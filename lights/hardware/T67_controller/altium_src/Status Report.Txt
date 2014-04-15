@@ -1,0 +1,19 @@
+Output: Gerber Files
+Type  : Gerber
+From  : Variant [[No Variations]] of PCB Document [vlc_ctrl_T67.PcbDoc]
+   Generated File[vlc_ctrl_T67.GTL]
+   Generated File[vlc_ctrl_T67.GBL]
+   Generated File[vlc_ctrl_T67.GTO]
+   Generated File[vlc_ctrl_T67.GTS]
+   Generated File[vlc_ctrl_T67.GBS]
+   Generated File[vlc_ctrl_T67.GBO]
+   Generated File[vlc_ctrl_T67.GKO]
+   Generated File[vlc_ctrl_T67.RUL]
+   Generated File[vlc_ctrl_T67.EXTREP]
+   Generated File[vlc_ctrl_T67.REP]
+
+
+Files Generated   : 10
+Documents Printed : 0
+
+Finished Output Generation At 3:26:29 PM On 3/25/2014

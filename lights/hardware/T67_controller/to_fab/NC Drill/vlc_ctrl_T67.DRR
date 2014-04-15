@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+NCDrill File Report For: vlc_ctrl_T67.PcbDoc   3/25/2014  3:26:27 PM
+---------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : vlc_ctrl_T67.TXT
+
+Tool         Hole Size           Hole Type     Hole Count Plated       Tool Travel
+---------------------------------------------------------------------------
+T1        20mil (0.508mm)          Round          1                0.00 Inch (0.00 mm)
+T2        35.4mil (0.89916mm)      Round          8                1.63 Inch (41.40 mm)
+T3        63mil (1.6002mm)         Round          3                0.46 Inch (11.58 mm)
+---------------------------------------------------------------------------
+Totals                                            12               2.09 Inch (52.98 mm)
+
+Total Processing Time (hh:mm:ss) : 00:00:00

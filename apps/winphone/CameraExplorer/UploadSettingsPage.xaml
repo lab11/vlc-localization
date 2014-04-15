@@ -1,0 +1,55 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="CameraExplorer.UploadSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="CAMERA EXPLORER - Upload Settings" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Upload Server URL" VerticalAlignment="Top"/>
+            <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible">
+            <TextBox x:Name="UrlBox" HorizontalAlignment="Left" Height="72" Margin="0,37,0,0" TextWrapping="NoWrap"
+                     Text="{Binding}" VerticalAlignment="Top" Width="1000" HorizontalScrollBarVisibility="Visible"/>
+            </ScrollViewer>
+            <Button Content="Set to pfet" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Width="256"
+                    Click="SetToPfet_Click" />
+            <Button Content="Set to capacitor" HorizontalAlignment="Left" Margin="10,186,0,0" VerticalAlignment="Top" Width="256"
+                    Click="SetToCapacitor_Click" />
+            <Button Content="Set to memristor" HorizontalAlignment="Left" Margin="10,258,0,0" VerticalAlignment="Top" Width="256"
+                    Click="SetToMemristor_Click" />
+            <Button Content="Set to ninja" HorizontalAlignment="Left" Margin="10,330,0,0" VerticalAlignment="Top" Width="256"
+                    Click="SetToNinja_Click" />
+            <Button Content="Set to patbook" HorizontalAlignment="Left" Margin="10,402,0,0" VerticalAlignment="Top" Width="256"
+                    Click="SetToPatbook_Click"/>
+        </Grid>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True">
+            <shell:ApplicationBarIconButton x:Name="saveButton" Text="Done"
+                IconUri="Assets/Icons/check.png" Click="doneButton_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

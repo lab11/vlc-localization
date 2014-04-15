@@ -1,0 +1,6 @@
+DRC Rules Export File for PCB: C:\Users\samkuo\Dropbox\Altium_YeSheng\VLC_ctrl_T67\vlc_ctrl_T67.PcbDoc
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing~Sunstone Circuits|Scope=Board|Minimum=7.00
+RuleKind=ShortCircuit|RuleName=ShortCircuit~Sunstone Circuits|Scope=Board|Allowed=0
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion~Sunstone Circuits|Scope=Board|Minimum=3.00
+RuleKind=Width|RuleName=Width~Sunstone Circuits|Scope=Board|Minimum=6.00
+RuleKind=Clearance|RuleName=Clearance~Sunstone Circuits|Scope=Board|Minimum=6.00

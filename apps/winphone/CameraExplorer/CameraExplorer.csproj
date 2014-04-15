@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{94F53777-5783-47B2-9BCB-CE46CCB0F219}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CameraExplorer</RootNamespace>
+    <AssemblyName>CameraExplorer</AssemblyName>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>CameraExplorer_$(Configuration)_$(Platform).xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>CameraExplorer.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AboutPage.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArrayParameter.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="UploadSettingsPage.xaml.cs">
+      <DependentUpon>UploadSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Parameter.cs" />
+    <Compile Include="OverlayTemplateSelector.cs" />
+    <Compile Include="DataContext.cs" />
+    <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RangeParameter.cs" />
+    <Compile Include="PreviewPage.xaml.cs">
+      <DependentUpon>PreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsTemplateSelector.cs" />
+    <Compile Include="UrlParameter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UploadSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Icons\appbar.feature.camera.rest.png" />
+    <Content Include="Assets\Icons\appbar.feature.settings.rest.png" />
+    <Content Include="Assets\Icons\check.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.16000.png" />
+    <None Include="SplashScreenImage.jpg" />
+    <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\overlay.exposuretime.1000.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.125.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.15.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.1s.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.2.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.2000.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.250.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.2s.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.30.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.4.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.4000.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.4s.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.500.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.60.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.8.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.8000.png" />
+    <Content Include="Assets\Icons\overlay.exposuretime.auto.png" />
+    <Content Include="Assets\Icons\overlay.flashmode.auto.png" />
+    <Content Include="Assets\Icons\overlay.flashmode.off.png" />
+    <Content Include="Assets\Icons\overlay.flashmode.on.png" />
+    <Content Include="Assets\Icons\overlay.flashmode.redeyereduction.png" />
+    <Content Include="Assets\Icons\appbar.sensor.png" />
+    <Content Include="Assets\Icons\overlay.iso.100.png" />
+    <Content Include="Assets\Icons\overlay.iso.1600.png" />
+    <Content Include="Assets\Icons\overlay.iso.200.png" />
+    <Content Include="Assets\Icons\overlay.iso.3200.png" />
+    <Content Include="Assets\Icons\overlay.iso.400.png" />
+    <Content Include="Assets\Icons\overlay.iso.800.png" />
+    <Content Include="Assets\Icons\overlay.iso.auto.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.auto.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.backlit.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.beach.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.candlelight.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.landscape.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.macro.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.night.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.nightportrait.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.portrait.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.snow.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.sport.png" />
+    <Content Include="Assets\Icons\overlay.scenemode.sunset.png" />
+    <Content Include="Assets\Icons\questionmark.png" />
+    <Content Include="Assets\Icons\save.png" />
+    <Content Include="Assets\Icons\stop.png" />
+    <Content Include="Assets\Icons\transport.pause.png" />
+    <Content Include="Assets\Icons\transport.play.png" />
+    <Content Include="Assets\Icons\upload.png" />
+    <Content Include="Assets\Lens.Screen-720p.png" />
+    <Content Include="Assets\Lens.Screen-WVGA.png" />
+    <Content Include="Assets\Lens.Screen-WXGA.png" />
+    <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tiles\FlipCycleTileMedium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Tiles\FlipCycleTileSmall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
