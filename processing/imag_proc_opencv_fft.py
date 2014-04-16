@@ -2,7 +2,10 @@
 # vim: sts=4 ts=4 sw=4 noet:
 
 from __future__ import print_function
-import sys, os, math
+import sys, os
+import math
+import argparse
+
 import cv2
 import numpy
 #import numpy.ma
@@ -54,7 +57,8 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 	# Blur image
 	logger.start_op("Applying blur")
 	#m2 = cv2.GaussianBlur(gray_image, (31,31), 0)
-	m2 = cv2.blur(gray_image, (40,40)) # faster and good enough
+	m2 = cv2.blur(gray_image, (50,50)) # faster and good enough
+	#m2 = cv2.blur(gray_image, (150,150)) # faster and good enough
 	if debug:
 		dbg_save('/tmp/after_blur.png', m2)
 	logger.debug('m2.shape = {}'.format(m2.shape))
@@ -225,11 +229,27 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 
 if __name__ == '__main__':
 	logger.info('imag_proc.py is main. Running imag_proc')
-	try:
-		fname = sys.argv[1]
-	except IndexError:
-		fname = '/tmp/x_0_y_1.27.jpg'
-	logger.debug('Processing image {}'.format(fname))
+	parser = argparse.ArgumentParser(
+			formatter_class=argparse.RawDescriptionHelpFormatter,
+			description='Program Action: Run image processing',
+			epilog='''\
+Control debug level with DEBUG evinronment environment variable.
+  Default: no debugging
+  DEBUG=1: print debugging information
+  DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
+''')
+	parser.add_argument('filename', type=str, nargs='?',
+			default='/tmp/x_0_y_1.27.jpg',
+			help='image to process')
+	parser.add_argument('phone_type', type=str, nargs='?',
+			default='lumia',
+			help='phone type; one of "iphone" "lumia" "lumia-front" "glass"')
+
+	args = parser.parse_args()
+
+	logger.debug('Processing image {} phone type {}'.\
+			format(args.filename, args.phone_type))
+
 	try:
 		if os.environ['DEBUG'] == '2':
 			debug = True
@@ -237,8 +257,10 @@ if __name__ == '__main__':
 			debug = False
 	except KeyError:
 		debug = False
+
 	try:
-		centers, estimated_frequencies, shape = imag_proc(fname, 0, 'lumia', debug)
+		centers, estimated_frequencies, shape =\
+				imag_proc(args.filename, 0, args.phone_type, debug)
 		logger.info('centers = {}'.format(centers))
 		logger.info('estimated_frequencies = {}'.format(estimated_frequencies))
 		logger.info('shape = {}'.format(shape))

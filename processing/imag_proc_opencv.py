@@ -30,7 +30,7 @@ def dbg_save(fname, array):
 
 def dbg_plot_subplots(fname):
 	logger.start_op('plot_subplots for ' + fname)
-	pylab.savefig(fname)#, dpi=1200)
+	pylab.savefig(fname, dpi=1200)
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
