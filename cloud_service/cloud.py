@@ -12,8 +12,11 @@ import urllib2
 #hack
 import PIL
 
-sys.path.append('../image_proc/')
+sys.path.append('../processing/')
 from aoa_full import aoa_full
+import phones.lumia_1020
+import rooms.test_rig
+import processors.opencv_fft
 
 import pretty_logger
 logger = pretty_logger.get_logger()
@@ -46,11 +49,11 @@ def on_image_received(input_image_path):
 
 	size = PIL.Image.open(input_image_path).size
 	if (7712 in size) and (4352 in size):
-		phone = 'lumia'
+		camera = phones.lumia_1020.back
 	elif (7136 in size) and (5360 in size):
-		phone = 'lumia'
+		camera = phones.lumia_1020.back
 	elif (960 in size) and (1280 in size):
-		phone = 'lumia-front'
+		camera = phones.lumia_1020.front
 	else:
 		raise NotImplementedError('Unknown phone type for image dimensions: ' + str(size))
 
@@ -58,7 +61,12 @@ def on_image_received(input_image_path):
 	logger.copy_to_file(output_path)
 
 	try:
-		rx_location, rx_rotation, location_error = aoa_full(input_image_path, phone, False)
+		rx_location, rx_rotation, location_error = aoa_full(
+				input_image_path,
+				camera,
+				rooms.test_rig,
+				processors.opencv_fft,
+				)
 		logger.info('rx_location = {}'.format(rx_location))
 		logger.info('rx_rotation =\n{}'.format(rx_rotation))
 		logger.info('location_error = {}'.format(location_error))
