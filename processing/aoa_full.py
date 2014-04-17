@@ -16,47 +16,18 @@ import matplotlib
 import matplotlib.mlab
 import pylab
 
-from imag_proc_opencv_fft import imag_proc
-#from imag_proc_opencv import imag_proc
-#from imag_proc import static_imag_proc as imag_proc
 from aoa import aoa
 
 import pretty_logger
 logger = pretty_logger.get_logger()
 
-@logger.op("Aoa full on image {0} taken with {1}")
-def aoa_full(file_name, phone_type, debug):
-
-	w = 28.0
-	l = 29.0
-
-	#position_of_transmitters = [-w/2*2.54 l/2*2.54 0; w/2*2.54 l/2*2.54 0; w/2*2.54 -l/2*2.54 0; -w/2*2.54 -l/2*2.54 0; 0 0 0];
-	#frequency_of_transmitter = [2000; 2500; 3000; 3500; 4000];
-	transmitters = {
-			2000 : (-w/2*2.54,  l/2*2.54, 0),
-			2500 : ( w/2*2.54,  l/2*2.54, 0),
-			3000 : ( w/2*2.54, -l/2*2.54, 0),
-			3500 : (-w/2*2.54, -l/2*2.54, 0),
-			4000 : (        0,         0, 0),
-			}
-	frequencies = numpy.array(transmitters.keys())
+@logger.op("Aoa full on image {0} taken with {1} in {2}")
+def aoa_full(file_name, camera, room, imag_proc, debug):
+	frequencies = numpy.array(room.transmitters.keys())
 	logger.debug("Transmitter frequencies = {}".format(frequencies))
 
-	Zf_lumia = 5620;
-	Zf_lumia_front = 1039;
-	Zf_iphone = 2950;
-
-	if phone_type == 'iphone':
-		Zf = Zf_iphone
-	elif phone_type == 'lumia':
-		Zf = Zf_lumia
-	elif phone_type == 'lumia-front':
-		Zf = Zf_lumia_front
-	else:
-		raise NotImplementedError("Unknown phone type: {} (need to add Zf info to this script)".format(phone_type))
-
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
-			imag_proc(file_name, 0, phone_type, debug)
+			imag_proc(file_name, 0, camera, debug)
 
 	# Image is mirrored by the lens, need to reflect the image
 	# Image origin is currently the top left but we want to center it
@@ -112,7 +83,7 @@ def aoa_full(file_name, phone_type, debug):
 	lights = [
 			(
 				positions_of_lights[i],
-				transmitters[actual_frequencies[i]]
+				room.transmitters[actual_frequencies[i]]
 			) for i in xrange(len(positions_of_lights))]
 	logger.debug('Lights information: {}'.format(lights))
 
@@ -125,7 +96,7 @@ def aoa_full(file_name, phone_type, debug):
 	tries_rx_err = numpy.empty([tries])
 	tries_method = ['YS_brute', 'static', 'scipy_basin']
 	for i in xrange(tries):
-		rx_location, rx_rotation, location_error = aoa(lights, Zf, k_init_method=tries_method[i])
+		rx_location, rx_rotation, location_error = aoa(lights, camera.Zf, k_init_method=tries_method[i])
 		logger.info('location estimate = {}'.format(rx_location))
 		logger.info('location error    = {}'.format(location_error))
 		tries_rx_loc[i] = rx_location
@@ -154,50 +125,9 @@ def aoa_full(file_name, phone_type, debug):
 		for i in r:
 			aoa_lights.append(lights[i])
 		logger.info('aoa_lights = {}'.format(aoa_lights))
-		rx_location, rx_rotation, location_error = aoa(aoa_lights, Zf)
+		rx_location, rx_rotation, location_error = aoa(aoa_lights, camera.Zf)
 		logger.info('location with brute  k_init = {}'.format(rx_location))
 		logger.info('location error              = {}'.format(location_error))
 	'''
 
 	return (rx_location, rx_rotation, location_error)
-
-if __name__ == '__main__':
-	logger.info("aoa_full.py is main. Running aoa_full")
-	parser = argparse.ArgumentParser(
-			formatter_class=argparse.RawDescriptionHelpFormatter,
-			description='Program Action: Run AoA full (image proc + AoA)',
-			epilog='''\
-Control debug level with DEBUG evinronment environment variable.
-  Default: no debugging
-  DEBUG=1: print debugging information
-  DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
-''')
-	parser.add_argument('filename', type=str, nargs='?',
-			default='/tmp/x_0_y_1.27.jpg',
-			help='image to process')
-	parser.add_argument('phone_type', type=str, nargs='?',
-			default='lumia',
-			help='phone type; one of "iphone" "lumia" "lumia-front" "glass"')
-
-	args = parser.parse_args()
-
-	logger.debug('Processing image {} phone type {}'.\
-			format(args.filename, args.phone_type))
-
-	try:
-		if os.environ['DEBUG'] == '2':
-			debug = True
-		else:
-			debug = False
-	except KeyError:
-		debug = False
-
-	try:
-		rx_location, rx_rotation, location_error = aoa_full(
-				args.filename, args.phone_type, debug)
-		logger.info('rx_location = {}'.format(rx_location))
-		logger.info('rx_rotation =\n{}'.format(rx_rotation))
-		logger.info('location_error = {}'.format(location_error))
-	except Exception as e:
-		logger.warn('Exception: {}'.format(e))
-		raise
