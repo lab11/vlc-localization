@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # vim: sts=4 ts=4 sw=4 noet:
 
 from __future__ import print_function
@@ -20,7 +20,7 @@ Control debug level with DEBUG evinronment environment variable.
   DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
 ''')
 	parser.add_argument('-f', '--filename', type=str,
-			default='/tmp/x_0_y_1.27.jpg',
+			default='./samples/x_0_y_1.27.jpg',
 			help='image to process')
 	parser.add_argument('-c', '--camera', type=str,
 			default='lumia_1020',
