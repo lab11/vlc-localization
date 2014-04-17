@@ -41,13 +41,13 @@ Localization
 
 Our localization scheme relies on some basic geometry and lens optics. Each
 transmitter projects an image along a straight ray onto the imager (camera)
-plane. Each transmitter (_t<sub>0</sub>)_) can be expressed as coordinates in
+plane. Each transmitter (_t<sub>0</sub>_) can be expressed as coordinates in
 both the transmitter coordinate system (_x<sub>0</sub>_, _y<sub>0</sub>_,
 _z<sub>0</sub>_) and its projection (_t'<sub>0</sub>_) the imager coordinate
 system (_u<sub>0</sub>_, _v<sub>0</sub>_, _w<sub>0</sub>_). For each pair, there
 is a distinct scaling factor (_K<sub>0</sub>_) that maps
 _t'<sub>0</sub>_&nbsp;&#8594;&nbsp;_t<sub>0</sub>_. The goal is to solve for
-these scaling factors (_K_s). Once we have a translation between coordinate
+these scaling factors (_K_'s). Once we have a translation between coordinate
 systems, we can use some basic geometry to solve for the camera's location and
 orientation with respect to the transmitters.
 
