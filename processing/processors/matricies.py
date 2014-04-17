@@ -17,6 +17,7 @@ import matplotlib
 import matplotlib.mlab
 import pylab
 
+sys.path.append('..')
 import pretty_logger
 logger = pretty_logger.get_logger()
 
@@ -53,7 +54,8 @@ def static_imag_proc(file_name, num_of_tx, phone_type, debug):
 	return (centers, estimated_frequencies, shape)
 
 @logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
-def imag_proc(file_name, num_of_tx, phone_type, debug):
+def imag_proc(file_name, num_of_tx, camera, debug):
+	raise NotImplementedError("This method was abandoned and not updated for new calling signature (no radii)")
 
 	# Load image and convert to grayscale
 	logger.start_op("Loading image")
@@ -107,17 +109,6 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 	assert number_of_transmitters >= 3, 'not enough transmitters'
 	logger.end_op()
 
-	# Set rolling shutter value
-	rolling_shutter_r_iphone = 1/(55556.0)
-	rolling_shutter_r_lumia  = 1/(46.54e3)
-
-	if phone_type == 'iphone':
-		rolling_shutter_r = rolling_shutter_r_iphone
-	elif phone_type == 'lumia':
-		rolling_shutter_r = rolling_shutter_r_lumia
-	else:
-		raise NotImplementedError("Unknown phone type " + phone_type)
-
 	# Find centers and sort
 	centers = centroids.astype(int)
 	# idiom for matlab sortrows:
@@ -126,7 +117,7 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 	logger.debug('centers = {}'.format(centers), remove_newlines=True)
 	#logger.end_op() was clustering's
 
-	Fs = 1/rolling_shutter_r
+	Fs = 1/camera.rolling_shutter_r
 	T = 1/Fs
 	NFFT = 1024
 	gain = 5
@@ -207,24 +198,3 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 
 	return (centers, estimated_frequencies, gray_image.shape)
 
-if __name__ == '__main__':
-	logger.info('imag_proc.py is main. Running imag_proc')
-	try:
-		fname = sys.argv[1]
-	except IndexError:
-		fname = '/tmp/x_0_y_1.27.jpg'
-	try:
-		if os.environ['DEBUG'] == '2':
-			debug = True
-		else:
-			debug = False
-	except KeyError:
-		debug = False
-	try:
-		centers, estimated_frequencies, shape = imag_proc(fname, 0, 'lumia', debug)
-		logger.info('centers =\n{}'.format(centers))
-		logger.info('estimated_frequencies = {}'.format(estimated_frequencies))
-		logger.info('shape = {}'.format(shape))
-	except Exception as e:
-		logger.warn('Exception: {}'.format(e))
-		raise

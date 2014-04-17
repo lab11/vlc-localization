@@ -8,19 +8,10 @@ import argparse
 
 import cv2
 import numpy
-#import numpy.ma
-#import scipy
-#import scipy.misc
-#import scipy.ndimage
 import scipy.signal
-#import scipy.cluster
-#import skimage
-#import skimage.filter
-#import skimage.morphology
-#import matplotlib
-#import matplotlib.mlab
 import pylab
 
+sys.path.append('..')
 import pretty_logger
 logger = pretty_logger.get_logger()
 
@@ -35,7 +26,7 @@ def dbg_plot_subplots(fname):
 	logger.end_op()
 
 @logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
-def imag_proc(file_name, num_of_tx, phone_type, debug):
+def imag_proc(file_name, num_of_tx, camera, debug):
 	BLACK  = (  0,   0,   0)
 	WHITE  = (255, 255, 255)
 	BLUE   = (255,   0,   0)
@@ -44,23 +35,6 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 	YELLOW = (  0, 255, 255)
 	TEAL   = (255, 255,   0)
 	MAGENTA= (255,   0, 255)
-
-	# Set rolling shutter value
-	rolling_shutter_r_iphone      = 1/(55556.0)
-	rolling_shutter_r_lumia       = 1/(47.54e3)
-	rolling_shutter_r_lumia_front = 1/(30.88e3)
-	rolling_shutter_r_glass       = 1/(60e3) # rough estimate, not well-calibrated
-
-	if phone_type == 'iphone':
-		rolling_shutter_r = rolling_shutter_r_iphone
-	elif phone_type == 'lumia':
-		rolling_shutter_r = rolling_shutter_r_lumia
-	elif phone_type == 'lumia-front':
-		rolling_shutter_r = rolling_shutter_r_lumia_front
-	elif phone_type == 'glass':
-		rolling_shutter_r = rolling_shutter_r_glass
-	else:
-		raise NotImplementedError("Unknown phone type " + phone_type)
 
 	# Load image and convert to grayscale
 	logger.start_op("Loading image")
@@ -368,7 +342,7 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 		half_period = numpy.mean(intervals)
 		logger.debug('half_period = {}'.format(half_period))
 
-		freqs.append((1/rolling_shutter_r) / (2*half_period))
+		freqs.append((1/camera.rolling_shutter_r) / (2*half_period))
 
 		cnt += 1
 		logger.end_op()
@@ -390,7 +364,7 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 	# Compute transmitter frequencies
 	logger.start_op("Computing transmitter frequencies")
 
-	Fs = 1/rolling_shutter_r
+	Fs = 1/camera.rolling_shutter_r
 	T = 1/Fs
 	NFFT = 1024
 	gain = 5
@@ -458,44 +432,3 @@ def imag_proc(file_name, num_of_tx, phone_type, debug):
 
 	return (centers, estimated_frequencies, gray_image.shape)
 	'''
-
-if __name__ == '__main__':
-	logger.info('imag_proc.py is main. Running imag_proc')
-	parser = argparse.ArgumentParser(
-			formatter_class=argparse.RawDescriptionHelpFormatter,
-			description='Program Action: Run image processing',
-			epilog='''\
-Control debug level with DEBUG evinronment environment variable.
-  Default: no debugging
-  DEBUG=1: print debugging information
-  DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
-''')
-	parser.add_argument('filename', type=str, nargs='?',
-			default='/tmp/x_0_y_1.27.jpg',
-			help='image to process')
-	parser.add_argument('phone_type', type=str, nargs='?',
-			default='lumia',
-			help='phone type; one of "iphone" "lumia" "lumia-front" "glass"')
-
-	args = parser.parse_args()
-
-	logger.debug('Processing image {} phone type {}'.\
-			format(args.filename, args.phone_type))
-
-	try:
-		if os.environ['DEBUG'] == '2':
-			debug = True
-		else:
-			debug = False
-	except KeyError:
-		debug = False
-
-	try:
-		centers, estimated_frequencies, shape =\
-				imag_proc(args.filename, 0, args.phone_type, debug)
-		logger.info('centers = {}'.format(centers))
-		logger.info('estimated_frequencies = {}'.format(estimated_frequencies))
-		logger.info('shape = {}'.format(shape))
-	except Exception as e:
-		logger.warn('Exception: {}'.format(e))
-		raise
