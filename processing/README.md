@@ -65,3 +65,48 @@ axis).
 The `aoa_full.py` script stitches the image processing and localization
 together. It's biggest responsibility is mapping the estimated frequencies to
 transmitter coordinates.
+
+Installation
+------------
+
+### Mac OS X
+
+```
+sudo port install py27-numpy py27-scipy
+sudo port install opencv +python27
+sudo pip install termcolor matplotlib
+```
+
+Usage
+-----
+
+
+    ./run.py
+
+
+Command line usage:
+
+```
+./run.py --help
+usage: run.py [-h] [-f FILENAME] [-c CAMERA] [-m METHOD] [-r ROOM]
+              [--only-image]
+
+Program Action: Run image processing
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FILENAME, --filename FILENAME
+                        image to process
+  -c CAMERA, --camera CAMERA
+                        phone type; must be in phones/
+  -m METHOD, --method METHOD
+                        image processing method; must be in processors/
+  -r ROOM, --room ROOM  room the image was taken in; must be in rooms/
+  --only-image          stop after image processing (do not attempt
+                        localization)
+
+Control debug level with DEBUG evinronment environment variable.
+  Default: no debugging
+  DEBUG=1: print debugging information
+  DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
+```
