@@ -98,7 +98,6 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	centers = []
 	radii = []
 	freqs = []
-	vals_arr = []
 	cnt = 0
 	for contour in contours:
 		center, radius = cv2.minEnclosingCircle(contour)
@@ -172,7 +171,6 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 				dbg_save('/tmp/one-{}_canny.png'.format(cnt), cv2.add(one_light, post_canny))
 
 			vals = numpy.sum(post_canny, axis=0)
-			vals_arr.append(vals)
 
 			v_idx = -1
 			tot = 0
@@ -342,7 +340,14 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		half_period = numpy.mean(intervals)
 		logger.debug('half_period = {}'.format(half_period))
 
-		freqs.append((1/camera.rolling_shutter_r) / (2*half_period))
+		freq = (1/camera.rolling_shutter_r) / (2*half_period)
+
+		if (freq < 900):
+			logger.info("Rejecting impossibly low frequency {} Hz".format(freq))
+			centers.pop()
+			radii.pop()
+		else:
+			freqs.append(freq)
 
 		cnt += 1
 		logger.end_op()
