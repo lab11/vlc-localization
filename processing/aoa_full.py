@@ -21,6 +21,38 @@ from aoa import aoa
 import pretty_logger
 logger = pretty_logger.get_logger()
 
+def dist(c1, c2):
+	return ( (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 - (c1[2] - c2[2])**2)**.5
+
+def resolve_aliased_frequncies(lights):
+	l,p = zip(*lights)
+	def build_opts(s, p, r):
+		if len(p) == 1:
+			for e in p[0]:
+				new_s = list(s)
+				new_s.append(e)
+				r.append(new_s)
+		else:
+			for i in range(len(p[0])):
+				sub_s = list(s)
+				sub_s.append(p[0][i])
+				sub_p = list(p)
+				sub_p.pop(0)
+				build_opts(sub_s, sub_p, r)
+	r = []
+	build_opts([], p, r)
+
+	best_dist = 1e12
+	for coords in r:
+		d = 0
+		for i in range(len(coords)-1):
+			for j in range(1, len(coords)):
+				d += dist(coords[i], coords[j])
+		if d < best_dist:
+			best_dist = d
+			best_coords = coords
+	return zip(l, best_coords)
+
 @logger.op("Aoa full on image {0} taken with {1} in {2}")
 def aoa_full(file_name, camera, room, imag_proc, debug):
 	frequencies = numpy.array(room.transmitters.keys())
@@ -29,12 +61,19 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
 			imag_proc(file_name, 0, camera, debug)
 
-	# Image is mirrored by the lens, need to reflect the image
-	# Image origin is currently the top left but we want to center it
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
-	center_point = tuple([p /2 for p in image_shape])
-	positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]
-	positions_of_lights[:,1] = center_point[1] - positions_of_lights[:,1]
+	# Image is mirrored by the lens, need to reflect the image
+	if not hasattr(room, 'origin'):
+		raise TypeError('Room object {} does not have an origin'.format(room))
+	if room.origin == 'center':
+		# Image origin is currently the top left but we want to center it
+		center_point = tuple([p /2 for p in image_shape])
+		positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]
+		positions_of_lights[:,1] = center_point[1] - positions_of_lights[:,1]
+	elif room.origin == 'south-east':
+		positions_of_lights[:,1] = -positions_of_lights[:,1]
+	else:
+		raise NotImplementedError('Unknown origin type: {}'.format(room.origin))
 	logger.debug('Translated light center points: {}'.format(
 		positions_of_lights), remove_newlines=True)
 
@@ -85,7 +124,10 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 				positions_of_lights[i],
 				room.transmitters[actual_frequencies[i]]
 			) for i in xrange(len(positions_of_lights))]
-	logger.debug('Lights information: {}'.format(lights))
+	logger.debug('Raw lights information: {}'.format(lights))
+
+	# Some frequencies have multiple locations, need to pick one
+	lights = resolve_aliased_frequncies(lights)
 
 	# AoA calcualation requires at least 3 transmitters
 	assert len(lights) >= 3, "AoA calcualation requires at least 3 transmitters"
