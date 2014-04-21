@@ -172,8 +172,11 @@ if __name__ == '__main__':
 			print("WARN: Light {} set to {:4.0f} which is not detectable".format(
 				k, dip2f(*DIP_SETTINGS[k])))
 		else:
-			print("Light {} set to {:4.0f}".format(k, dip2f(*DIP_SETTINGS[k])))
+			try:
+				print("Light {} set to {:4.0f} ({:4.0f}) at {}".format(
+					k, dip2f(*DIP_SETTINGS[k]), dip2f_meas(*DIP_SETTINGS[k]), coords(k)))
+			except KeyError:
+				print("Light {} set to {:4.0f} ({:4.0f})".format(
+					k, dip2f(*DIP_SETTINGS[k]), dip2f_meas(*DIP_SETTINGS[k])))
 
 	print('')
-
-	print(transmitters)
