@@ -80,7 +80,7 @@ sudo pip install termcolor matplotlib
 ### Fedora
 
 ```
-sudo yum install opencv-python scipy
+sudo yum install opencv-python scipy python-matplotlib
 sudo pip install termcolor matplotlib
 ```
 
