@@ -77,6 +77,13 @@ sudo port install opencv +python27
 sudo pip install termcolor matplotlib
 ```
 
+### Fedora
+
+```
+sudo yum install opencv-python scipy
+sudo pip install termcolor matplotlib
+```
+
 Usage
 -----
 
