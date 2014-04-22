@@ -81,7 +81,7 @@ sudo pip install termcolor matplotlib
 
 ```
 sudo yum install opencv-python scipy python-matplotlib
-sudo pip install termcolor matplotlib
+sudo pip install termcolor
 ```
 
 Usage
