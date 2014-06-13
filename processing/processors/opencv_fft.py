@@ -35,7 +35,6 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	if debug:
 		dbg_save('/tmp/gray_image.png', gray_image)
 	logger.end_op()
-
 	# Handle orientation
 	logger.start_op("Normalizing image rotation")
 	if gray_image.shape[1] > gray_image.shape[0]:
@@ -106,7 +105,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		radii.append(radius)
 
 	number_of_transmitters = len(centers)
-	assert number_of_transmitters >= 3, 'not enough transmitters'
+	assert number_of_transmitters >= 1, 'not enough transmitters'############################################################################################
 	logger.end_op()
 
 

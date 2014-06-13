@@ -84,7 +84,6 @@ Control debug level with DEBUG evinronment environment variable.
 		except ImportError:
 			logger.error('Unknown room')
 			raise
-
 		try:
 			rx_location, rx_rotation, location_error = aoa_full(
 					args.filename, camera, room, imag_proc, debug)
@@ -92,5 +91,6 @@ Control debug level with DEBUG evinronment environment variable.
 			logger.info('rx_rotation =\n{}'.format(rx_rotation))
 			logger.info('location_error = {}'.format(location_error))
 		except Exception as e:
+			print ("Here")
 			logger.warn('Exception: {}'.format(e))
 			raise
