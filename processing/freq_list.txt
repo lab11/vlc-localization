@@ -42,7 +42,7 @@ p17
 tp18
 bsS'loca'
 p19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_1.jpg'
 p20
 sS'ptype'
 p21
@@ -72,7 +72,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p30
 tp31
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_2.jpg'
 p32
 sg21
 g22
@@ -99,7 +99,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p39
 tp40
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_3.jpg'
 p41
 sg21
 g22
@@ -126,7 +126,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p48
 tp49
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_4.jpg'
 p50
 sg21
 g22
@@ -153,7 +153,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p57
 tp58
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_5.jpg'
 p59
 sg21
 g22
@@ -180,7 +180,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p66
 tp67
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_6.jpg'
 p68
 sg21
 g22
@@ -207,7 +207,7 @@ S'\x00\x00\x00\x00\x00\x0f9\xc0'
 p75
 tp76
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_7.jpg'
 p77
 sg21
 g22
@@ -234,7 +234,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p84
 tp85
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_8.jpg'
 p86
 sg21
 g22
@@ -261,7 +261,7 @@ S'\x00\x00\x00\x00\x00\x0f9\xc0'
 p93
 tp94
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/0.5m/0.5m_9.jpg'
 p95
 sg21
 g22
@@ -288,7 +288,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p102
 tp103
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_1.jpg'
 p104
 sg21
 S'TX1K, 1m, 1 Light Source'
@@ -316,7 +316,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p112
 tp113
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_2.jpg'
 p114
 sg21
 g105
@@ -343,7 +343,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p121
 tp122
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_3.jpg'
 p123
 sg21
 g105
@@ -370,7 +370,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p130
 tp131
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_4.jpg'
 p132
 sg21
 g105
@@ -397,7 +397,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p139
 tp140
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_5.jpg'
 p141
 sg21
 g105
@@ -424,7 +424,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p148
 tp149
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_6.jpg'
 p150
 sg21
 g105
@@ -451,7 +451,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p157
 tp158
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_7.jpg'
 p159
 sg21
 g105
@@ -478,7 +478,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p166
 tp167
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_8.jpg'
 p168
 sg21
 g105
@@ -505,7 +505,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p175
 tp176
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1m/1m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1m/1m_9.jpg'
 p177
 sg21
 g105
@@ -532,7 +532,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p184
 tp185
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_1.jpg'
 p186
 sg21
 S'TX1K, 1.5m, 1 Light Source'
@@ -560,7 +560,7 @@ S'\x00\x00\x00\x00\x00\xdfQ\xc0'
 p194
 tp195
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_2.jpg'
 p196
 sg21
 g187
@@ -587,7 +587,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p203
 tp204
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_3.jpg'
 p205
 sg21
 g187
@@ -614,7 +614,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p212
 tp213
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_4.jpg'
 p214
 sg21
 g187
@@ -641,7 +641,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p221
 tp222
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_5.jpg'
 p223
 sg21
 g187
@@ -668,7 +668,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p230
 tp231
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_6.jpg'
 p232
 sg21
 g187
@@ -695,7 +695,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p239
 tp240
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_7.jpg'
 p241
 sg21
 g187
@@ -722,7 +722,7 @@ S'\x00\x00\x00\x00\x00\x8e\\@'
 p248
 tp249
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_8.jpg'
 p250
 sg21
 g187
@@ -749,7 +749,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p257
 tp258
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/1.5m/1.5m_9.jpg'
 p259
 sg21
 g187
@@ -776,7 +776,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p266
 tp267
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_1.jpg'
 p268
 sg21
 S'TX1K, 2m, 1 Light Source'
@@ -804,7 +804,7 @@ S'\x00\x00\x00\x00\x00\xdfQ\xc0'
 p276
 tp277
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_2.jpg'
 p278
 sg21
 g269
@@ -831,7 +831,7 @@ S'\x00\x00\x00\x00@z]\xc0'
 p285
 tp286
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_3.jpg'
 p287
 sg21
 g269
@@ -858,7 +858,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p294
 tp295
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_4.jpg'
 p296
 sg21
 g269
@@ -885,7 +885,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p303
 tp304
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_5.jpg'
 p305
 sg21
 g269
@@ -912,7 +912,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p312
 tp313
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_6.jpg'
 p314
 sg21
 g269
@@ -939,7 +939,7 @@ S'\x00\x00\x00\x00\x00\x0f9\xc0'
 p321
 tp322
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_7.jpg'
 p323
 sg21
 g269
@@ -966,7 +966,7 @@ S'\x00\x00\x00\x00\x00\xdfQ\xc0'
 p330
 tp331
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_8.jpg'
 p332
 sg21
 g269
@@ -993,7 +993,7 @@ S'\x00\x00\x00\x00\x00\x8e\\@'
 p339
 tp340
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2m/2m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2m/2m_9.jpg'
 p341
 sg21
 g269
@@ -1020,7 +1020,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p348
 tp349
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_1.jpg'
 p350
 sg21
 S'TX1K, 2.5m, 1 Light Source'
@@ -1048,7 +1048,7 @@ S'\x00\x00\x00\x00\x00\x0f9\xc0'
 p358
 tp359
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_2.jpg'
 p360
 sg21
 g351
@@ -1075,7 +1075,7 @@ S'\x00\x00\x00\x00\x98Y\x9d@'
 p367
 tp368
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_3.jpg'
 p369
 sg21
 g351
@@ -1102,7 +1102,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p376
 tp377
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_4.jpg'
 p378
 sg21
 g351
@@ -1129,7 +1129,7 @@ S'\x00\x00\x00\x00\x98Y\x9d@'
 p385
 tp386
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_5.jpg'
 p387
 sg21
 g351
@@ -1156,7 +1156,7 @@ S'\x00\x00\x00\x00\x00\x8e\\@'
 p394
 tp395
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_6.jpg'
 p396
 sg21
 g351
@@ -1183,7 +1183,7 @@ S'\x00\x00\x00\x00\x00\x8e\\@'
 p403
 tp404
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_7.jpg'
 p405
 sg21
 g351
@@ -1210,7 +1210,7 @@ S'\x00\x00\x00\x000\xe6\x9b@'
 p412
 tp413
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_8.jpg'
 p414
 sg21
 g351
@@ -1237,7 +1237,7 @@ S'\x00\x00\x00\x00\x88\xa7\xa6@'
 p421
 tp422
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/2.5m/2.5m_9.jpg'
 p423
 sg21
 g351
@@ -1264,7 +1264,7 @@ S'\x00\x00\x00\x00\x00\x8e\\@'
 p430
 tp431
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_1.jpg'
 p432
 sg21
 S'TX1K, 3m, 1 Light Source'
@@ -1292,7 +1292,7 @@ S'\x00\x00\x00\x00`\x8cx@'
 p440
 tp441
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_2.jpg'
 p442
 sg21
 g433
@@ -1319,7 +1319,7 @@ S'\x00\x00\x00\x00\x00^5@'
 p449
 tp450
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_3.jpg'
 p451
 sg21
 g433
@@ -1346,7 +1346,7 @@ S'\x00\x00\x00\x00\xc8r\x9a@'
 p458
 tp459
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_5.jpg'
 p460
 sg21
 g433
@@ -1373,7 +1373,7 @@ S'\x00\x00\x00\x00\x98Y\x9d@'
 p467
 tp468
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_8.jpg'
 p469
 sg21
 g433
@@ -1400,7 +1400,7 @@ S'\x00\x00\x00\x000\xe6\x9b@'
 p476
 tp477
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3m/3m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3m/3m_9.jpg'
 p478
 sg21
 g433
@@ -1427,7 +1427,7 @@ S'\x00\x00\x00\x00`\xff\x98@'
 p485
 tp486
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_1.jpg'
 p487
 sg21
 S'TX1K, 3.5m, 1 Light Source'
@@ -1455,7 +1455,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p495
 tp496
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_2.jpg'
 p497
 sg21
 g488
@@ -1482,7 +1482,7 @@ S'\x00\x00\x00\x00\xb6\x8b\xad@'
 p504
 tp505
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_3.jpg'
 p506
 sg21
 g488
@@ -1509,7 +1509,7 @@ S'\x00\x00\x00\x00\xc8r\x9a@'
 p513
 tp514
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_4.jpg'
 p515
 sg21
 g488
@@ -1536,7 +1536,7 @@ S'\x00\x00\x00\x00\xc26\xa1@'
 p522
 tp523
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_6.jpg'
 p524
 sg21
 g488
@@ -1563,7 +1563,7 @@ S'\x00\x00\x00\x00\xc0\xf2P@'
 p531
 tp532
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_7.jpg'
 p533
 sg21
 g488
@@ -1590,7 +1590,7 @@ S'\x00\x00\x00\x00\xe4\x9f\x9c@'
 p540
 tp541
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_8.jpg'
 p542
 sg21
 g488
@@ -1617,7 +1617,7 @@ S'\x00\x00\x00\x00~1\xa9@'
 p549
 tp550
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX1K/3.5m/3.5m_9.jpg'
 p551
 sg21
 g488
@@ -1644,7 +1644,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p558
 tp559
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_1.jpg'
 p560
 sg21
 S'TX3K, .5m, 1 Light Source'
@@ -1672,7 +1672,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p568
 tp569
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_2.jpg'
 p570
 sg21
 g561
@@ -1699,7 +1699,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p577
 tp578
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_3.jpg'
 p579
 sg21
 g561
@@ -1726,7 +1726,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p586
 tp587
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_4.jpg'
 p588
 sg21
 g561
@@ -1753,7 +1753,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p595
 tp596
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_5.jpg'
 p597
 sg21
 g561
@@ -1780,7 +1780,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p604
 tp605
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_6.jpg'
 p606
 sg21
 g561
@@ -1807,7 +1807,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p613
 tp614
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_7.jpg'
 p615
 sg21
 g561
@@ -1834,7 +1834,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p622
 tp623
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_8.jpg'
 p624
 sg21
 g561
@@ -1861,7 +1861,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p631
 tp632
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/0.5m/0.5m_9.jpg'
 p633
 sg21
 g561
@@ -1888,7 +1888,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p640
 tp641
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_1.jpg'
 p642
 sg21
 S'TX3K, 1m, 1 Light Source'
@@ -1916,7 +1916,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p650
 tp651
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_2.jpg'
 p652
 sg21
 g643
@@ -1943,7 +1943,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p659
 tp660
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_3.jpg'
 p661
 sg21
 g643
@@ -1970,7 +1970,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p668
 tp669
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_4.jpg'
 p670
 sg21
 g643
@@ -1997,7 +1997,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p677
 tp678
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_5.jpg'
 p679
 sg21
 g643
@@ -2024,7 +2024,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p686
 tp687
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_6.jpg'
 p688
 sg21
 g643
@@ -2051,7 +2051,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p695
 tp696
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_7.jpg'
 p697
 sg21
 g643
@@ -2078,7 +2078,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p704
 tp705
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_8.jpg'
 p706
 sg21
 g643
@@ -2105,7 +2105,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p713
 tp714
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1m/1m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1m/1m_9.jpg'
 p715
 sg21
 g643
@@ -2132,7 +2132,7 @@ S'\x00\x00\x00\x00@\xcbR\xc0'
 p722
 tp723
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_1.jpg'
 p724
 sg21
 S'TX3K, 1.5m, 1 Light Source'
@@ -2160,7 +2160,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p732
 tp733
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_2.jpg'
 p734
 sg21
 g725
@@ -2187,7 +2187,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p741
 tp742
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_3.jpg'
 p743
 sg21
 g725
@@ -2214,7 +2214,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p750
 tp751
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_4.jpg'
 p752
 sg21
 g725
@@ -2241,7 +2241,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p759
 tp760
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_5.jpg'
 p761
 sg21
 g725
@@ -2268,7 +2268,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p768
 tp769
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_6.jpg'
 p770
 sg21
 g725
@@ -2295,7 +2295,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p777
 tp778
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_7.jpg'
 p779
 sg21
 g725
@@ -2322,7 +2322,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p786
 tp787
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_8.jpg'
 p788
 sg21
 g725
@@ -2349,7 +2349,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p795
 tp796
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/1.5m/1.5m_9.jpg'
 p797
 sg21
 g725
@@ -2376,7 +2376,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p804
 tp805
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_1.jpg'
 p806
 sg21
 S'TX3K, 2m, 1 Light Source'
@@ -2404,7 +2404,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p814
 tp815
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_2.jpg'
 p816
 sg21
 g807
@@ -2431,7 +2431,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p823
 tp824
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_3.jpg'
 p825
 sg21
 g807
@@ -2458,7 +2458,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p832
 tp833
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_4.jpg'
 p834
 sg21
 g807
@@ -2485,7 +2485,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p841
 tp842
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_5.jpg'
 p843
 sg21
 g807
@@ -2512,7 +2512,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p850
 tp851
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_6.jpg'
 p852
 sg21
 g807
@@ -2539,7 +2539,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p859
 tp860
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_7.jpg'
 p861
 sg21
 g807
@@ -2566,7 +2566,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p868
 tp869
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_8.jpg'
 p870
 sg21
 g807
@@ -2593,7 +2593,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p877
 tp878
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2m/2m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2m/2m_9.jpg'
 p879
 sg21
 g807
@@ -2620,7 +2620,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p886
 tp887
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_1.jpg'
 p888
 sg21
 S'TX3K, 2.5m, 1 Light Source'
@@ -2648,7 +2648,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p896
 tp897
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_2.jpg'
 p898
 sg21
 g889
@@ -2675,7 +2675,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p905
 tp906
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_3.jpg'
 p907
 sg21
 g889
@@ -2702,7 +2702,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p914
 tp915
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_4.jpg'
 p916
 sg21
 g889
@@ -2729,7 +2729,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p923
 tp924
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_5.jpg'
 p925
 sg21
 g889
@@ -2756,7 +2756,7 @@ S'\x00\x00\x00\x00\x80\x06P@'
 p932
 tp933
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_6.jpg'
 p934
 sg21
 g889
@@ -2783,7 +2783,7 @@ S'\x00\x00\x00\x00\x00\xc0<\xc0'
 p941
 tp942
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_7.jpg'
 p943
 sg21
 g889
@@ -2810,7 +2810,7 @@ S'\x00\x00\x00\x00@\xcbR\xc0'
 p950
 tp951
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_8.jpg'
 p952
 sg21
 g889
@@ -2837,7 +2837,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p959
 tp960
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/2.5m/2.5m_9.jpg'
 p961
 sg21
 g889
@@ -2864,7 +2864,7 @@ S'\x00\x00\x00\x00\xc0\xa1[@'
 p968
 tp969
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_1.jpg'
 p970
 sg21
 S'TX3K, 3m, 1 Light Source'
@@ -2892,7 +2892,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p978
 tp979
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_2.jpg'
 p980
 sg21
 g971
@@ -2919,7 +2919,7 @@ S'\x00\x00\x00\x00@\xcbR\xc0'
 p987
 tp988
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_3.jpg'
 p989
 sg21
 g971
@@ -2946,7 +2946,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p996
 tp997
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_4.jpg'
 p998
 sg21
 g971
@@ -2973,7 +2973,7 @@ S'\x00\x00\x00\x00\xe0\x00e\xc0'
 p1005
 tp1006
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_5.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_5.jpg'
 p1007
 sg21
 g971
@@ -3000,7 +3000,7 @@ S'\x00\x00\x00\x00\xc0\xa1[@'
 p1014
 tp1015
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_6.jpg'
 p1016
 sg21
 g971
@@ -3027,7 +3027,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p1023
 tp1024
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_7.jpg'
 p1025
 sg21
 g971
@@ -3054,7 +3054,7 @@ S'\x00\x00\x00\x00\x80\x06P@'
 p1032
 tp1033
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_8.jpg'
 p1034
 sg21
 g971
@@ -3081,7 +3081,7 @@ S'\x00\x00\x00\x00@\xcbR\xc0'
 p1041
 tp1042
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3m/3m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3m/3m_9.jpg'
 p1043
 sg21
 g971
@@ -3108,7 +3108,7 @@ S'\x00\x00\x00\x00\x80\x06P@'
 p1050
 tp1051
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_1.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_1.jpg'
 p1052
 sg21
 S'TX3K, 3.5m, 1 Light Source'
@@ -3136,7 +3136,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p1060
 tp1061
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_2.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_2.jpg'
 p1062
 sg21
 g1053
@@ -3163,7 +3163,7 @@ S'\x00\x00\x00\x00@\xcbR\xc0'
 p1069
 tp1070
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_3.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_3.jpg'
 p1071
 sg21
 g1053
@@ -3190,7 +3190,7 @@ S'\x00\x00\x00\x00\x80\x06P@'
 p1078
 tp1079
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_4.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_4.jpg'
 p1080
 sg21
 g1053
@@ -3217,7 +3217,7 @@ S'\x00\x00\x00\x00\xc0\xa1[@'
 p1087
 tp1088
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_6.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_6.jpg'
 p1089
 sg21
 g1053
@@ -3244,7 +3244,7 @@ S'\x00\x00\x00\x00\xc0\xa1[@'
 p1096
 tp1097
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_7.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_7.jpg'
 p1098
 sg21
 g1053
@@ -3271,7 +3271,7 @@ S'\x00\x00\x00\x00\x80f^\xc0'
 p1105
 tp1106
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_8.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_8.jpg'
 p1107
 sg21
 g1053
@@ -3298,7 +3298,7 @@ S'\x00\x00\x00\x00\x00\xad1@'
 p1114
 tp1115
 bsg19
-S'/home/noah/lab/vlc-localization/processing/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_9.jpg'
+S'/home/noah/lab/shed-data/vlc/back_camera/distance/TX3K/3.5m/3.5m_9.jpg'
 p1116
 sg21
 g1053

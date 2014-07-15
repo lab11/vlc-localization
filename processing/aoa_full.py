@@ -60,7 +60,7 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
 			imag_proc(file_name, 0, camera, debug)
-
+	print (frequencies_of_lights)
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
 	# Image is mirrored by the lens, need to reflect the image
 	if not hasattr(room, 'origin'):
@@ -87,6 +87,9 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
 		logger.start_op('Removing duplicate transmitter entries')
 		uniq_freq = numpy.unique(actual_frequencies)
+		print ("Frequencies: " + str(frequencies))
+		print ("Actual Frequencies: " + str(actual_frequencies))
+		print ("Unique Frequencies: " + str(uniq_freq))
 		for freq in uniq_freq:
 			matches = []
 			for i in xrange(len(actual_frequencies)):
@@ -138,7 +141,9 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	tries_rx_err = numpy.empty([tries])
 	tries_method = ['YS_brute', 'static', 'scipy_basin']
 	for i in xrange(tries):
-		rx_location, rx_rotation, location_error = aoa(lights, camera.Zf, k_init_method=tries_method[i])
+		rx_location, rx_rotation, location_error, valid = aoa(lights, camera.Zf, k_init_method=tries_method[i])
+		if valid == False:
+			location_error = 999999 #this is hardcoding an exit, i can do better...
 		logger.info('location estimate = {}'.format(rx_location))
 		logger.info('location error    = {}'.format(location_error))
 		tries_rx_loc[i] = rx_location

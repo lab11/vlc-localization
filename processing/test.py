@@ -8,7 +8,7 @@ import argparse
 
 import pretty_logger
 import pickle
-
+import numpy
 import test_pics
 
 logger = pretty_logger.get_logger()
@@ -21,7 +21,7 @@ class Picture:
 		self.ptype = c
 		self.freq_diff = d
 
-def run_test(filename,only_im):
+def run_test(filename,only_im,roomin):
 	#comment out to silence logger
 	try:
 		if os.environ['DEBUG'] == '2':
@@ -47,7 +47,7 @@ def run_test(filename,only_im):
 			raise
 	else:
 		from aoa_full import aoa_full
-		room = __import__('rooms.' + 'test_rig', fromlist=[1,])
+		room = __import__('rooms.' + roomin, fromlist=[1,])
 		try:
 			rx_location, rx_rotation, location_error = aoa_full(
 					filename, camera, room, imag_proc, debug)
@@ -59,7 +59,9 @@ def run_test(filename,only_im):
 
 #finds statistics on error in localization (improvement/depreciation)
 def find_error_diffs(error_list):
-	saved_error_list = pickle.load(open("error_list.txt","r"))
+	infile = open("error_list.txt","r")
+	saved_error_list = pickle.load(infile)
+	infile.close()
 	i = 0
 	num_better = 0
 	num_worse = 0
@@ -69,37 +71,50 @@ def find_error_diffs(error_list):
 	while i < len(error_list):
 		if error_list[i].error < saved_error_list[i].error:
 			num_better = num_better + 1
-			delta_e = delta_e  + (error_list[i].error - saved_error_list[i].error)
-			print ("Error Improved to " + error_list[i].error + " from " + saved_error_list[i].error +"!")
+			if error_list[i].error == "false":
+				print ("Error in " + error_list[i].loca)
+				i = i + 1
+				continue
+			delta_e = delta_e + (numpy.float64(error_list[i].error) - numpy.float64(saved_error_list[i].error))
+			print ("Error Improved to " + str(error_list[i].error) + " from " + str(saved_error_list[i].error) +"!")
 			print ("	File Type: " + error_list[i].ptype + "  -- " + error_list[i].loca)
 		elif error_list[i].error > saved_error_list[i].error:
 			num_worse = num_worse + 1
-			delta_e = delta_e + (error_list[i].error - saved_error_list[i].error)
-			print ("Error Depreciated to " + error_list[i].error + " from " + saved_error_list[i].error +"!")
+			print (delta_e)
+			print (error_list[i].error)
+			print (saved_error_list[i].error)
+			if error_list[i].error == "false":
+				print ("Error in " + error_list[i].loca)
+				i = i + 1
+				continue
+			delta_e = delta_e + (numpy.float64(error_list[i].error) - numpy.float64(saved_error_list[i].error))
+			print ("Error Depreciated to " + str(error_list[i].error) + " from " + str(saved_error_list[i].error) +"!")
 			print ("	File Type: " + error_list[i].ptype + "  -- " + error_list[i].loca)
 		elif error_list[i].error == saved_error_list[i].error: 
 			num_same = num_same + 1
 		i = i + 1
 	avg_delta_e = (delta_e)/(num_better + num_worse + num_same)
-	print ("----------------------------------------")
 	return avg_delta_e,num_better,num_worse,num_same
 
 #finds statistics on error in frequency calculation (improvement/depreciation)
 def find_freq_diff(freq_list):
-	saved_freq_list = pickle.load(open("freq_list.txt","r"))
+	infile = open("freq_list.txt","r")
+	saved_freq_list = pickle.load(infile)
+	infile.close()
 	i = 0
 	num_dep = 0
 	num_imp = 0
 	num_eq = 0
+	print ("----------------------------------------")
 	while i < len(freq_list):
 		if abs(freq_list[i].freq_diff) < abs(saved_freq_list[i].freq_diff):
 			num_imp = num_imp + 1
-			print ("Freq diff Improved to" + freq_list[i].freq_diff +" from " + saved_freq_list[i].freq_diff + "!")
-			print ("	File Type: " + freq_list[i].ptype + "  -- " + freq_list[i].loca)
+			print ("Freq diff Improved to" + str(freq_list[i].freq_diff) +" from " + str(saved_freq_list[i].freq_diff) + "!")
+			print ("	File Type: " + str(freq_list[i].ptype) + "  -- " + str(freq_list[i].loca))
 		elif abs(freq_list[i].freq_diff) > abs(saved_freq_list[i].freq_diff):
 			num_dep = num_dep + 1
-			print ("Freq diff Depreciated to" + freq_list[i].freq_diff +" from " + saved_freq_list[i].freq_diff + "!")
-			print ("	File Type: " + freq_list[i].ptype + "  -- " + freq_list[i].loca)
+			print ("Freq diff Depreciated to" + str(freq_list[i].freq_diff) +" from " + str(saved_freq_list[i].freq_diff) + "!")
+			print ("	File Type: " + str(freq_list[i].ptype) + "  -- " + str(freq_list[i].loca))
 		else:
 			num_eq = num_eq + 1
 		i = i + 1
@@ -142,7 +157,7 @@ if __name__ == '__main__':
 			description='Program Action: Regression Test Image Processing',
 			epilog='''Can only save data if running Localization AND Frequency Testing
 		
-To test you must set enviroment variable SHED_DATA to the location of directory "shed data"
+To test you must set enviroment variable SHED_DATA to location of dir "shed-data"
 EX: export SHED_DATA="~/shed-data"
 
 TEST ALL THE THINGZ!!!
@@ -159,6 +174,9 @@ TEST ALL THE THINGZ!!!
 	parser.add_argument('-f', '--frequency',
 			action = "store_true",
 			help='only run frequency testing')
+	parser.add_argument('-b','--box',
+			action = "store_true",
+			help='run box test')
 
 	args = parser.parse_args()
 	try:
@@ -166,13 +184,13 @@ TEST ALL THE THINGZ!!!
 	except KeyError:
 		#SHED-DATA not set
 		print ("Path Not Found to directory \"shed-data\"")
-		print ("Edit Environment variable SHED_DATA to the path to directory shed-data")
+		print ("Edit Environment variable SHED_DATA to path to dir shed-data")
 		print ("EX: export SHED_DATA=\"~/shed-data\"")
 		sys.exit()
 	
 	error_list = []
 	freq_list = []
-	all_ins = args.frequency == False and args.localization == False
+	all_ins = args.frequency == False and args.localization == False and args.box == False
 	if args.localization == True or all_ins :
 		error_list = test_pics.sample_test(error_list)
 		error_list = test_pics.angle_x_test(error_list,path)
@@ -181,6 +199,9 @@ TEST ALL THE THINGZ!!!
 	if args.frequency == True or all_ins:
 		freq_list = test_pics.dist_TX1K_test(freq_list,path)
 		freq_list = test_pics.dist_TX3K_test(freq_list,path)
+	
+	if args.box == True or all_ins:
+		error_list = test_pics.full_box_test(error_list)
 
 	if args.update:
 		pickle.dump(error_list,open("error_list.txt","w"))
@@ -189,9 +210,14 @@ TEST ALL THE THINGZ!!!
 	print_stats(error_list,freq_list,args)
 
 	if args.save == True and all_ins:
-		pickle.dump(error_list,open("error_list.txt","w"))
-		pickle.dump(freq_list,open("freq_list.txt","w"))
+		infile1 = open("error_list.txt","w")
+		infile2 = open("freq_list.txt","w")
+		pickle.dump(error_list,infile1)
+		pickle.dump(freq_list,infile2)
+		infile1.close()
+		infile2.close()
 		print ("Data Saved")
+	
 	print ("Session Ended")
 
 

@@ -94,6 +94,8 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 		for j in range(number_of_iteration+1):
 			# Last iteration, Find minimum
 			if (j==number_of_iteration):
+				if sol_found == 0:
+					return k_vals,False
 				min_error_history_idx = err_history.index(min(err_history))
 				min_idx = idx_history[min_error_history_idx]
 				print("Using index ", min_idx, "for initial guess")
@@ -137,14 +139,20 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 					print ("First found index: ", j)
 				err_history.append(min(scaling_factors_error_combination))
 				idx_history.append(j)
-		return k_vals
+		if sol_found:
+			return k_vals, True
+		else:
+			return k_vals, False
+			
 		# End of brute force method
 
 	logger.start_op('Minimize distance function')
 	if k_init_method == 'static':
 		k_vals_init = [-.05] * len(lights)
 	elif k_init_method == 'YS_brute':
-		k_vals_init = brute_force_k()
+		k_vals_init, valid = brute_force_k()
+		if valid == False:
+			return 0,0,0, False
 	elif k_init_method == 'scipy_brute':
 		k_ranges = [slice(.01, .1, (.1-.01)/10) for i in xrange(len(lights))]
 		k_vals_init = scipy.optimize.brute(scalar_scaling, k_ranges, disp=True)
@@ -220,5 +228,5 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 	logger.debug('rx_location_error = {}'.format(rx_location_error))
 	logger.end_op()
 
-	return (rx_location, rx_rotation, rx_location_error)
+	return (rx_location, rx_rotation, rx_location_error, True)
 

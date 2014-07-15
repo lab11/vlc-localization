@@ -33,6 +33,8 @@ Control debug level with DEBUG evinronment environment variable.
 			help='room the image was taken in; must be in rooms/')
 	parser.add_argument('--only-image', action='store_true',
 			help='stop after image processing (do not attempt localization)')
+	parser.add_argument('-b','--box',action='store_true',
+			help='Box light handleing')
 
 	args = parser.parse_args()
 
@@ -91,6 +93,5 @@ Control debug level with DEBUG evinronment environment variable.
 			logger.info('rx_rotation =\n{}'.format(rx_rotation))
 			logger.info('location_error = {}'.format(location_error))
 		except Exception as e:
-			print ("Here")
 			logger.warn('Exception: {}'.format(e))
 			raise

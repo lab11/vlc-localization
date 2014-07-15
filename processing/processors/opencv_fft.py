@@ -10,6 +10,7 @@ import cv2
 import numpy
 import scipy.signal
 import pylab
+import box_fft
 
 sys.path.append('..')
 import pretty_logger
@@ -27,7 +28,16 @@ def dbg_plot_subplots(fname):
 
 @logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
 def imag_proc(file_name, num_of_tx, camera, debug):
-
+	if True:
+		centers2 = []
+		radii2 = []
+		estimated_frequencies2 = []
+		x,y = 0,0
+		centers2, radii2, estimated_frequencies2, (x,y), valid = box_fft.box_light_fft(file_name)
+		if valid:
+			return centers2, radii2, estimated_frequencies2, (x,y)
+		else:
+			print ("Standard Light")
 	# Load image and convert to grayscale
 	logger.start_op("Loading image")
 	gray_image = cv2.imread(file_name, cv2.IMREAD_GRAYSCALE)
@@ -78,7 +88,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		cv2.drawContours(contour_image, contours, -1, 255, 3)
 		dbg_save('/tmp/contours.png', contour_image)
 
-	# And then fitting a circle to that contour
+	# And then fitting a circle to that contour)
 	centers = []
 	radii = []
 	for contour in contours:
@@ -86,8 +96,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		center = map(int, center)
 		radius = int(radius)
 		if radius <= 5:
-			logger.info('Skipping transmitter at {} with small radius ({} pixels)'.format(
-				center, radius))
+			logger.info('Skipping transmitter at {} with small radius ({} pixels)'.format(center, radius))
 			continue
 		# For some reason minEnclosingCircle flips x and y?
 		center = (center[1], center[0])
@@ -197,5 +206,4 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	centers = numpy.array(centers)
 	radii = numpy.array(radii)
 	estimated_frequencies = numpy.array(estimated_frequencies)
-
 	return (centers, radii, estimated_frequencies, gray_image.shape)
