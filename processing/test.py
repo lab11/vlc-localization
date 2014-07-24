@@ -94,6 +94,19 @@ def find_error_diffs(error_list):
 			num_same = num_same + 1
 		i = i + 1
 	avg_delta_e = (delta_e)/(num_better + num_worse + num_same)
+	i = 0
+	total_error = 0
+	while i < len(error_list):
+		if error_list[i].error < 0.00001 and error_list[i].error > -0.00001:
+			error_list[i].error = 0.0
+		total_error = total_error + error_list[i].error
+		if i < 9:
+			print (error_list[i].loca + "   ---   " + str(error_list[i].error)) 
+		else:
+			print (error_list[i].loca + "  ---   " + str(error_list[i].error)) 
+		i = i + 1
+	avg_error = total_error/len(error_list)
+	print ("Average Error: " + str(avg_error))
 	return avg_delta_e,num_better,num_worse,num_same
 
 #finds statistics on error in frequency calculation (improvement/depreciation)
@@ -179,14 +192,15 @@ TEST ALL THE THINGZ!!!
 			help='run box test')
 
 	args = parser.parse_args()
-	try:
-		path = os.environ['SHED_DATA']
-	except KeyError:
-		#SHED-DATA not set
-		print ("Path Not Found to directory \"shed-data\"")
-		print ("Edit Environment variable SHED_DATA to path to dir shed-data")
-		print ("EX: export SHED_DATA=\"~/shed-data\"")
-		sys.exit()
+	if args.box == False:
+		try:
+			path = os.environ['SHED_DATA']
+		except KeyError:
+			#SHED-DATA not set
+			print ("Path Not Found to directory \"shed-data\"")
+			print ("Edit Environment variable SHED_DATA to path to dir shed-data")
+			print ("EX: export SHED_DATA=\"~/shed-data\"")
+			sys.exit()
 	
 	error_list = []
 	freq_list = []

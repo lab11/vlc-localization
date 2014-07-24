@@ -742,4 +742,43 @@ def full_box_test(error_list):#add in testing suite of box test to shed-data
                      "/home/noah/lab/box_light/full/19.jpg",
                      "full 4 light image close up 1,2,2.46,3 k freq",
                      0))
+   """
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/20.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/20.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/21.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/21.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/22.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/22.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/23.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/23.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/24.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/24.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/25.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/25.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/26.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/26.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/27.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/27.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   error_list.append(Picture(run_test("/home/noah/lab/box_light/full/28.jpg",False,'box'),
+                     "/home/noah/lab/box_light/full/28.jpg",
+                     "full 4 light image close up 1,2,2.46,3 k freq",
+                     0))
+   """
    return error_list
+   

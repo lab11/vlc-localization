@@ -33,7 +33,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		radii2 = []
 		estimated_frequencies2 = []
 		x,y = 0,0
-		centers2, radii2, estimated_frequencies2, (x,y), valid = box_fft.box_light_fft(file_name)
+		centers2, radii2, estimated_frequencies2, (x,y), valid = box_fft.box_light_fft(file_name,debug)
 		if valid:
 			return centers2, radii2, estimated_frequencies2, (x,y)
 		else:

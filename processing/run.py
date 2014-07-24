@@ -61,7 +61,6 @@ Control debug level with DEBUG evinronment environment variable.
 		# Found the phone, but not the specified camera
 		logger.error("Unknown phone / camera combination")
 		raise
-
 	try:
 		imag_proc = __import__('processors.' + args.method, fromlist=[1,]).imag_proc
 	except ImportError:

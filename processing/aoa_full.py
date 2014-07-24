@@ -76,19 +76,17 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 		raise NotImplementedError('Unknown origin type: {}'.format(room.origin))
 	logger.debug('Translated light center points: {}'.format(
 		positions_of_lights), remove_newlines=True)
-
 	# Convert the measured frequencies to the actual transmitted frequencies:
 	actual_frequencies = [frequencies[(numpy.abs(frequencies - f)).argmin()] for
 			f in frequencies_of_lights]
 	logger.debug("Original frequencies: {}".format(frequencies_of_lights))
 	logger.debug("  Actual frequencies: {}".format(actual_frequencies))
 	del(frequencies_of_lights) # delete this so we don't accidentally use it
-
+	print ("Frequencies: " + str(frequencies))
+	print ("Actual Frequencies: " + str(actual_frequencies))
 	if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
 		logger.start_op('Removing duplicate transmitter entries')
 		uniq_freq = numpy.unique(actual_frequencies)
-		print ("Frequencies: " + str(frequencies))
-		print ("Actual Frequencies: " + str(actual_frequencies))
 		print ("Unique Frequencies: " + str(uniq_freq))
 		for freq in uniq_freq:
 			matches = []
