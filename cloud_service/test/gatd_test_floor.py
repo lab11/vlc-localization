@@ -364,7 +364,7 @@ if __name__ == '__main__':
 	except (IndexError, ValueError):
 		COUNT = 10
 	try:
-		DELAY = int(sys.argv[2])
+		DELAY = float(sys.argv[2])
 	except (IndexError, ValueError):
 		DELAY = .5
 	try:
