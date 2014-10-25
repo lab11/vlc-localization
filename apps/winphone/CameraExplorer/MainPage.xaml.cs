@@ -81,6 +81,12 @@ namespace CameraExplorer
             ApplicationBar.MenuItems.Add(uploadMenuItem);
             uploadMenuItem.Click += new EventHandler(uploadSettingsButton_Click);
 
+            ApplicationBarMenuItem userMenuItem = new ApplicationBarMenuItem();
+            userMenuItem.Text = "user settings";
+            userMenuItem.IsEnabled = false;
+            ApplicationBar.MenuItems.Add(userMenuItem);
+            userMenuItem.Click += new EventHandler(userSettingsButton_Click);
+
             // Disable app sleep
             PhoneApplicationService phoneAppService = PhoneApplicationService.Current;
             phoneAppService.UserIdleDetectionMode = IdleDetectionMode.Disabled;
@@ -265,6 +271,11 @@ namespace CameraExplorer
         private void uploadSettingsButton_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/UploadSettingsPage.xaml", UriKind.Relative));
+        }
+
+        private void userSettingsButton_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/UserSettingsPage.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -487,11 +498,11 @@ namespace CameraExplorer
                 IReadOnlyList<CameraSensorLocation> sensorLocations = PhotoCaptureDevice.AvailableSensorLocations;
                 if (_sensorLocation == sensorLocations[1])
                 {
-                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "front");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "front", _dataContext.UserName);
                 }
                 else
                 {
-                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "back");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "back", _dataContext.UserName);
                 }
 
                 

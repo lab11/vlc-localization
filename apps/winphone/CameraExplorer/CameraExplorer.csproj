@@ -124,6 +124,9 @@
     </Compile>
     <Compile Include="SettingsTemplateSelector.cs" />
     <Compile Include="UrlParameter.cs" />
+    <Compile Include="userSettingsPage.xaml.cs">
+      <DependentUpon>userSettingsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -146,6 +149,10 @@
     </Page>
     <Page Include="SettingsPage.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="userSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

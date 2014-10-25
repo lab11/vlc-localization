@@ -29,6 +29,7 @@ namespace CameraExplorer
         private ObservableCollection<Parameter> _parameters = new ObservableCollection<Parameter>();
         
         private UrlParameter _upload_url;
+        private string _user_name = null;
 
         /// <summary>
         /// Singleton instance accessor.
@@ -75,6 +76,22 @@ namespace CameraExplorer
             get
             {
                 return _upload_url;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                if (_user_name == null)
+                {
+                    _user_name = "Anonymous";
+                }
+                return _user_name;
+            }
+            set
+            {
+                _user_name = value;
             }
         }
 
