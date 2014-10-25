@@ -483,7 +483,18 @@ namespace CameraExplorer
                 await sequence.StartCaptureAsync();
 
                 stream.Seek(0, SeekOrigin.Begin);
-                RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream);
+
+                IReadOnlyList<CameraSensorLocation> sensorLocations = PhotoCaptureDevice.AvailableSensorLocations;
+                if (_sensorLocation == sensorLocations[1])
+                {
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "front");
+                }
+                else
+                {
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, stream, "back");
+                }
+
+                
 
                 //await Task.Delay(1000);
             }

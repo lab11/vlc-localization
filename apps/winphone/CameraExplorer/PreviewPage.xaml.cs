@@ -12,6 +12,8 @@ using System;
 using System.IO.IsolatedStorage;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Windows.Phone.Media.Capture;
+
 
 // REST Directives
 using System.IO;
@@ -116,11 +118,14 @@ namespace RESTAPI
             }, request);
         }
 
-        public static void post_image(Uri uri, Stream image_stream, RESTSuccessCallback success, RESTErrorCallback error)
+        public static void post_image(Uri uri, Stream image_stream, string which_camera, RESTSuccessCallback success, RESTErrorCallback error)
         {
             HttpWebRequest request = WebRequest.CreateHttp(uri);
             request.ContentType = "image/jpeg";
             request.Method = "POST";
+
+            request.Headers["X-luxapose-phone-type"] = "lumia_1020";
+            request.Headers["X-luxapose-camera"] = which_camera;
 
             request.BeginGetRequestStream((IAsyncResult result) =>
             {
@@ -155,7 +160,7 @@ namespace RESTAPI
         }
 
 
-        public static void upload_image(Uri uri, Stream image_stream)
+        public static void upload_image(Uri uri, Stream image_stream, string which_camera)
         {
             System.Diagnostics.Debug.WriteLine("upload image start. uri: " + uri.ToString());
             try
@@ -163,7 +168,7 @@ namespace RESTAPI
                 var name = DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss-ff");
                 uri = new Uri(uri.ToString() + name + ".jpg");
                 System.Diagnostics.Debug.WriteLine(String.Format("About to upload {0} to {1}", name, uri.ToString()));
-                RESTAPI.RESTAPIHandler.post_image(uri, image_stream, (stream) =>
+                RESTAPI.RESTAPIHandler.post_image(uri, image_stream, which_camera, (stream) =>
                 {
                     System.Diagnostics.Debug.WriteLine("Uploaded " + name + " successfully");
                 },
@@ -262,7 +267,25 @@ namespace CameraExplorer
                 _dataContext.ImageStream.Position = 0;
 
                 System.Diagnostics.Debug.WriteLine("uploadButton_Click Before calling upload_image");
-                RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream);
+
+                if (_dataContext.Device == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("null device in data context, assuming back button led to prop never being set");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back");
+                    return;
+                }
+
+                IReadOnlyList<CameraSensorLocation> sensorLocations = PhotoCaptureDevice.AvailableSensorLocations;
+                if (_dataContext.Device.SensorLocation == sensorLocations[1])
+                {
+                    System.Diagnostics.Debug.WriteLine(" --> from front camera");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "front");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine(" --> from back camera");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back");
+                }
             }
             catch (Exception ex)
             {
