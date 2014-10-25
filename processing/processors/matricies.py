@@ -53,7 +53,7 @@ def static_imag_proc(file_name, num_of_tx, phone_type, debug):
 	shape = (7712, 4352)
 	return (centers, estimated_frequencies, shape)
 
-@logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
+@logger.op("Process image {0} with {1} transmitter(s) taken with {2.__name__}")
 def imag_proc(file_name, num_of_tx, camera, debug):
 	raise NotImplementedError("This method was abandoned and not updated for new calling signature (no radii)")
 

@@ -26,7 +26,7 @@ def dbg_plot_subplots(fname):
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
-@logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
+@logger.op("Process image {0} with {1} transmitter(s) taken with {2.__name__} using opencv_fft")
 def imag_proc(file_name, num_of_tx, camera, debug):
 	if True:
 		centers2 = []

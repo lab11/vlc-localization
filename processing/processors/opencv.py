@@ -25,7 +25,7 @@ def dbg_plot_subplots(fname):
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
-@logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
+@logger.op("Process image {0} with {1} transmitter(s) taken with {2.__name__}")
 def imag_proc(file_name, num_of_tx, camera, debug):
 	BLACK  = (  0,   0,   0)
 	WHITE  = (255, 255, 255)

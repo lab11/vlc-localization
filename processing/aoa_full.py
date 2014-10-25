@@ -53,7 +53,7 @@ def resolve_aliased_frequncies(lights):
 			best_coords = coords
 	return zip(l, best_coords)
 
-@logger.op("Aoa full on image {0} taken with {1} in {2}")
+@logger.op("Aoa full on image {0} taken with {1.__name__} in {2.__name__}")
 def aoa_full(file_name, camera, room, imag_proc, debug):
 	frequencies = numpy.array(room.transmitters.keys())
 	logger.debug("Transmitter frequencies = {}".format(frequencies))

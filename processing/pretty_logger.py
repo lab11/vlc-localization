@@ -18,6 +18,23 @@ except ImportError:
 
 class Logger(object):
 
+	class LoggerOp(object):
+		def __init__(self, logger, op_str):
+			self.logger = logger
+			self.op_str = op_str
+
+		def __enter__(self):
+			self.logger.start_op(self.op_str)
+
+		def __exit__(self, exception_type, exception_val, trace):
+			if exception_type is None:
+				self.logger.end_op()
+			else:
+				self.logger.end_op(success=False)
+
+	def scoped_op(self, op_str):
+		return Logger.LoggerOp(self, op_str)
+
 	def op(self, op_str):
 		"""Decorator that wraps an operation with start/end op"""
 		def decorator_fn(fn):
@@ -30,6 +47,7 @@ class Logger(object):
 					raise
 				self.end_op()
 				return ret
+			wrapped_fn.__name__ = 'op{'+fn.__name__+'}'
 			return wrapped_fn
 		return decorator_fn
 

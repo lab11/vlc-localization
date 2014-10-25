@@ -14,8 +14,8 @@ import PIL
 
 sys.path.append('../processing/')
 from aoa_full import aoa_full
-import phones.lumia_1020
-import rooms.test_rig
+import phones
+import rooms
 import processors.opencv_fft
 
 import pretty_logger
@@ -47,15 +47,33 @@ def on_image_received(input_image_path):
 	result_path = os.path.join(root, 'result', img_name + '.result.txt')
 	output_path = os.path.join(root, 'result', img_name + '.log.txt')
 
-	size = PIL.Image.open(input_image_path).size
-	if (7712 in size) and (4352 in size):
-		camera = phones.lumia_1020.back
-	elif (7136 in size) and (5360 in size):
-		camera = phones.lumia_1020.back
-	elif (960 in size) and (1280 in size):
-		camera = phones.lumia_1020.front
-	else:
-		raise NotImplementedError('Unknown phone type for image dimensions: ' + str(size))
+	hfile = open(os.path.splitext(input_image_path)[0]+'.headers')
+	headers = dict()
+	for h in hfile:
+		k,v = h.split(':', 1)
+		headers[k.strip().lower()] = v.strip().lower()
+
+	try:
+		phone = getattr(phones, headers['x-luxapose-phone-type'])
+		camera = getattr(phone, headers['x-luxapose-camera'])
+	except (KeyError, AttributeError):
+		logger.warn("Bad or missing headers, attempting to guess phone and camera")
+		# Fall back to guessing
+		size = PIL.Image.open(input_image_path).size
+		if (7712 in size) and (4352 in size):
+			camera = phones.lumia_1020.back
+		elif (7136 in size) and (5360 in size):
+			camera = phones.lumia_1020.back
+		elif (960 in size) and (1280 in size):
+			camera = phones.lumia_1020.front
+		else:
+			raise NotImplementedError('Unknown phone type for image dimensions: ' + str(size))
+
+	try:
+		room = getattr(rooms, headers['x-luxapose-ble-loc-hints'].split()[0].strip())
+	except (KeyError, AttributeError):
+		logger.warn("No location hint. Assuming test_rig")
+		room = rooms.test_rig
 
 	# Copy work to an output file
 	logger.copy_to_file(output_path)
@@ -123,6 +141,12 @@ class SimpleHTTPRequestHandlerWithPUT(SimpleHTTPRequestHandler):
 					f.write(content)
 					f.close()
 					logger.debug("Wrote {}".format(path))
+					header_path = os.path.splitext(path)[0] + '.headers'
+					f = open(header_path, 'w')
+					for h in self.headers:
+						f.write('{}: {}\n'.format(h, self.headers[h]))
+					f.close()
+					logger.debug("Wrote {}".format(header_path))
 					self.send_response(200)
 					#r = pool.apply_async(on_image_received, path, callback=callback)
 					work_queue.put((on_image_received, path))
