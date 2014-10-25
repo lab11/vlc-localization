@@ -75,6 +75,8 @@ def on_image_received(input_image_path):
 		logger.warn("No location hint. Assuming test_rig")
 		room = rooms.test_rig
 
+	source_ip = headers['x-luxapose-source-ip']
+
 	# Copy work to an output file
 	logger.copy_to_file(output_path)
 
@@ -102,6 +104,7 @@ def on_image_received(input_image_path):
 				'rx_rotation' : rx_rotation.tolist(),
 				'location_error' : location_error,
 				'image_name' : img_name,
+				'phone_ip' : source_ip,
 		}
 
 		req = urllib2.Request('http://inductor.eecs.umich.edu:8081/WEgwAGyc9N')
@@ -145,6 +148,7 @@ class SimpleHTTPRequestHandlerWithPUT(SimpleHTTPRequestHandler):
 					f = open(header_path, 'w')
 					for h in self.headers:
 						f.write('{}: {}\n'.format(h, self.headers[h]))
+					f.write('X-luxapose-source-ip: {}\n'.format(self.client_address[0]))
 					f.close()
 					logger.debug("Wrote {}".format(header_path))
 					self.send_response(200)
