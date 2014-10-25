@@ -5,10 +5,14 @@ import time
 import json
 import urllib2
 import random
+import socket
 
-POST_URL = 'http://inductor.eecs.umich.edu:8081/WEgwAGyc9N'
+HOST = 'inductor.eecs.umich.edu'
+PORT = 8081
+PROFILE_ID = 'WEgwAGyc9N'
+POST_URL = 'http://' + HOST + ':' + str(PORT) + '/' + PROFILE_ID
 
-def post_pkt(idx):
+def post_pkt(idx, phone_ip):
 	#p = random.choice(data)
 	p = data[idx]
 	pkt = {
@@ -16,13 +20,14 @@ def post_pkt(idx):
 			'rx_rotation': p['rx_rotation'],
 			'location_error': p['location_error'],
 			'image_name': p['image_name'],
+			'phone_ip' : phone_ip,
 			}
 
 	req = urllib2.Request(POST_URL)
 	req.add_header('Content-Type', 'application/json')
 
 	response = urllib2.urlopen(req, json.dumps(pkt))
-	print("Posted pkt")
+	print("Posted pkt #{}".format(idx))
 
 data = [
 {u'_receiver': u'http_post', u'_processor_count': 0, u'profile_id': u'WEgwAGyc9N', u'image_name': u'2014-09-07--21-56-01-00', u'rx_rotation': [[-0.0456745453247575, -0.9937648779371678, 0.04103443419847221], [0.8763630535911789, -0.013842466402105926, 0.4842408528088045], [-0.45328688836223213, 0.028263638339037816, 0.8733387477481256]], u'rx_location': [8.991988333114621, 86.55352645581408, 127.69217094040292], u'location_error': 1.404359065164499, u'time': 1410141790371, u'_id': u'540d0e5e7f82e72e099f21cd', u'port': 50471, u'address': u'281471087271422'},
@@ -366,7 +371,14 @@ if __name__ == '__main__':
 		idx = int(sys.argv[3])
 	except (IndexError, ValueError):
 		idx = random.choice(range(len(data)-COUNT))
+	try:
+		phone_ip = sys.argv[4]
+	except IndexError:
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		s.connect((HOST,PORT))
+		phone_ip = s.getsockname()[0]
+		s.close()
 
 	for i in range(COUNT):
-		post_pkt(idx + i)
+		post_pkt(idx + i, phone_ip)
 		time.sleep(DELAY)
