@@ -80,6 +80,10 @@ namespace CameraExplorer
             uploadMenuItem.IsEnabled = false;
             ApplicationBar.MenuItems.Add(uploadMenuItem);
             uploadMenuItem.Click += new EventHandler(uploadSettingsButton_Click);
+
+            // Disable app sleep
+            PhoneApplicationService phoneAppService = PhoneApplicationService.Current;
+            phoneAppService.UserIdleDetectionMode = IdleDetectionMode.Disabled;
         }
 
         /// <summary>
