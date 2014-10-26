@@ -51,11 +51,11 @@ def on_image_received(input_image_path):
 	headers = dict()
 	for h in hfile:
 		k,v = h.split(':', 1)
-		headers[k.strip().lower()] = v.strip().lower()
+		headers[k.strip().lower()] = v.strip()
 
 	try:
-		phone = getattr(phones, headers['x-luxapose-phone-type'])
-		camera = getattr(phone, headers['x-luxapose-camera'])
+		phone = getattr(phones, headers['x-luxapose-phone-type'].lower())
+		camera = getattr(phone, headers['x-luxapose-camera'].lower())
 	except (KeyError, AttributeError):
 		logger.warn("Bad or missing headers, attempting to guess phone and camera")
 		# Fall back to guessing
@@ -76,6 +76,7 @@ def on_image_received(input_image_path):
 		room = rooms.test_rig
 
 	source_ip = headers['x-luxapose-source-ip']
+	user = headers['x-luxapose-user']
 
 	# Copy work to an output file
 	logger.copy_to_file(output_path)
@@ -105,6 +106,7 @@ def on_image_received(input_image_path):
 				'location_error' : location_error,
 				'image_name' : img_name,
 				'phone_ip' : source_ip,
+				'user': user,
 		}
 
 		req = urllib2.Request('http://inductor.eecs.umich.edu:8081/WEgwAGyc9N')

@@ -12,7 +12,7 @@ PORT = 8081
 PROFILE_ID = 'WEgwAGyc9N'
 POST_URL = 'http://' + HOST + ':' + str(PORT) + '/' + PROFILE_ID
 
-def post_pkt(idx, phone_ip):
+def post_pkt(idx, phone_ip, user):
 	#p = random.choice(data)
 	p = data[idx]
 	pkt = {
@@ -21,6 +21,7 @@ def post_pkt(idx, phone_ip):
 			'location_error': p['location_error'],
 			'image_name': p['image_name'],
 			'phone_ip' : phone_ip,
+			'user': user,
 			}
 
 	req = urllib2.Request(POST_URL)
@@ -378,7 +379,11 @@ if __name__ == '__main__':
 		s.connect((HOST,PORT))
 		phone_ip = s.getsockname()[0]
 		s.close()
+	try:
+		user = sys.argv[5]
+	except IndexError:
+		user = socket.gethostname().split('.')[0]
 
 	for i in range(COUNT):
-		post_pkt(idx + i, phone_ip)
+		post_pkt(idx + i, phone_ip, user)
 		time.sleep(DELAY)
