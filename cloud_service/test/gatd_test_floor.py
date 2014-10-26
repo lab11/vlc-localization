@@ -6,6 +6,7 @@ import json
 import urllib2
 import random
 import socket
+import argparse
 
 HOST = 'inductor.eecs.umich.edu'
 PORT = 8081
@@ -360,30 +361,25 @@ data = [
 ]
 
 if __name__ == '__main__':
-	try:
-		COUNT = int(sys.argv[1])
-	except (IndexError, ValueError):
-		COUNT = 10
-	try:
-		DELAY = float(sys.argv[2])
-	except (IndexError, ValueError):
-		DELAY = .5
-	try:
-		idx = int(sys.argv[3])
-	except (IndexError, ValueError):
-		idx = random.choice(range(len(data)-COUNT))
-	try:
-		phone_ip = sys.argv[4]
-	except IndexError:
+	parser = argparse.ArgumentParser(description='Unduly complex test script.')
+	parser.add_argument('--count', type=int, default=10)
+	parser.add_argument('--delay', type=float, default=.5)
+	parser.add_argument('--index', type=int, default=-1)
+	parser.add_argument('--ip', type=str, default='')
+	parser.add_argument('--user', type=str, default='')
+
+	args = parser.parse_args()
+
+	if args.index == -1:
+		args.index = random.choice(range(len(data)-args.count))
+	if args.ip == '':
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		s.connect((HOST,PORT))
-		phone_ip = s.getsockname()[0]
+		args.ip = s.getsockname()[0]
 		s.close()
-	try:
-		user = sys.argv[5]
-	except IndexError:
-		user = socket.gethostname().split('.')[0]
+	if args.user == '':
+		args.user = socket.gethostname().split('.')[0]
 
-	for i in range(COUNT):
-		post_pkt(idx + i, phone_ip, user)
-		time.sleep(DELAY)
+	for i in range(args.count):
+		post_pkt(args.index + i, args.ip, args.user)
+		time.sleep(args.delay)
