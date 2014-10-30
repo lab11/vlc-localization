@@ -118,7 +118,7 @@ namespace RESTAPI
             }, request);
         }
 
-        public static void post_image(Uri uri, Stream image_stream, string which_camera, RESTSuccessCallback success, RESTErrorCallback error)
+        public static void post_image(Uri uri, Stream image_stream, string which_camera, string from_whom, RESTSuccessCallback success, RESTErrorCallback error)
         {
             HttpWebRequest request = WebRequest.CreateHttp(uri);
             request.ContentType = "image/jpeg";
@@ -126,6 +126,7 @@ namespace RESTAPI
 
             request.Headers["X-luxapose-phone-type"] = "lumia_1020";
             request.Headers["X-luxapose-camera"] = which_camera;
+            request.Headers["X-luxapose-user"] = from_whom;
 
             request.BeginGetRequestStream((IAsyncResult result) =>
             {
@@ -160,7 +161,7 @@ namespace RESTAPI
         }
 
 
-        public static void upload_image(Uri uri, Stream image_stream, string which_camera)
+        public static void upload_image(Uri uri, Stream image_stream, string which_camera, string from_whom)
         {
             System.Diagnostics.Debug.WriteLine("upload image start. uri: " + uri.ToString());
             try
@@ -168,7 +169,7 @@ namespace RESTAPI
                 var name = DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss-ff");
                 uri = new Uri(uri.ToString() + name + ".jpg");
                 System.Diagnostics.Debug.WriteLine(String.Format("About to upload {0} to {1}", name, uri.ToString()));
-                RESTAPI.RESTAPIHandler.post_image(uri, image_stream, which_camera, (stream) =>
+                RESTAPI.RESTAPIHandler.post_image(uri, image_stream, which_camera, from_whom, (stream) =>
                 {
                     System.Diagnostics.Debug.WriteLine("Uploaded " + name + " successfully");
                 },
@@ -271,7 +272,7 @@ namespace CameraExplorer
                 if (_dataContext.Device == null)
                 {
                     System.Diagnostics.Debug.WriteLine("null device in data context, assuming back button led to prop never being set");
-                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back", _dataContext.UserName);
                     return;
                 }
 
@@ -279,12 +280,12 @@ namespace CameraExplorer
                 if (_dataContext.Device.SensorLocation == sensorLocations[1])
                 {
                     System.Diagnostics.Debug.WriteLine(" --> from front camera");
-                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "front");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "front", _dataContext.UserName);
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine(" --> from back camera");
-                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back");
+                    RESTAPI.RESTAPIHandler.upload_image(_dataContext.UploadUrl.Url, _dataContext.ImageStream, "back", _dataContext.UserName);
                 }
             }
             catch (Exception ex)

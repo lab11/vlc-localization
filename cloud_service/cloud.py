@@ -51,11 +51,11 @@ def on_image_received(input_image_path):
 	headers = dict()
 	for h in hfile:
 		k,v = h.split(':', 1)
-		headers[k.strip().lower()] = v.strip().lower()
+		headers[k.strip().lower()] = v.strip()
 
 	try:
-		phone = getattr(phones, headers['x-luxapose-phone-type'])
-		camera = getattr(phone, headers['x-luxapose-camera'])
+		phone = getattr(phones, headers['x-luxapose-phone-type'].lower())
+		camera = getattr(phone, headers['x-luxapose-camera'].lower())
 	except (KeyError, AttributeError):
 		logger.warn("Bad or missing headers, attempting to guess phone and camera")
 		# Fall back to guessing
@@ -74,6 +74,9 @@ def on_image_received(input_image_path):
 	except (KeyError, AttributeError):
 		logger.warn("No location hint. Assuming test_rig")
 		room = rooms.test_rig
+
+	source_ip = headers['x-luxapose-source-ip']
+	user = headers['x-luxapose-user']
 
 	# Copy work to an output file
 	logger.copy_to_file(output_path)
@@ -102,6 +105,8 @@ def on_image_received(input_image_path):
 				'rx_rotation' : rx_rotation.tolist(),
 				'location_error' : location_error,
 				'image_name' : img_name,
+				'phone_ip' : source_ip,
+				'user': user,
 		}
 
 		req = urllib2.Request('http://inductor.eecs.umich.edu:8081/WEgwAGyc9N')
@@ -145,6 +150,7 @@ class SimpleHTTPRequestHandlerWithPUT(SimpleHTTPRequestHandler):
 					f = open(header_path, 'w')
 					for h in self.headers:
 						f.write('{}: {}\n'.format(h, self.headers[h]))
+					f.write('X-luxapose-source-ip: {}\n'.format(self.client_address[0]))
 					f.close()
 					logger.debug("Wrote {}".format(header_path))
 					self.send_response(200)

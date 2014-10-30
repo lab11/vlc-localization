@@ -214,7 +214,7 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 		logger.debug('rx_rotation =\n{}'.format(rx_rotation))
 
 	# Compute the error
-	with logger.start_op('Compute error'):
+	with logger.scoped_op('Compute error'):
 		rx_location_error = numpy.sum(numpy.abs(
 				numpy.sqrt(numpy.sum(numpy.square(rx_location - transmitters[i]))) -\
 				numpy.sqrt(k_vals[i]**2 * image_squared_distance[i])
