@@ -8,7 +8,7 @@ import random
 import socket
 import argparse
 
-HOST = 'inductor.eecs.umich.edu'
+HOST = 'gatd.eecs.umich.edu'
 PORT = 8081
 PROFILE_ID = 'WEgwAGyc9N'
 POST_URL = 'http://' + HOST + ':' + str(PORT) + '/' + PROFILE_ID

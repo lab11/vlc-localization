@@ -109,7 +109,7 @@ def on_image_received(input_image_path):
 				'user': user,
 		}
 
-		req = urllib2.Request('http://inductor.eecs.umich.edu:8081/WEgwAGyc9N')
+		req = urllib2.Request('http://gatd.eecs.umich.edu:8081/WEgwAGyc9N')
 		req.add_header('Content-Type', 'application/json')
 
 		response = urllib2.urlopen(req, json.dumps(data))
