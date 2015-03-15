@@ -77,6 +77,16 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	logger.debug('Translated light center points: {}'.format(
 		positions_of_lights), remove_newlines=True)
 
+	# Drop frequencies that are unreasonably low
+	to_del = []
+	for i in range(len(frequencies_of_lights)):
+		if frequencies_of_lights[i] < 750:
+			logger.debug("Deleting light with freq too low: {}".format(frequencies_of_lights[i]))
+			to_del.append(i)
+	positions_of_lights = numpy.delete(positions_of_lights, to_del, axis=0)
+	radii_of_lights = numpy.delete(radii_of_lights, to_del)
+	frequencies_of_lights = numpy.delete(frequencies_of_lights, to_del)
+
 	# Convert the measured frequencies to the actual transmitted frequencies:
 	actual_frequencies = [frequencies[(numpy.abs(frequencies - f)).argmin()] for
 			f in frequencies_of_lights]
