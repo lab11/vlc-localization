@@ -53,14 +53,14 @@ def resolve_aliased_frequncies(lights):
 			best_coords = coords
 	return zip(l, best_coords)
 
-@logger.op("Aoa full on image {0} taken with {1.__name__} in {2.__name__}")
+@logger.op("Aoa full on image {0} taken with {1} in {2}")
 def aoa_full(file_name, camera, room, imag_proc, debug):
 	frequencies = numpy.array(room.transmitters.keys())
 	logger.debug("Transmitter frequencies = {}".format(frequencies))
 
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
 			imag_proc(file_name, 0, camera, debug)
-	print (frequencies_of_lights)
+
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
 	# Image is mirrored by the lens, need to reflect the image
 	if not hasattr(room, 'origin'):
@@ -76,46 +76,46 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 		raise NotImplementedError('Unknown origin type: {}'.format(room.origin))
 	logger.debug('Translated light center points: {}'.format(
 		positions_of_lights), remove_newlines=True)
+
 	# Convert the measured frequencies to the actual transmitted frequencies:
 	actual_frequencies = [frequencies[(numpy.abs(frequencies - f)).argmin()] for
 			f in frequencies_of_lights]
 	logger.debug("Original frequencies: {}".format(frequencies_of_lights))
 	logger.debug("  Actual frequencies: {}".format(actual_frequencies))
 	del(frequencies_of_lights) # delete this so we don't accidentally use it
-	print ("Frequencies: " + str(frequencies))
-	print ("Actual Frequencies: " + str(actual_frequencies))
-	if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
-		with logger.scoped_op('Removing duplicate transmitter entries'):
-			uniq_freq = numpy.unique(actual_frequencies)
-			print ("Unique Frequencies: " + str(uniq_freq))
-			for freq in uniq_freq:
-				matches = []
-				for i in xrange(len(actual_frequencies)):
-					if freq == actual_frequencies[i]:
-						matches.append((i, positions_of_lights[i], radii_of_lights[i]))
-				if len(matches) > 1:
-					idxs, centers, radii = zip(*matches)
-					logger.debug('Duplicate frequency {} --'\
-							' idxs {} centers {} radii {}'.format(
-								freq, idxs, centers, radii))
-					logger.debug('pos = {}'.format(positions_of_lights))
-					positions_of_lights = numpy.delete(positions_of_lights, idxs, axis=0)
-					logger.debug('pos = {}'.format(positions_of_lights))
-					logger.debug('rad = {}'.format(radii_of_lights))
-					radii_of_lights = numpy.delete(radii_of_lights, idxs)
-					logger.debug('rad = {}'.format(radii_of_lights))
-					actual_frequencies = numpy.delete(actual_frequencies, idxs)
-					best_idx = numpy.argmax(radii)
-					logger.debug('pos = {}'.format(positions_of_lights))
-					logger.debug('centers[{}] = {}'.format(best_idx, centers[best_idx]))
-					positions_of_lights = numpy.vstack((positions_of_lights, centers[best_idx]))
-					logger.debug('pos = {}'.format(positions_of_lights))
-					radii_of_lights = numpy.append(radii_of_lights, radii[best_idx])
-					actual_frequencies = numpy.append(actual_frequencies, freq)
 
-			logger.debug('After duplicate removal:')
-			for pos, rad, freq in zip(positions_of_lights, radii_of_lights, actual_frequencies):
-				logger.debug('  {} with radius {}\t= {} Hz'.format(pos, rad, freq))
+	if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
+		logger.start_op('Removing duplicate transmitter entries')
+		uniq_freq = numpy.unique(actual_frequencies)
+		for freq in uniq_freq:
+			matches = []
+			for i in xrange(len(actual_frequencies)):
+				if freq == actual_frequencies[i]:
+					matches.append((i, positions_of_lights[i], radii_of_lights[i]))
+			if len(matches) > 1:
+				idxs, centers, radii = zip(*matches)
+				logger.debug('Duplicate frequency {} --'\
+						' idxs {} centers {} radii {}'.format(
+							freq, idxs, centers, radii))
+				logger.debug('pos = {}'.format(positions_of_lights))
+				positions_of_lights = numpy.delete(positions_of_lights, idxs, axis=0)
+				logger.debug('pos = {}'.format(positions_of_lights))
+				logger.debug('rad = {}'.format(radii_of_lights))
+				radii_of_lights = numpy.delete(radii_of_lights, idxs)
+				logger.debug('rad = {}'.format(radii_of_lights))
+				actual_frequencies = numpy.delete(actual_frequencies, idxs)
+				best_idx = numpy.argmax(radii)
+				logger.debug('pos = {}'.format(positions_of_lights))
+				logger.debug('centers[{}] = {}'.format(best_idx, centers[best_idx]))
+				positions_of_lights = numpy.vstack((positions_of_lights, centers[best_idx]))
+				logger.debug('pos = {}'.format(positions_of_lights))
+				radii_of_lights = numpy.append(radii_of_lights, radii[best_idx])
+				actual_frequencies = numpy.append(actual_frequencies, freq)
+
+		logger.debug('After duplicate removal:')
+		for pos, rad, freq in zip(positions_of_lights, radii_of_lights, actual_frequencies):
+			logger.debug('  {} with radius {}\t= {} Hz'.format(pos, rad, freq))
+		logger.end_op()
 
 	# Create pairs (light_position_on_image, transmitter_position)
 	assert len(positions_of_lights) == len(actual_frequencies), "# of center points != # of frequencies?"
@@ -138,9 +138,7 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	tries_rx_err = numpy.empty([tries])
 	tries_method = ['YS_brute', 'static', 'scipy_basin']
 	for i in xrange(tries):
-		rx_location, rx_rotation, location_error, valid = aoa(lights, camera.Zf, k_init_method=tries_method[i])
-		if valid == False:
-			location_error = 999999 #this is hardcoding an exit, i can do better...
+		rx_location, rx_rotation, location_error = aoa(lights, camera.Zf, k_init_method=tries_method[i])
 		logger.info('location estimate = {}'.format(rx_location))
 		logger.info('location error    = {}'.format(location_error))
 		tries_rx_loc[i] = rx_location

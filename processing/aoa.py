@@ -29,23 +29,26 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 	logger.debug('centers\n{}'.format(centers))
 
 	## Precompute static properties of locations (constant calculation)
-	with logger.scoped_op("Pre-computing static arrays used for AoA"):
-		# Compute squared distance across x, y, z of center coords
-		image_squared_distance = numpy.sum(numpy.square(centers), axis=1)
-		logger.debug('image_squared_distance\n{}'.format(image_squared_distance))
+	logger.start_op("Pre-computing static arrays used for AoA")
 
-		# Compute pairwise constants (2*K_m*K_n term and abosulte square distances)
-		pair_shape = (len(lights)-1, len(lights))
-		transmitter_pair_squared_distance = numpy.zeros(pair_shape)
-		pairwise_image_inner_products     = numpy.zeros(pair_shape)
-		for i in xrange(len(lights)-1):
-			for j in xrange(i+1, len(lights)):
-				transmitter_pair_squared_distance[i][j] =\
-						numpy.sum(numpy.square(transmitters[i] - transmitters[j]))
-				pairwise_image_inner_products[i][j]=\
-						numpy.dot(centers[i], centers[j])
-		logger.debug('transmitter_pair_squared_distance\n{}'.format(transmitter_pair_squared_distance))
-		logger.debug('pairwise_image_inner_products\n{}'.format(pairwise_image_inner_products))
+	# Compute squared distance across x, y, z of center coords
+	image_squared_distance = numpy.sum(numpy.square(centers), axis=1)
+	logger.debug('image_squared_distance\n{}'.format(image_squared_distance))
+
+	# Compute pairwise constants (2*K_m*K_n term and abosulte square distances)
+	pair_shape = (len(lights)-1, len(lights))
+	transmitter_pair_squared_distance = numpy.zeros(pair_shape)
+	pairwise_image_inner_products     = numpy.zeros(pair_shape)
+	for i in xrange(len(lights)-1):
+		for j in xrange(i+1, len(lights)):
+			transmitter_pair_squared_distance[i][j] =\
+					numpy.sum(numpy.square(transmitters[i] - transmitters[j]))
+			pairwise_image_inner_products[i][j]=\
+					numpy.dot(centers[i], centers[j])
+	logger.debug('transmitter_pair_squared_distance\n{}'.format(transmitter_pair_squared_distance))
+	logger.debug('pairwise_image_inner_products\n{}'.format(pairwise_image_inner_products))
+
+	logger.end_op()
 	## End precompute constants
 
 	# In the Python version we use an explicit least-squares algorithm so the
@@ -91,8 +94,6 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 		for j in range(number_of_iteration+1):
 			# Last iteration, Find minimum
 			if (j==number_of_iteration):
-				if sol_found == 0:
-					return k_vals,False
 				min_error_history_idx = err_history.index(min(err_history))
 				min_idx = idx_history[min_error_history_idx]
 				print("Using index ", min_idx, "for initial guess")
@@ -136,43 +137,38 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 					print ("First found index: ", j)
 				err_history.append(min(scaling_factors_error_combination))
 				idx_history.append(j)
-		if sol_found:
-			return k_vals, True
-		else:
-			return k_vals, False
-			
+		return k_vals
 		# End of brute force method
 
-	with logger.scoped_op('Minimize distance function'):
-		if k_init_method == 'static':
-			k_vals_init = [-.05] * len(lights)
-		elif k_init_method == 'YS_brute':
-			k_vals_init, valid = brute_force_k()
-			if valid == False:
-				return 0,0,0, False
-		elif k_init_method == 'scipy_brute':
-			k_ranges = [slice(.01, .1, (.1-.01)/10) for i in xrange(len(lights))]
-			k_vals_init = scipy.optimize.brute(scalar_scaling, k_ranges, disp=True)
-		elif k_init_method == 'scipy_basin':
-			# The basin method still requires somewhere to start from but hops much
-			# more aggressively around the space than leastsq eventually will
-			k_vals_init = [-.05] * len(lights)
-			res = scipy.optimize.basinhopping(scalar_scaling, k_vals_init,
-					T=1e12,
-					stepsize=0.01,
-					)
-			k_vals_init = res.x
-		else:
-			logger.error("Unknown k_init_method. Valid options are:\n"\
-					"  static YS_brute scipy_brute scipy_basin")
-		print('{} (k_vals_init from {})'.format(k_vals_init, k_init_method))
-		k_vals, ier = scipy.optimize.leastsq(least_squares_scaling_factors, k_vals_init)
-		print('{} (k_vals after leastsq)'.format(k_vals))
-		if ier not in (1,2,3,4):
-			# ier is a return code that must be in (1,2,3,4) if leastsq succeeded:
-			# http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html
-			raise ValueError("Least squares failed to minimize distance function")
-		logger.debug('k_vals = {}'.format(k_vals))
+	logger.start_op('Minimize distance function')
+	if k_init_method == 'static':
+		k_vals_init = [-.05] * len(lights)
+	elif k_init_method == 'YS_brute':
+		k_vals_init = brute_force_k()
+	elif k_init_method == 'scipy_brute':
+		k_ranges = [slice(.01, .1, (.1-.01)/10) for i in xrange(len(lights))]
+		k_vals_init = scipy.optimize.brute(scalar_scaling, k_ranges, disp=True)
+	elif k_init_method == 'scipy_basin':
+		# The basin method still requires somewhere to start from but hops much
+		# more aggressively around the space than leastsq eventually will
+		k_vals_init = [-.05] * len(lights)
+		res = scipy.optimize.basinhopping(scalar_scaling, k_vals_init,
+				T=1e12,
+				stepsize=0.01,
+				)
+		k_vals_init = res.x
+	else:
+		logger.error("Unknown k_init_method. Valid options are:\n"\
+				"  static YS_brute scipy_brute scipy_basin")
+	print('{} (k_vals_init from {})'.format(k_vals_init, k_init_method))
+	k_vals, ier = scipy.optimize.leastsq(least_squares_scaling_factors, k_vals_init)
+	print('{} (k_vals after leastsq)'.format(k_vals))
+	if ier not in (1,2,3,4):
+		# ier is a return code that must be in (1,2,3,4) if leastsq succeeded:
+		# http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html
+		raise ValueError("Least squares failed to minimize distance function")
+	logger.debug('k_vals = {}'.format(k_vals))
+	logger.end_op()
 
 	def least_squares_rx_location(rx_location):
 		dists = []
@@ -183,12 +179,13 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 					)
 		return dists
 
-	with logger.scoped_op('Minimize location function'):
-		rx_location_init = numpy.array([0, 0, 200])
-		rx_location, ier = scipy.optimize.leastsq(least_squares_rx_location, rx_location_init)
-		if ier not in (1,2,3,4):
-			raise ValueError("Least squares failed to minimize location function")
-		logger.debug('rx_location = {}'.format(rx_location))
+	logger.start_op('Minimize location function')
+	rx_location_init = numpy.array([0, 0, 200])
+	rx_location, ier = scipy.optimize.leastsq(least_squares_rx_location, rx_location_init)
+	if ier not in (1,2,3,4):
+		raise ValueError("Least squares failed to minimize location function")
+	logger.debug('rx_location = {}'.format(rx_location))
+	logger.end_op()
 
 	def least_squares_rotation(rotation):
 		rotation = rotation.reshape((3,3))
@@ -205,21 +202,23 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 	# because the scipy optimizer flattens matricies into 1d arrays when passing
 	# arugments in and out. We just have to correct this in the called function
 	# and in the return value.
-	with logger.scoped_op('Minimize rotation function'):
-		rx_rotation_init = numpy.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
-		rx_rotation, ier = scipy.optimize.leastsq(least_squares_rotation, rx_rotation_init)
-		if ier not in (1,2,3,4):
-			raise ValueError("Least squares failed to minimize rotation function")
-		rx_rotation = numpy.array(rx_rotation).reshape((3,3))
-		logger.debug('rx_rotation =\n{}'.format(rx_rotation))
+	logger.start_op('Minimize rotation function')
+	rx_rotation_init = numpy.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
+	rx_rotation, ier = scipy.optimize.leastsq(least_squares_rotation, rx_rotation_init)
+	if ier not in (1,2,3,4):
+		raise ValueError("Least squares failed to minimize rotation function")
+	rx_rotation = numpy.array(rx_rotation).reshape((3,3))
+	logger.debug('rx_rotation =\n{}'.format(rx_rotation))
+	logger.end_op()
 
 	# Compute the error
-	with logger.scoped_op('Compute error'):
-		rx_location_error = numpy.sum(numpy.abs(
-				numpy.sqrt(numpy.sum(numpy.square(rx_location - transmitters[i]))) -\
-				numpy.sqrt(k_vals[i]**2 * image_squared_distance[i])
-				))
-		logger.debug('rx_location_error = {}'.format(rx_location_error))
+	logger.start_op('Compute error')
+	rx_location_error = numpy.sum(numpy.abs(
+			numpy.sqrt(numpy.sum(numpy.square(rx_location - transmitters[i]))) -\
+			numpy.sqrt(k_vals[i]**2 * image_squared_distance[i])
+			))
+	logger.debug('rx_location_error = {}'.format(rx_location_error))
+	logger.end_op()
 
-	return (rx_location, rx_rotation, rx_location_error, True)
+	return (rx_location, rx_rotation, rx_location_error)
 
