@@ -132,11 +132,12 @@ def aoa_full(file_name, camera, room, imag_proc, debug):
 	# AoA calcualation requires at least 3 transmitters
 	assert len(lights) >= 3, "AoA calcualation requires at least 3 transmitters"
 
-	tries = 3
+	tries = 1
 	tries_rx_loc = numpy.empty([tries, 3])
 	tries_rx_rot = numpy.empty([tries, 3, 3])
 	tries_rx_err = numpy.empty([tries])
-	tries_method = ['YS_brute', 'static', 'scipy_basin']
+	#tries_method = ['YS_brute', 'static', 'scipy_basin']
+	tries_method = ['static']
 	for i in xrange(tries):
 		rx_location, rx_rotation, location_error = aoa(lights, camera.Zf, k_init_method=tries_method[i])
 		logger.info('location estimate = {}'.format(rx_location))

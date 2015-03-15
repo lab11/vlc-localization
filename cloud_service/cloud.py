@@ -73,8 +73,8 @@ def on_image_received(input_image_path):
 	try:
 		room = getattr(rooms, headers['x-luxapose-ble-loc-hints'].split()[0].strip())
 	except (KeyError, AttributeError):
-		logger.warn("No location hint. Assuming test_rig")
-		room = rooms.test_rig
+		logger.warn("No location hint. Assuming demo_floor")
+		room = rooms.demo_floor
 
 	source_ip = headers['x-luxapose-source-ip']
 	user = headers['x-luxapose-user']

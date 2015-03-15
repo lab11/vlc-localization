@@ -142,7 +142,7 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 
 	logger.start_op('Minimize distance function')
 	if k_init_method == 'static':
-		k_vals_init = [-.05] * len(lights)
+		k_vals_init = [-.2] * len(lights)
 	elif k_init_method == 'YS_brute':
 		k_vals_init = brute_force_k()
 	elif k_init_method == 'scipy_brute':
