@@ -16,11 +16,13 @@ import pretty_logger
 logger = pretty_logger.get_logger()
 
 def dbg_save(fname, array):
+	fname = '/tmp/luxp-' + fname + '.png'
 	cv2.imwrite(fname, array)
 	logger.debug('Saved WIP to {}'.format(fname))
 
 def dbg_plot_subplots(fname):
 	logger.start_op('plot_subplots for ' + fname)
+	fname = '/tmp/lux-' + fname + '.png'
 	pylab.savefig(fname, dpi=300)
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
@@ -33,7 +35,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	gray_image = cv2.imread(file_name, cv2.IMREAD_GRAYSCALE)
 	logger.debug('gray_image.shape = {}'.format(gray_image.shape))
 	if debug:
-		dbg_save('/tmp/gray_image.png', gray_image)
+		dbg_save('gray_image', gray_image)
 	logger.end_op()
 
 	# Handle orientation
@@ -41,7 +43,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	if gray_image.shape[1] > gray_image.shape[0]:
 		gray_image = numpy.rot90(gray_image, 3)
 	if debug:
-		dbg_save('/tmp/gray_image_rotated.png', gray_image)
+		dbg_save('gray_image_rotated', gray_image)
 	logger.debug('gray_image.shape = {}'.format(gray_image.shape))
 	logger.end_op()
 
@@ -51,7 +53,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	m2 = cv2.blur(gray_image, (50,50)) # faster and good enough
 	#m2 = cv2.blur(gray_image, (150,150)) # faster and good enough
 	if debug:
-		dbg_save('/tmp/after_blur.png', m2)
+		dbg_save('after_blur', m2)
 	logger.debug('m2.shape = {}'.format(m2.shape))
 	logger.end_op()
 
@@ -59,7 +61,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	logger.start_op("Threshold image")
 	threshold, thresholded_img = cv2.threshold(m2, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 	if debug:
-		dbg_save('/tmp/thresholded_img.png', thresholded_img)
+		dbg_save('thresholded_img', thresholded_img)
 	logger.end_op()
 
 	# Find and label disjoint sets of pixels (each transmitter blob)
@@ -77,7 +79,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		# drawContours draws contours on the supplied image, need a copy
 		contour_image = gray_image.copy()
 		cv2.drawContours(contour_image, contours, -1, 255, 3)
-		dbg_save('/tmp/contours.png', contour_image)
+		dbg_save('contours', contour_image)
 
 		contours_kept_image = gray_image.copy()
 
@@ -111,7 +113,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 			cv2.drawContours(contours_kept_image, [contour,], -1, 255, 3)
 
 	if debug:
-		dbg_save('/tmp/contours-kept.png', contours_kept_image)
+		dbg_save('contours-kept', contours_kept_image)
 
 	number_of_transmitters = len(centers)
 	assert number_of_transmitters >= 3, 'not enough transmitters'
@@ -211,8 +213,8 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		estimated_frequencies.append(peak_freq)
 
 	if debug:
-		dbg_plot_subplots('/tmp/freq_fft_transmitters.png')
-		dbg_save('/tmp/contours-kept-labeled.png', contours_kept_image)
+		dbg_plot_subplots('freq_fft_transmitters')
+		dbg_save('contours-kept-labeled', contours_kept_image)
 
 	logger.debug('estimated_frequencies = {}'.format(estimated_frequencies))
 	logger.end_op()
