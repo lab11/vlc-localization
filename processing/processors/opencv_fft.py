@@ -21,7 +21,7 @@ def dbg_save(fname, array):
 
 def dbg_plot_subplots(fname):
 	logger.start_op('plot_subplots for ' + fname)
-	pylab.savefig(fname, dpi=1200)
+	pylab.savefig(fname, dpi=300)
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
@@ -79,6 +79,8 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		cv2.drawContours(contour_image, contours, -1, 255, 3)
 		dbg_save('/tmp/contours.png', contour_image)
 
+		contours_kept_image = gray_image.copy()
+
 	# And then fitting a circle to that contour
 	centers = []
 	radii = []
@@ -104,6 +106,12 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 			continue
 		centers.append(center)
 		radii.append(radius)
+
+		if debug:
+			cv2.drawContours(contours_kept_image, [contour,], -1, 255, 3)
+
+	if debug:
+		dbg_save('/tmp/contours-kept.png', contours_kept_image)
 
 	number_of_transmitters = len(centers)
 	assert number_of_transmitters >= 3, 'not enough transmitters'
@@ -162,6 +170,10 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 
 		if debug:
 			pylab.subplot(number_of_transmitters,2,2*i-1)
+			pylab.title(str(centers[i]), size='xx-small')
+			pylab.ylim([0,260])
+			pylab.yticks([0,127,255])
+			pylab.tick_params(labelsize=4)
 			pylab.plot(y)
 
 		L = len(y)
@@ -173,9 +185,10 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		if debug:
 			pylab.subplot(number_of_transmitters,2,2*i)
 			pylab.plot(f, Y_plot)
-			pylab.title(str(centers[i]))
-			pylab.xlabel('Frequency (Hz)')
-			pylab.xlim([0,5000])
+			pylab.title(str(centers[i]), size='xx-small')
+			#pylab.xlabel('Frequency (Hz)')
+			pylab.xlim([0,6000])
+			pylab.tick_params(labelsize=4)
 
 		peaks = scipy.signal.argrelmax(Y_plot)[0]
 		#logger.debug('peaks =\n{}'.format(peaks))
@@ -186,11 +199,20 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		peak_freq = f[peaks[idx]]
 
 		logger.debug('center {} peak_freq = {}'.format(centers[i], peak_freq))
+		if debug:
+			cv2.putText(
+					contours_kept_image,
+					"{} {} Hz".format(centers[i], int(peak_freq)),
+					(centers[i][1]+100, centers[i][0]),
+					cv2.FONT_HERSHEY_TRIPLEX,
+					2,
+					255)
 
 		estimated_frequencies.append(peak_freq)
 
 	if debug:
 		dbg_plot_subplots('/tmp/freq_fft_transmitters.png')
+		dbg_save('/tmp/contours-kept-labeled.png', contours_kept_image)
 
 	logger.debug('estimated_frequencies = {}'.format(estimated_frequencies))
 	logger.end_op()
