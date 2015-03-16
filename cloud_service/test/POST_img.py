@@ -26,7 +26,7 @@ r = requests.post('http://'+host+':4908/img/'+os.path.basename(fname),
 			'content-type': 'image/jpeg',
 			'X-luxapose-phone-type': 'lumia_1020',
 			'X-luxapose-camera': 'back',
-			'X-luxapose-ble-loc-hints': '4908',
+			'X-luxapose-ble-loc-hints': 'chandelier0',
 			'X-luxapose-user': user,
 			},
 		data=open(fname, 'rb'))

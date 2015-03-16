@@ -71,10 +71,15 @@ def on_image_received(input_image_path):
 			raise NotImplementedError('Unknown phone type for image dimensions: ' + str(size))
 
 	try:
-		room = getattr(rooms, headers['x-luxapose-ble-loc-hints'].split()[0].strip())
-	except (KeyError, AttributeError):
+		hint = headers['x-luxapose-ble-loc-hints'].split()[0].strip()
+		room = getattr(rooms, hint)
+	except KeyError:
 		logger.warn("No location hint. Assuming demo_floor")
 		room = rooms.demo_floor
+	except AttributeError:
+		logger.error("Location hint for unknown room: {}".format(hint))
+		logger.error("Skipping image in unknown room")
+		return
 
 	source_ip = headers['x-luxapose-source-ip']
 	user = headers['x-luxapose-user']
@@ -86,9 +91,9 @@ def on_image_received(input_image_path):
 		rx_location, rx_rotation, location_error = aoa_full(
 				input_image_path,
 				camera,
-				rooms.test_rig,
+				room,
 				processors.opencv_fft.imag_proc,
-				False,
+				True,
 				)
 		logger.info('rx_location = {}'.format(rx_location))
 		logger.info('rx_rotation =\n{}'.format(rx_rotation))
