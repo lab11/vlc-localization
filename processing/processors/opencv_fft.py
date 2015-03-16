@@ -15,20 +15,30 @@ sys.path.append('..')
 import pretty_logger
 logger = pretty_logger.get_logger()
 
+# n.b. step counter is not thread-safe, but only for deep debug anyway
+dbg_step = 0
+def dbg_fname(fname):
+	global dbg_step
+	dbg_step += 1
+	return '/tmp/luxp-opencv_fft-step{}-'.format(dbg_step) + fname + '.png'
+
 def dbg_save(fname, array):
-	fname = '/tmp/luxp-' + fname + '.png'
+	fname = dbg_fname(fname)
 	cv2.imwrite(fname, array)
 	logger.debug('Saved WIP to {}'.format(fname))
 
 def dbg_plot_subplots(fname):
 	logger.start_op('plot_subplots for ' + fname)
-	fname = '/tmp/lux-' + fname + '.png'
+	fname = dbg_fname(fname)
 	pylab.savefig(fname, dpi=300)
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
 @logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
 def imag_proc(file_name, num_of_tx, camera, debug):
+	if debug:
+		global dbg_step
+		dbg_step = 0
 
 	# Load image and convert to grayscale
 	logger.start_op("Loading image")
