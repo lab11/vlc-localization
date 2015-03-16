@@ -36,6 +36,15 @@ def dbg_plot_subplots(fname):
 
 @logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
 def imag_proc(file_name, num_of_tx, camera, debug):
+	BLACK  = (  0,   0,   0)
+	WHITE  = (255, 255, 255)
+	BLUE   = (255,   0,   0)
+	GREEN  = (  0, 255,   0)
+	RED    = (  0,   0, 255)
+	YELLOW = (  0, 255, 255)
+	TEAL   = (255, 255,   0)
+	MAGENTA= (255,   0, 255)
+
 	if debug:
 		global dbg_step
 		dbg_step = 0
@@ -144,68 +153,67 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	average_window = 40;
 	avg_threshold = 20;
 
+	light_circles = gray_image.copy()
+
 	for i in xrange(number_of_transmitters):
-		image_row = gray_image[centers[i][0]]
-		'''
-		if (centers[i][1] - window_size) < 1:
-			sig = image_row[0:centers[i][1]+window_size+1]
-		elif (centers[i][1]+window_size) > min(gray_image.shape):
-			sig = image_row[centers[i][1]-window_size:min(gray_image.shape)]
-		else:
-			sig = image_row[centers[i][1]-window_size:centers[i][1]+window_size]
+		row_start = max(0, centers[i][0] - radii[i])
+		row_end = min(gray_image.shape[0]-1, centers[i][0] + radii[i])
+		column_start = max(0, centers[i][1] - radii[i])
+		column_end = min(gray_image.shape[1]-1, centers[i][1] + radii[i])
 
-		y = sig
-		'''
-		if centers[i][1] > average_window:
-			left_boundary = centers[i][1] - average_window
-			while left_boundary > 1:
-				sub_image_row = image_row[left_boundary:left_boundary+average_window-1]
-				if (sum(sub_image_row)/len(sub_image_row)) < avg_threshold:
-					break
-				else:
-					left_boundary -= 1
-		else:
-			left_boundary = 1
-		
-		if centers[i][1] + average_window < min(gray_image.shape):
-			right_boundary = centers[i][1] + average_window
-			while right_boundary < min(gray_image.shape):
-				sub_image_row = image_row[right_boundary-average_window:right_boundary-1]
-				if (sum(sub_image_row)/len(sub_image_row)) < avg_threshold:
-					break
-				else:
-					right_boundary += 1
-		else:
-			right_boundary = min(gray_image.shape)
-		y = image_row[left_boundary:right_boundary]
-		
+		#Slice image around current center and sum across all rows
+		image_slice = gray_image[row_start:row_end, column_start:column_end]
+		image_slice_mean = numpy.mean(image_slice)
+		image_row = numpy.sum(image_slice, axis=0)
 
-		if debug:
-			pylab.subplot(number_of_transmitters,2,2*i+1)
-			pylab.title(str(centers[i]), size='xx-small')
-			pylab.ylim([0,260])
-			pylab.yticks([0,127,255])
-			pylab.tick_params(labelsize=4)
-			pylab.plot(y)
+		#Remove any DC component
+		image_row = image_row - numpy.mean(image_row)
 
+		#Apply window
+		y = image_row * numpy.hamming(image_row.shape[0])
+
+		#Take FFT
 		L = len(y)
-		t = numpy.arange(0,L) * T
 		Y = numpy.fft.fft(y* gain, NFFT) / float(L)
 		f = Fs/2 * numpy.linspace(0,1,NFFT/2.0+1)
 		Y_plot = 2*abs(Y[0:NFFT/2.0+1])
 
+		#TODO: Apply heuristic to determine SNR
+
 		if debug:
-			pylab.subplot(number_of_transmitters,2,2*i)
+			pylab.subplot(number_of_transmitters,2,2*i+1)
+			pylab.title(str(centers[i]), size='xx-small')
+			pylab.ylim([-13000,13000])
+			pylab.yticks([-13000,0,13000])
+			pylab.tick_params(labelsize=4)
+			pylab.plot(y)
+
+		#Improve center by thresholding image and obtaining minimum enclosing circle
+		_, image_slice_thresh = cv2.threshold(image_slice, image_slice_mean*1.5, 1, cv2.THRESH_BINARY)
+		image_slice_thresh_contours, _ = cv2.findContours(image_slice_thresh, cv2.RETR_LIST,
+			cv2.CHAIN_APPROX_SIMPLE)
+		image_slice_thresh_contours = numpy.vstack(image_slice_thresh_contours)
+		center, radius = cv2.minEnclosingCircle(image_slice_thresh_contours)
+		center = map(int, center)
+		radius = int(radius)
+		center = (center[1] + row_start, center[0] + column_start)
+		cv2.circle(light_circles, (center[1], center[0]), radius + 3, WHITE, 3)
+		centers[i] = center
+		radii[i] = radius
+
+
+		if debug:
+			pylab.subplot(number_of_transmitters,2,2*i+2)
 			pylab.plot(f, Y_plot)
 			pylab.title(str(centers[i]), size='xx-small')
 			#pylab.xlabel('Frequency (Hz)')
-			pylab.xlim([0,6000])
+			pylab.xlim([0,16000])
 			pylab.tick_params(labelsize=4)
 
 		peaks = scipy.signal.argrelmax(Y_plot)[0]
-		#logger.debug('peaks =\n{}'.format(peaks))
-		#logger.debug('f[peaks] =\n{}'.format(f[peaks]))
-		#logger.debug('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
+		logger.debug('peaks =\n{}'.format(peaks))
+		logger.debug('f[peaks] =\n{}'.format(f[peaks]))
+		logger.debug('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
 
 		idx = numpy.argmax(Y_plot[peaks])
 		peak_freq = f[peaks[idx]]
@@ -225,6 +233,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	if debug:
 		dbg_plot_subplots('freq_fft_transmitters')
 		dbg_save('contours-kept-labeled', contours_kept_image)
+		dbg_save('circles', light_circles)
 
 	logger.debug('estimated_frequencies = {}'.format(estimated_frequencies))
 	logger.end_op()
