@@ -181,7 +181,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		
 
 		if debug:
-			pylab.subplot(number_of_transmitters,2,2*i-1)
+			pylab.subplot(number_of_transmitters,2,2*i+1)
 			pylab.title(str(centers[i]), size='xx-small')
 			pylab.ylim([0,260])
 			pylab.yticks([0,127,255])
