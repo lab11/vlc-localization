@@ -2,7 +2,7 @@ VLC Localization
 ================
 
 The goal of this project is to address the indoor localization problem. Our
-system achieves centimeter-scale accuracy using unmodified commercial
+system achieves decimeter-scale accuracy using unmodified commercial
 smartphones as receivers and commercial LED bulbs (with some minor
 modifications) as transmitters.
 
@@ -31,22 +31,27 @@ To build an end-to-end localization demo requires pulling together a few pieces:
     particularly important, anything slower than 1/8000 sec will not work.
   * We have built applications for Windows Phone 8 and iOS that will capture
     and upload images (see `apps/`).
+  * Android does not support an exposure control API, which means our app will not work on android phones.
  * Image Processing
-  * `processing/image_proc.py`
+  * `processing/processors/XXX.py`
   * This step scans a captured image, identifies each transmitter, and
     outputs a set of labeled coordinates (`tx_freq :: (px_x, px_y)`). These
     coordinates are in the pixel coordinate system of the captured image.
+  * We have a few competing approaches for image processing. In particular, `opencv_fft` uses opencv to identify and isolate individual transmitters and then runs an FFT over each sub-region to extract the frequency. The `opencv` approach begins the same, but then uses edge detection to identify dark/light transitions. 
  * Localization
-  * `processing/localize.py`
+  * `processing/aoa.py`, `processing/aoa_full.py`
   * This step requires out-of-band knowledge of the transmitter locations.
     It takes a set of transmitter labels and coordinates in the
     transmitter coordinate system (e.g. meters) and the coordinates from
     the image processing step and solves for the image capture device's
     location in the transmitter coordinate system.
+  * The `aoa_full.py` script ties together image processing and Angle of Arrival (AoA) calculation.
+  * The `aoa.py` script takes in known transmitter positions and the coordinates of transmitter projections in the imager coordinate system. It returns the imager (phone) position and orientation in the transmitter's coordinate system.
  * Cloud Service
   * `cloud_service/`
   * We have a very basic cloudlet app that will accept image uploads, process
     the image, and report localization results to [gatd].
+  * This tool selects the processing to use (e.g. `import processors.opencv_fft`) and uses meta-data from the uploaded image to determine the room the picture was taken in and the type of phone the picture was taken with.
  * Visualization
   * We have some initial visualization ideas in the `web/` folder. They
     rely on our cloud service and [gatd][gatd].
