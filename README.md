@@ -57,3 +57,11 @@ To build an end-to-end localization demo requires pulling together a few pieces:
     rely on our cloud service and [gatd][gatd].
 
 [gatd]: https://github.com/lab11/gatd/ "GATD Homepage"
+
+
+Debugging
+---------
+
+Most of the processing is instrumented using a "pretty_logger". A function decorated with `@logger.op` will print its entry/exit, increase a level of indentation for clearer output, save a copy of its output to a result file (cloud service only), and time its duration.
+
+The processing scripts should respect the environment variable `DEBUG`. Currently, DEBUG can range from `DEBUG=1` for light information, `DEBUG=2` for lots of information, and `DEBUG=3` will write out all of the intermediate images generated during image processing to `/tmp/luxp-*`. `DEBUG=3` runs noticably slower.
