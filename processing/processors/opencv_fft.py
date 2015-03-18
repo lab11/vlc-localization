@@ -219,12 +219,12 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 			min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 			circle_area = math.pi*math.pow(radius,2)
 			#Continue to decrease the circle size until more than 10% of the remaining pixels 
-			print('{} {}'.format(max_val, last_max_val))
+			#print('{} {}'.format(max_val, last_max_val))
 			if first_time or max_val > last_max_val*((.4*circle_area+.6*last_circle_area)/last_circle_area):
 				first_time = False
 				radius = radius-1
 			else:
-				print('GOT HERE')
+				#print('GOT HERE')
 				radii[i] = last_radius
 				centers[i] = (row_start + last_max_loc[1] + last_radius + 1, column_start + last_max_loc[0] + last_radius + 1)
 				cv2.circle(light_circles, (centers[i][1], centers[i][0]), radius + 5, WHITE, 3)
