@@ -188,19 +188,47 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 			pylab.tick_params(labelsize=4)
 			pylab.plot(y)
 
-		#Improve center by thresholding image and obtaining minimum enclosing circle
-		_, image_slice_thresh = cv2.threshold(image_slice, image_slice_mean*1.5, 1, cv2.THRESH_BINARY)
-		image_slice_thresh_contours, _ = cv2.findContours(image_slice_thresh, cv2.RETR_LIST,
-			cv2.CHAIN_APPROX_SIMPLE)
-		image_slice_thresh_contours = numpy.vstack(image_slice_thresh_contours)
-		center, radius = cv2.minEnclosingCircle(image_slice_thresh_contours)
-		center = map(int, center)
-		radius = int(radius)
-		center = (center[1] + row_start, center[0] + column_start)
-		cv2.circle(light_circles, (center[1], center[0]), radius + 3, WHITE, 3)
-		centers[i] = center
-		radii[i] = radius
+		##Improve center by thresholding image and obtaining minimum enclosing circle
+		#_, image_slice_thresh = cv2.threshold(image_slice, image_slice_mean*1.5, 1, cv2.THRESH_BINARY)
+		#image_slice_thresh_contours, _ = cv2.findContours(image_slice_thresh, cv2.RETR_LIST,
+		#	cv2.CHAIN_APPROX_SIMPLE)
+		#image_slice_thresh_contours = numpy.vstack(image_slice_thresh_contours)
+		#center, radius = cv2.minEnclosingCircle(image_slice_thresh_contours)
+		#center = map(int, center)
+		#radius = int(radius)
+		#center = (center[1] + row_start, center[0] + column_start)
+		#cv2.circle(light_circles, (center[1], center[0]), radius + 3, WHITE, 3)
+		#centers[i] = center
+		#radii[i] = radius
 
+		#Find the best fit for the largest circle
+		radius = int(image_slice.shape[0]/2)
+		first_time = True
+		max_val = 0
+		circle_area = 0
+		max_loc = (0, 0)
+		while radius > 0:
+			last_radius = radius
+			last_max_loc = max_loc
+			last_max_val = max_val
+			last_circle_area = circle_area
+
+			circle_template = numpy.zeros((radius*2+1, radius*2+1), type(image_slice[0][0]))
+			cv2.circle(circle_template, (radius, radius), radius, WHITE, -1)
+			res = cv2.matchTemplate(image_slice, circle_template, cv2.TM_CCORR)
+			min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+			circle_area = math.pi*math.pow(radius,2)
+			#Continue to decrease the circle size until more than 10% of the remaining pixels 
+			print('{} {}'.format(max_val, last_max_val))
+			if first_time or max_val > last_max_val*((.4*circle_area+.6*last_circle_area)/last_circle_area):
+				first_time = False
+				radius = radius-1
+			else:
+				print('GOT HERE')
+				radii[i] = last_radius
+				centers[i] = (row_start + last_max_loc[1] + last_radius + 1, column_start + last_max_loc[0] + last_radius + 1)
+				cv2.circle(light_circles, (centers[i][1], centers[i][0]), radius + 5, WHITE, 3)
+				break
 
 		if debug:
 			pylab.subplot(number_of_transmitters,2,2*i+2)
