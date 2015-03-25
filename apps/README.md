@@ -2,10 +2,11 @@ Apps
 ====
 
 This folder holds the application development for apps on each of the major
-platforms. Currently we only have a Windows Phone app. Neither the Android nor
-iOS APIs provide sufficient access to the camera hardware for our application.
-In particular, we require the ability to manually set exposure time and ISO
-values.
+platforms. Initially, only Windows Phone provided sufficient access to the
+camera hardware for our application. In particular, we require the ability
+to manually set exposure time and ISO values. Since then iOS (v8) and
+Android (v5) have added the required APIs. We have added an iOS app but have
+not yet developed and do not currently have plans to develop an Android app.
 
 Winphone
 --------
