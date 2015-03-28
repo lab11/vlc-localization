@@ -5,6 +5,7 @@ from __future__ import print_function
 import sys, os
 import multiprocessing.pool
 import threading, Queue
+import traceback
 
 import json
 import socket
@@ -45,6 +46,8 @@ def work_fn(work_queue):
 			fn(args)
 		except Exception as e:
 			logger.warn("Worker exception: {}".format(e))
+			if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 1:
+				traceback.print_exc()
 
 def on_image_received(input_image_path):
 	directory, fname = os.path.split(input_image_path)
