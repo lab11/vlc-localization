@@ -60,7 +60,10 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	# Handle orientation
 	logger.start_op("Normalizing image rotation")
 	if gray_image.shape[1] > gray_image.shape[0]:
+		logger.debug("Rotated image")
 		gray_image = numpy.rot90(gray_image, 3)
+	else:
+		logger.debug("No rotation")
 	if debug:
 		dbg_save('gray_image_rotated', gray_image)
 	logger.debug('gray_image.shape = {}'.format(gray_image.shape))
@@ -117,6 +120,25 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		center = (center[1], center[0])
 		#assert thresholded_img[center[0], center[1]] == 1, 'Center of blob is not lit?'
 		logger.debug('Transmitter at {}. Radius of {} pixels'.format(center, radius))
+
+		reject = False
+		for pt in contour:
+			# List of lists? Maybe some contour structure could have blob points?
+			assert len(pt) == 1
+			pt = pt[0]
+			# More x,y flip?
+			if \
+			pt[1] < 10 or \
+			pt[0] < 10 or \
+			pt[1] > (thresholded_img.shape[0]-10) or \
+			pt[0] > (thresholded_img.shape[1]-10):
+				reject = True
+				logger.debug("Bad edge point: {}".format(pt))
+				break
+
+		if reject:
+			logger.info('Rejecting edge contour at {}'.format(center))
+			continue
 
 		contour_area = cv2.contourArea(contour)
 		circle_area = math.pi * radius**2
