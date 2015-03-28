@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 import os, time
+import functools
 
 try:
 	import termcolor
@@ -38,6 +39,7 @@ class Logger(object):
 	def op(self, op_str):
 		"""Decorator that wraps an operation with start/end op"""
 		def decorator_fn(fn):
+			@functools.wraps(fn)
 			def wrapped_fn(*args, **kwargs):
 				self.start_op(op_str.format(*args))
 				try:
@@ -47,7 +49,6 @@ class Logger(object):
 					raise
 				self.end_op()
 				return ret
-			wrapped_fn.__name__ = 'op{'+fn.__name__+'}'
 			return wrapped_fn
 		return decorator_fn
 
