@@ -166,7 +166,8 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 
 	Fs = 1/camera.rolling_shutter_r
 	T = 1/Fs
-	NFFT = 1024
+	# 2**14 good balance of speed / resolution [5~10 hz for small sample set]
+	NFFT = 2**14
 	gain = 5
 
 	estimated_frequencies = []
