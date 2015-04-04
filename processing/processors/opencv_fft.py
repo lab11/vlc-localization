@@ -34,7 +34,7 @@ def dbg_plot_subplots(fname):
 	logger.debug('Plotted WIP subplots to {}'.format(fname))
 	logger.end_op()
 
-@logger.op("Process image {0} with {1} transmitter(s) taken with {2}")
+@logger.op("Process image {0} taken with {2}")
 def imag_proc(file_name, num_of_tx, camera, debug):
 	BLACK  = (  0,   0,   0)
 	WHITE  = (255, 255, 255)
@@ -95,7 +95,6 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	# We solve this by drawing an outline ("contour") around each blob
 	contours, heirarchy = cv2.findContours(thresholded_img, cv2.RETR_LIST,
 			cv2.CHAIN_APPROX_SIMPLE)
-	logger.debug('heirarchy = {}'.format(heirarchy))
 
 	if debug:
 		# drawContours draws contours on the supplied image, need a copy
@@ -103,7 +102,39 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		cv2.drawContours(contour_image, contours, -1, 255, 3)
 		dbg_save('contours', contour_image)
 
-		contours_kept_image = gray_image.copy()
+		#contours_kept_image = gray_image.copy()
+		contours_kept_image = cv2.imread(file_name, cv2.IMREAD_COLOR)
+
+		# Draw the center point; useful for eyeballing calibration
+		kept_center = (contours_kept_image.shape[1] / 2, contours_kept_image.shape[0] / 2)
+		cv2.circle(
+				contours_kept_image,
+				kept_center,
+				5, # radius
+				RED, # color
+				-1 # fill circle
+				)
+		cv2.circle(
+				contours_kept_image,
+				(kept_center[0], kept_center[1]+20),
+				5, # radius
+				RED, # color
+				-1 # fill circle
+				)
+		cv2.circle(
+				contours_kept_image,
+				(kept_center[0]+20, kept_center[1]),
+				5, # radius
+				RED, # color
+				-1 # fill circle
+				)
+		cv2.circle(
+				contours_kept_image,
+				(kept_center[0]+40, kept_center[1]),
+				5, # radius
+				RED, # color
+				-1 # fill circle
+				)
 
 	# And then fitting a circle to that contour
 	centers = []
@@ -119,7 +150,6 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		# For some reason minEnclosingCircle flips x and y?
 		center = (center[1], center[0])
 		#assert thresholded_img[center[0], center[1]] == 1, 'Center of blob is not lit?'
-		logger.debug('Transmitter at {}. Radius of {} pixels'.format(center, radius))
 
 		reject = False
 		for pt in contour:
@@ -142,8 +172,8 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 
 		contour_area = cv2.contourArea(contour)
 		circle_area = math.pi * radius**2
-		logger.debug('Transmitter area {}. Contour area {}. %age {}'.format(
-			circle_area, contour_area, (contour_area / circle_area)*100 ))
+		logger.debug('Transmitter area {:0.1f}. Radius {} px. Contour area {}.  %age {:0.1f}'.format(
+			circle_area, radius, contour_area, (contour_area / circle_area)*100 ))
 		if (contour_area / circle_area) < .5:
 			logger.info('Rejecting non-circular contour at {}'.format(center))
 			continue
@@ -151,13 +181,13 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 		radii.append(radius)
 
 		if debug:
-			cv2.drawContours(contours_kept_image, [contour,], -1, 255, 3)
+			cv2.drawContours(contours_kept_image, [contour,], -1, TEAL, 3)
 
 	if debug:
 		dbg_save('contours-kept', contours_kept_image)
 
 	number_of_transmitters = len(centers)
-	assert number_of_transmitters >= 3, 'not enough transmitters'
+	#assert number_of_transmitters >= 3, 'not enough transmitters'
 	logger.end_op()
 
 
@@ -262,9 +292,9 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 			pylab.tick_params(labelsize=4)
 
 		peaks = scipy.signal.argrelmax(Y_plot)[0]
-		logger.debug('peaks =\n{}'.format(peaks))
-		logger.debug('f[peaks] =\n{}'.format(f[peaks]))
-		logger.debug('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
+		logger.debug2('peaks =\n{}'.format(peaks))
+		logger.debug2('f[peaks] =\n{}'.format(f[peaks]))
+		logger.debug2('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
 
 		idx = numpy.argmax(Y_plot[peaks])
 		peak_freq = f[peaks[idx]]
@@ -277,7 +307,7 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 					(centers[i][1]+100, centers[i][0]),
 					cv2.FONT_HERSHEY_TRIPLEX,
 					2,
-					255)
+					YELLOW)
 
 		estimated_frequencies.append(peak_freq)
 

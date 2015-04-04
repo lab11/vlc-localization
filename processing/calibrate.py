@@ -4,18 +4,11 @@
 from __future__ import print_function
 import sys, os
 import math
+import glob
 import argparse
 
 import numpy
-import numpy.ma
-import scipy
-import scipy.misc
-import scipy.ndimage
-import scipy.signal
-import scipy.cluster
-import matplotlib
-import matplotlib.mlab
-import pylab
+np = numpy
 
 from aoa import aoa
 
@@ -68,10 +61,11 @@ def calibrate(file_name, z_dict, camera, cam_pos, imag_proc, debug):
 		frequencies_of_lights[i] = cround(frequencies_of_lights[i], 50)
 
 
-	assert len(z_dict) == len(positions_of_lights)
+	assert len(z_dict) >= len(positions_of_lights)
 
 
 	locs = {}
+	abs_locs = {}
 	for i in range(len(positions_of_lights)):
 		x, y, z = calibrate_light(
 				positions_of_lights[i],
@@ -80,8 +74,9 @@ def calibrate(file_name, z_dict, camera, cam_pos, imag_proc, debug):
 				z_dict[frequencies_of_lights[i]],
 				)
 		locs[frequencies_of_lights[i]] = (x, y, z)
+		abs_locs[frequencies_of_lights[i]] = (x + cam_pos[0], y + cam_pos[1], z)
 
-	return locs
+	return locs, abs_locs
 
 
 def calibrate_from_files(fname, cal_f):
@@ -97,38 +92,67 @@ def calibrate_from_files(fname, cal_f):
 		l = l.split()
 
 		if l[0] == 'CAM_POS:':
-			cam_pos = map(float, l[1:2])
+			cam_pos = map(float, l[1:3])
+			cam_pos = (cam_pos[1], cam_pos[0])
 			continue
 
 		z_vals[int(l[1])] = float(l[2])
 		names[int(l[1])] = l[0]
 
 	from phones.cameras import lumia_1020_back as camera
-	from processors import opencv_fft as imag_proc
+	from processors import opencv_fft
 
 	try:
 		debug = int(os.environ['DEBUG']) >= 3
 	except KeyError:
 		debug = False
 
-	locs = calibrate(fname, z_vals, camera, cam_pos, imag_proc.imag_proc, debug)
+	locs, abs_locs = calibrate(fname, z_vals, camera, cam_pos, opencv_fft.imag_proc, debug)
 
-	return locs
+	return locs, abs_locs, names
+
+
+@logger.op('Averaging images in {0}')
+def calibrate_from_directory(path):
+	cal_f = os.path.join(path, 'cal.txt')
+	if path[-1] != '/':
+		path += '/'
+
+	ret = {}
+	abs_ret = {}
+	for pic in glob.glob(path + '*.jpg'):
+		locs, abs_locs, names = calibrate_from_files(pic, cal_f)
+
+		for f in sorted(locs):
+			logger.info('{} Hz: {}'.format(f, map(lambda x: round(x, 3), locs[f])))
+
+		for f in locs:
+			if f not in ret:
+				ret[f] = np.array(locs[f])
+				abs_ret[f] = np.array(abs_locs[f])
+			else:
+				ret[f] = np.vstack((ret[f], locs[f]))
+				abs_ret[f] = np.vstack((abs_ret[f], abs_locs[f]))
+
+		if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 3:
+			break
+
+	return ret, abs_ret, names
 
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
-		fname = '~/Dropbox/benpat/research/vlc-data/calibration/bulb7/2013-05-24--23-29-33-08.jpg'
-		cal_f = '~/Dropbox/benpat/research/vlc-data/calibration/bulb7/cal.txt'
+		path = '~/Dropbox/benpat/research/vlc-data/calibration/bulb7/'
 	elif len(sys.argv) == 2:
-		fname = sys.argv[1]
-		cal_f = '/'.join(sys.argv[1].split('/')[:-1]) + '/cal.txt'
-	else:
-		fname = sys.argv[1]
-		cal_f = sys.argv[2]
+		path = sys.argv[1]
 
-	locs = calibrate_from_files(fname, cal_f)
+	locs, abs_locs, names = calibrate_from_directory(path)
 
+	np.set_printoptions(suppress=True)
 	for f in sorted(locs):
-		print('{} Hz: {}'.format(f, map(lambda x: round(x, 3), locs[f])))
+		print('Bulb {} ({} Hz):'.format(names[f], f))
+		logger.debug('{}'.format(locs[f]))
+		print(np.mean(locs[f], axis=0))
+		logger.debug('{}'.format(abs_locs[f]))
+		print(np.mean(abs_locs[f], axis=0))
 

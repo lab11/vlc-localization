@@ -17,6 +17,9 @@ except ImportError:
 
 	cprint = lambda s, *args, **kwargs : print(s)
 
+if 'QUIET' in os.environ:
+	cprint = lambda s, *args, **kwargs : None
+
 class Logger(object):
 
 	class LoggerOp(object):
@@ -124,6 +127,13 @@ class Logger(object):
 		elif indent_newlines:
 			s = s.replace('\n', '\n'+self.indent())
 		cprint(self.indent() + s, 'blue')
+
+	def debug2(self, *args, **kwargs):
+		try:
+			if int(os.environ['DEBUG']) >= 2:
+				return self.debug(*args, **kwargs)
+		except KeyError:
+			return
 
 	def update(self, msg):
 		op, start = self.ops[-1]

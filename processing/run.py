@@ -39,7 +39,7 @@ Control debug level with DEBUG evinronment environment variable.
 	args = parser.parse_args()
 
 	try:
-		if os.environ['DEBUG'] == '2':
+		if os.environ['DEBUG'] >= '2':
 			debug = True
 		else:
 			debug = False
