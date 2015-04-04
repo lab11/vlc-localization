@@ -301,9 +301,22 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 
 		logger.debug('center {} peak_freq = {}'.format(centers[i], peak_freq))
 		if debug:
+			cv2.circle(contours_kept_image,
+					(centers[i][1], centers[i][0]),
+					5,
+					GREEN,
+					-1)
+			cv2.circle(contours_kept_image,
+					(centers[i][1], centers[i][0]),
+					radius + 5,
+					GREEN,
+					2)
 			cv2.putText(
 					contours_kept_image,
-					"{} {} Hz".format(centers[i], int(peak_freq)),
+					"({} {}) {} Hz".format(
+						centers[i][1],
+						centers[i][0],
+						int(peak_freq)),
 					(centers[i][1]+100, centers[i][0]),
 					cv2.FONT_HERSHEY_TRIPLEX,
 					2,
