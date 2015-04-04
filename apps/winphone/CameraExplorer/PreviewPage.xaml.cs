@@ -128,6 +128,11 @@ namespace RESTAPI
             request.Headers["X-luxapose-camera"] = which_camera;
             request.Headers["X-luxapose-user"] = from_whom;
 
+            // http://stackoverflow.com/questions/13975315/get-unique-device-id-udid-under-windows-phone-8
+            byte[] myDeviceID = (byte[])Microsoft.Phone.Info.DeviceExtendedProperties.GetValue("DeviceUniqueId");
+            string DeviceIDAsString = Convert.ToBase64String(myDeviceID);
+            request.Headers["X-luxapose-device-uuid"] = DeviceIDAsString;
+
             request.BeginGetRequestStream((IAsyncResult result) =>
             {
                 HttpWebRequest preq = result.AsyncState as HttpWebRequest;
