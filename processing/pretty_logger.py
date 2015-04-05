@@ -130,12 +130,18 @@ class Logger(object):
 			s = s.replace('\n', '\n'+self.indent())
 		cprint(self.indent() + s, 'green', attrs=['bold'])
 
-	def debug(self, s, remove_newlines=False, indent_newlines=True):
+	def debug(self, s,
+			remove_newlines=False,
+			indent_newlines=True,
+			remove_blanklines=False):
 		try:
 			os.environ['DEBUG']
 		except KeyError:
 			return
 		s = str(s)
+		if remove_blanklines:
+			while '\n\n' in s:
+				s = s.replace('\n\n', '\n')
 		if remove_newlines:
 			s = s.replace('\n', ' ')
 		elif indent_newlines:

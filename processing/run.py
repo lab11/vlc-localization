@@ -6,6 +6,8 @@ import sys
 import os
 import argparse
 
+import numpy as np
+
 import pretty_logger
 logger = pretty_logger.get_logger()
 
@@ -42,6 +44,7 @@ Control debug level with DEBUG evinronment environment variable.
 
 	args = parser.parse_args()
 
+	np.set_printoptions(suppress=True)
 
 	try:
 		#from phones import args.camera.split('-')[0] as phone

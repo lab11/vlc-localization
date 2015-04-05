@@ -16,23 +16,46 @@ import pylab
 import pretty_logger
 logger = pretty_logger.get_logger()
 
-@logger.op("AoA on lights {0} with Zf={1}")
-def aoa(lights, Zf, k_init_method='scipy_basin'):
+def get_Z_offset_guess(room):
+	# Assume we are ~2.5 m away in Z
+	DEFAULT_OFFSET = 2.5
+
+	if room.units == 'm':
+		offset = DEFAULT_OFFSET
+	elif room.units == 'cm':
+		offset = DEFAULT_OFFSET * 100
+	elif room.units == 'in':
+		offset = (DEFAULT_OFFSET * 100) / 2.54
+	else:
+		raise NotImplementedError('Unknown unit: {}'.format(room.units))
+
+	if room.user_is == 'below':
+		pass
+	elif room.user_is == 'above':
+		offset = -offset
+	else:
+		raise NotImplementedError('Unkonwn user position: {}'.format(room.user_is))
+
+	return offset
+
+@logger.op("AoA on lights {1} with Zf={2}")
+def aoa(room, lights, Zf, k_init_method='scipy_basin'):
 	# Convert argument to useful array format
 	centers = numpy.array(zip(*lights)[0])
-	logger.debug('centers\n{}'.format(centers))
 	transmitters = numpy.array(zip(*lights)[1])
-	logger.debug('transmitters\n{}'.format(transmitters))
 
 	# Add Zf column to centers array (light z coordinate is fixed by Zf)
-	centers = numpy.append(centers, Zf * numpy.ones((len(lights), 1)), axis=1)
+	centers = numpy.append(centers, -Zf * numpy.ones((len(lights), 1)), axis=1)
+
+	logger.debug('centers\n{}'.format(centers))
+	logger.debug('transmitters\n{}'.format(transmitters), remove_blanklines=True)
 
 	## Precompute static properties of locations (constant calculation)
 	logger.start_op("Pre-computing static arrays used for AoA")
 
 	# Compute squared distance across x, y, z of center coords
 	image_squared_distance = numpy.sum(numpy.square(centers), axis=1)
-	logger.debug('image_squared_distance\n{}'.format(image_squared_distance))
+	logger.debug2('image_squared_distance\n{}'.format(image_squared_distance))
 
 	# Compute pairwise constants (2*K_m*K_n term and abosulte square distances)
 	pair_shape = (len(lights)-1, len(lights))
@@ -44,8 +67,8 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 					numpy.sum(numpy.square(transmitters[i] - transmitters[j]))
 			pairwise_image_inner_products[i][j]=\
 					numpy.dot(centers[i], centers[j])
-	logger.debug('transmitter_pair_squared_distance\n{}'.format(transmitter_pair_squared_distance))
-	logger.debug('pairwise_image_inner_products\n{}'.format(pairwise_image_inner_products))
+	logger.debug2('transmitter_pair_squared_distance\n{}'.format(transmitter_pair_squared_distance))
+	logger.debug2('pairwise_image_inner_products\n{}'.format(pairwise_image_inner_products))
 
 	logger.end_op()
 	## End precompute constants
@@ -141,7 +164,8 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 
 	logger.start_op('Minimize distance function')
 	if k_init_method == 'static':
-		k_vals_init = [-.2] * len(lights)
+		k_val_from_z = get_Z_offset_guess(room) / Zf
+		k_vals_init = [k_val_from_z] * len(lights)
 	elif k_init_method == 'YS_brute':
 		k_vals_init = brute_force_k()
 	elif k_init_method == 'scipy_brute':
@@ -177,12 +201,20 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 					)
 		return dists
 
+	def initial_position_guess(room, transmitters):
+		'''Need to see huerisitic with a location; use the average of lights'''
+		guess = numpy.mean(transmitters, axis=0)[0]
+		offset = get_Z_offset_guess(room)
+		guess[2] = guess[2] - offset
+		logger.debug('seed_loc_guess = {}'.format(guess))
+		return guess
+
 	logger.start_op('Minimize location function')
-	rx_location_init = numpy.array([0, 0, 200])
+	rx_location_init = initial_position_guess(room, transmitters)
 	rx_location, ier = scipy.optimize.leastsq(least_squares_rx_location, rx_location_init)
 	if ier not in (1,2,3,4):
 		raise ValueError("Least squares failed to minimize location function")
-	logger.debug('rx_location = {}'.format(rx_location))
+	logger.debug('   rx_location = {}'.format(rx_location))
 	logger.end_op()
 
 	def least_squares_rotation(rotation):

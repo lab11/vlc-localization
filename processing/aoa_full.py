@@ -171,7 +171,8 @@ def aoa_full(file_name, camera, room, imag_proc):
 	#tries_method = ['YS_brute', 'static', 'scipy_basin']
 	tries_method = ['static']
 	for i in xrange(tries):
-		rx_location, rx_rotation, location_error = aoa(lights, camera.Zf, k_init_method=tries_method[i])
+		rx_location, rx_rotation, location_error =\
+				aoa(room, lights, camera.Zf, k_init_method=tries_method[i])
 		logger.primary('location estimate = {}'.format(rx_location))
 		logger.primary('location error    = {}'.format(location_error))
 		tries_rx_loc[i] = rx_location

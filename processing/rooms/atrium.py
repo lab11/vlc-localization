@@ -1,5 +1,7 @@
 
 origin = 'center'
+units = 'm'
+user_is = 'below'
 
 transmitters = {
 		# Chandelier 0
