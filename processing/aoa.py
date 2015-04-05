@@ -39,13 +39,13 @@ def get_Z_offset_guess(room):
 	return offset
 
 @logger.op("AoA on lights {1} with Zf={2}")
-def aoa(room, lights, Zf, k_init_method='scipy_basin'):
+def aoa(room, lights, Zf, k_init_method='scipy_basin', actual_location=None):
 	# Convert argument to useful array format
 	centers = numpy.array(zip(*lights)[0])
 	transmitters = numpy.array(zip(*lights)[1])
 
 	# Add Zf column to centers array (light z coordinate is fixed by Zf)
-	centers = numpy.append(centers, -Zf * numpy.ones((len(lights), 1)), axis=1)
+	centers = numpy.append(centers, Zf * numpy.ones((len(lights), 1)), axis=1)
 
 	logger.debug('centers\n{}'.format(centers))
 	logger.debug('transmitters\n{}'.format(transmitters), remove_blanklines=True)
@@ -163,6 +163,19 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin'):
 		# End of brute force method
 
 	logger.start_op('Minimize distance function')
+	if actual_location is not None:
+		k_vals_actual = []
+		for i in range(len(centers)):
+			pts = []
+			for j in range(3):
+				if transmitters[i][0][j] == 0:
+					continue
+				if centers[i][j] == 0:
+					continue
+				pts.append(abs(transmitters[i][0][j] / centers[i][j]))
+			k_vals_actual.append(numpy.mean(pts))
+		logger.debug('{} (k_vals_actual)'.format(k_vals_actual))
+
 	if k_init_method == 'static':
 		k_val_from_z = get_Z_offset_guess(room) / Zf
 		k_vals_init = [k_val_from_z] * len(lights)
@@ -180,16 +193,22 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin'):
 				stepsize=0.01,
 				)
 		k_vals_init = res.x
+	elif k_init_method == 'actual':
+		assert actual_location is not None
+		k_vals_init = k_vals_actual
 	else:
 		logger.error("Unknown k_init_method. Valid options are:\n"\
 				"  static YS_brute scipy_brute scipy_basin")
+
 	logger.debug('{} (k_vals_init from {})'.format(k_vals_init, k_init_method))
 	k_vals, ier = scipy.optimize.leastsq(least_squares_scaling_factors, k_vals_init)
-	logger.debug('{} (k_vals after leastsq)'.format(k_vals))
+
 	if ier not in (1,2,3,4):
 		# ier is a return code that must be in (1,2,3,4) if leastsq succeeded:
 		# http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html
 		raise ValueError("Least squares failed to minimize distance function")
+	logger.debug('{} (k_vals after leastsq)'.format(k_vals))
+
 	logger.end_op()
 
 	def least_squares_rx_location(rx_location):

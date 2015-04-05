@@ -11,6 +11,9 @@ import numpy as np
 import pretty_logger
 logger = pretty_logger.get_logger()
 
+def dist(c1, c2):
+	return ( (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 + (c1[2] - c2[2])**2 )**.5
+
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(
 			formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -28,12 +31,16 @@ Control debug level with DEBUG evinronment environment variable.
 	parser.add_argument('-f', '--filename', type=str,
 			default='./samples/x_0_y_1.27.jpg',
 			help='image to process')
+	parser.add_argument('-l', '--actual-location', type=str,
+			help='actual location in space, formatted as "x, y, z"')
 	parser.add_argument('-c', '--camera', type=str,
 			default='lumia_1020',
 			help='phone type; must be in phones/')
 	parser.add_argument('-m', '--method', type=str,
 			default='opencv_fft',
 			help='image processing method; must be in processors/')
+	parser.add_argument('-k', '--k-val-method', type=str,
+			help='Override k-val guess method (useful with -l)')
 	parser.add_argument('-r', '--room', type=str,
 			default='test_rig',
 			help='room the image was taken in; must be in rooms/')
@@ -45,6 +52,12 @@ Control debug level with DEBUG evinronment environment variable.
 	args = parser.parse_args()
 
 	np.set_printoptions(suppress=True)
+
+	if args.actual_location:
+		if ',' in args.actual_location:
+			args.actual_location = np.array(map(float, args.actual_location.split(',')))
+		else:
+			args.actual_location = np.array(map(float, args.actual_location.split()))
 
 	try:
 		#from phones import args.camera.split('-')[0] as phone
@@ -69,8 +82,11 @@ Control debug level with DEBUG evinronment environment variable.
 
 	if args.only_image:
 		try:
-			centers, radii, estimated_frequencies, shape =\
-					imag_proc(args.filename, 0, camera)
+			centers, radii, estimated_frequencies, shape = imag_proc(
+					args.filename,
+					0,
+					camera,
+					)
 			for c,r,f in zip(centers, radii, estimated_frequencies):
 				logger.info('{}: {} pixel radius. Freq {}'.format(c, r, f))
 			logger.info('shape = {}'.format(shape))
@@ -87,10 +103,23 @@ Control debug level with DEBUG evinronment environment variable.
 			raise
 		try:
 			rx_location, rx_rotation, location_error = aoa_full(
-					args.filename, camera, room, imag_proc)
+					args.filename,
+					camera, room,
+					imag_proc,
+					actual_location=args.actual_location,
+					k_val_method=args.k_val_method,
+					)
 			logger.info('rx_location = {}'.format(rx_location))
+			if args.actual_location is not None:
+				logger.info(' rx_loc_err = {}'.format(
+					map(abs, rx_location - args.actual_location)))
+				logger.info('x, y, z err = {}'.format(
+					dist(rx_location, args.actual_location)))
+				rx_location[2] = 0
+				args.actual_location[2] = 0
+				logger.info('   x, y err = {}'.format(
+					dist(rx_location, args.actual_location)))
 			logger.info('rx_rotation =\n{}'.format(rx_rotation))
-			logger.info('location_error = {}'.format(location_error))
 		except Exception as e:
 			logger.warn('Exception: {}'.format(e))
 			raise

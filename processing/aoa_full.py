@@ -22,7 +22,7 @@ import pretty_logger
 logger = pretty_logger.get_logger()
 
 def dist(c1, c2):
-	return ( (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 - (c1[2] - c2[2])**2)**.5
+	return ( (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 + (c1[2] - c2[2])**2 )**.5
 
 def cround(x, base):
 	return base * round(float(x)/base)
@@ -57,7 +57,8 @@ def resolve_aliased_frequncies(lights):
 	return zip(l, best_coords)
 
 @logger.op("Aoa full on image {0} taken with {1} in {2}")
-def aoa_full(file_name, camera, room, imag_proc):
+def aoa_full(file_name, camera, room, imag_proc,
+		actual_location=None, k_val_method=None):
 	frequencies = numpy.array(room.transmitters.keys())
 
 	positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
@@ -169,10 +170,17 @@ def aoa_full(file_name, camera, room, imag_proc):
 	tries_rx_rot = numpy.empty([tries, 3, 3])
 	tries_rx_err = numpy.empty([tries])
 	#tries_method = ['YS_brute', 'static', 'scipy_basin']
-	tries_method = ['static']
+	if k_val_method:
+		tries_method = [k_val_method]
+	else:
+		tries_method = ['static']
 	for i in xrange(tries):
 		rx_location, rx_rotation, location_error =\
-				aoa(room, lights, camera.Zf, k_init_method=tries_method[i])
+				aoa(
+						room, lights, camera.Zf,
+						k_init_method=tries_method[i],
+						actual_location=actual_location,
+						)
 		logger.primary('location estimate = {}'.format(rx_location))
 		logger.primary('location error    = {}'.format(location_error))
 		tries_rx_loc[i] = rx_location
