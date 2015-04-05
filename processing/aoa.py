@@ -53,7 +53,7 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin', actual_location=None):
 	## Precompute static properties of locations (constant calculation)
 	logger.start_op("Pre-computing static arrays used for AoA")
 
-	# Compute squared distance across x, y, z of center coords
+	# Compute squared distance from lens center to each projection
 	image_squared_distance = numpy.sum(numpy.square(centers), axis=1)
 	logger.debug2('image_squared_distance\n{}'.format(image_squared_distance))
 
@@ -166,14 +166,15 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin', actual_location=None):
 	if actual_location is not None:
 		k_vals_actual = []
 		for i in range(len(centers)):
-			pts = []
-			for j in range(3):
-				if transmitters[i][0][j] == 0:
-					continue
-				if centers[i][j] == 0:
-					continue
-				pts.append(abs(transmitters[i][0][j] / centers[i][j]))
-			k_vals_actual.append(numpy.mean(pts))
+			# T is phone location in transmitter's frame of reference
+			# (Tx - x)^2 + (Ty - y)^2 + (Tz - z)^2 = K^2*(a^2 + b^2 + Zf^2)
+			t_sum = (actual_location[0] - transmitters[i][0][0])**2 +\
+					(actual_location[1] - transmitters[i][0][1])**2 +\
+					(actual_location[2] - transmitters[i][0][2])**2
+			px_sum = image_squared_distance[i]
+			k_sqared = t_sum / px_sum
+			k_vals_actual.append(k_sqared**.5)
+
 		logger.debug('{} (k_vals_actual)'.format(k_vals_actual))
 
 	if k_init_method == 'static':
