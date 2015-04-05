@@ -82,12 +82,24 @@ def aoa_full(file_name, camera, room, imag_proc):
 		positions_of_lights), remove_newlines=True)
 
 
+	last_f = None
+	min_freq_diff = 10000
+	for f in sorted(room.transmitters):
+		if last_f is None:
+			last_f = f
+			continue
+		min_freq_diff = min(min_freq_diff, f-last_f)
+		last_f = f
+	del(last_f)
+
+
 	# Lock frequencies
 	actual_frequencies = [
-			cround(f, 50)
+			cround(f, min_freq_diff)
 			for f in frequencies_of_lights
 			]
 	del(frequencies_of_lights) # delete this so we don't accidentally use it
+	del(min_freq_diff)
 
 
 	# Drop unknown frequencies
