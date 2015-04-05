@@ -225,11 +225,14 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin', actual_location=None):
 		guess = numpy.mean(transmitters, axis=0)[0]
 		offset = get_Z_offset_guess(room)
 		guess[2] = guess[2] - offset
-		logger.debug('seed_loc_guess = {}'.format(guess))
 		return guess
 
 	logger.start_op('Minimize location function')
-	rx_location_init = initial_position_guess(room, transmitters)
+	if k_init_method == 'actual':
+		rx_location_init = actual_location
+	else:
+		rx_location_init = initial_position_guess(room, transmitters)
+	logger.debug('seed_loc_guess = {}'.format(rx_location_init))
 	rx_location, ier = scipy.optimize.leastsq(least_squares_rx_location, rx_location_init)
 	if ier not in (1,2,3,4):
 		raise ValueError("Least squares failed to minimize location function")
