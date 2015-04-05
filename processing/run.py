@@ -58,6 +58,17 @@ Control debug level with DEBUG evinronment environment variable.
 			args.actual_location = np.array(map(float, args.actual_location.split(',')))
 		else:
 			args.actual_location = np.array(map(float, args.actual_location.split()))
+	else:
+		try:
+			f = os.path.basename(args.filename)[:-4].split('_')
+			if len(f) == 4:
+				if f[0] == 'x' and f[2] == 'y':
+					args.actual_location = np.array([float(f[1]), float(f[3]), 0])
+			if len(f) == 6:
+				if f[0] == 'x' and f[2] == 'y' and f[4] == 'z':
+					args.actual_location = np.array([float(f[1]), float(f[3]), float(f[5])])
+		except IndexError:
+			pass
 
 	try:
 		#from phones import args.camera.split('-')[0] as phone
@@ -113,12 +124,14 @@ Control debug level with DEBUG evinronment environment variable.
 			if args.actual_location is not None:
 				logger.info(' rx_loc_err = {}'.format(
 					map(abs, rx_location - args.actual_location)))
-				logger.info('x, y, z err = {}'.format(
-					dist(rx_location, args.actual_location)))
+				logger.info('x, y, z err = {} {}'.format(
+					dist(rx_location, args.actual_location),
+					room.units))
 				rx_location[2] = 0
 				args.actual_location[2] = 0
-				logger.info('   x, y err = {}'.format(
-					dist(rx_location, args.actual_location)))
+				logger.info('   x, y err = {} {}'.format(
+					dist(rx_location, args.actual_location),
+					room.units))
 			logger.info('rx_rotation =\n{}'.format(rx_rotation))
 		except Exception as e:
 			logger.warn('Exception: {}'.format(e))

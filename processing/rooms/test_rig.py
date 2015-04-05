@@ -39,7 +39,7 @@ transmitters = transmitters_from_zero_in_cm
 units = 'cm'
 user_is = 'below'
 
-transmitters = transmitters_zero_floor_in_m
-units = 'm'
-user_is = 'below'
+#transmitters = transmitters_zero_floor_in_m
+#units = 'm'
+#user_is = 'below'
 
