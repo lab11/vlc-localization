@@ -35,7 +35,7 @@ def dbg_plot_subplots(fname):
 	logger.end_op()
 
 @logger.op("Process image {0} taken with {2}")
-def imag_proc(file_name, num_of_tx, camera, debug):
+def imag_proc(file_name, num_of_tx, camera):
 	BLACK  = (  0,   0,   0)
 	WHITE  = (255, 255, 255)
 	BLUE   = (255,   0,   0)
@@ -44,6 +44,16 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	YELLOW = (  0, 255, 255)
 	TEAL   = (255, 255,   0)
 	MAGENTA= (255,   0, 255)
+
+	if 'PICS' in os.environ:
+		debug = True
+	else:
+		debug = False
+
+	if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 3:
+		logger.warn("DEBUG=3 doesn't save pictures any more")
+		logger.warn("I split saving pictures out to its own independent setting")
+		logger.warn("Use PICS=1 to save intermediate images")
 
 	if debug:
 		global dbg_step

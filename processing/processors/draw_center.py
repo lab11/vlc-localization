@@ -35,7 +35,7 @@ def dbg_plot_subplots(fname):
 	logger.end_op()
 
 @logger.op("Process image {0} taken with {2}")
-def imag_proc(file_name, num_of_tx, camera, debug):
+def imag_proc(file_name, num_of_tx, camera):
 	debug = True
 	BLACK  = (  0,   0,   0)
 	WHITE  = (255, 255, 255)
@@ -45,6 +45,11 @@ def imag_proc(file_name, num_of_tx, camera, debug):
 	YELLOW = (  0, 255, 255)
 	TEAL   = (255, 255,   0)
 	MAGENTA= (255,   0, 255)
+
+	if 'PICS' in os.environ:
+		debug = True
+	else:
+		debug = False
 
 	if debug:
 		global dbg_step

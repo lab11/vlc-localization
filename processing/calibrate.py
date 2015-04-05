@@ -21,25 +21,28 @@ def dist(c1, c2):
 def cround(x, base):
 	return base * round(float(x)/base)
 
-@logger.op("Calibrate {1} Hz light at {0} px at height {3} m")
+@logger.op("Calibrate {1} Hz light at {0} px at height {4} m")
 def calibrate_light(px_pos, freq, z_f, correction, z_val):
 	z_f = float(z_f)
+
 	atan_x = math.atan2(px_pos[0], z_f)
-	atan_y = math.atan2(px_pos[1], z_f)
-	logger.debug('          atan(x): {} deg'.format(math.degrees(atan_x)))
-	logger.debug('          atan(y): {} deg'.format(math.degrees(atan_y)))
+	logger.debug('          atan(x): {:0.4f}\t({:0.4f} deg)'.format(atan_x, math.degrees(atan_x)))
 	atan_x += correction['x']
+	logger.debug('corrected atan(x): {:0.4f}\t({:0.4f} deg)'.format(atan_x, math.degrees(atan_x)))
+
+	atan_y = math.atan2(px_pos[1], z_f)
+	logger.debug('          atan(y): {:0.4f}\t({:0.4f} deg)'.format(atan_y, math.degrees(atan_y)))
 	atan_y += correction['y']
-	logger.debug('corrected atan(x): {} deg'.format(math.degrees(atan_x)))
-	logger.debug('corrected atan(y): {} deg'.format(math.degrees(atan_y)))
+	logger.debug('corrected atan(y): {:0.4f}\t({:0.4f} deg)'.format(atan_y, math.degrees(atan_y)))
+
 	x = math.tan(atan_x) * z_val
 	y = math.tan(atan_y) * z_val
 	return x, y, z_val
 
-@logger.op("Calibrate using image {0} taken with {2}::{3} at {4}")
-def calibrate(file_name, z_dict, camera, cam_id, cam_pos, imag_proc, debug):
+@logger.op("Calibrate using image {0} taken with {2}::{3} facing {5} at {4}")
+def calibrate(file_name, z_dict, camera, cam_id, cam_pos, cam_orient, imag_proc,):
 	raw_positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
-			imag_proc(file_name, 0, camera, debug)
+			imag_proc(file_name, 0, camera)
 
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
 
@@ -50,7 +53,6 @@ def calibrate(file_name, z_dict, camera, cam_id, cam_pos, imag_proc, debug):
 	positions_of_lights = np.zeros(raw_positions_of_lights.shape)
 	positions_of_lights[:,0] = raw_positions_of_lights[:,1] - center_point[1]
 	positions_of_lights[:,1] = center_point[0] - raw_positions_of_lights[:,0]
-
 
 	# Drop frequencies that are unreasonably low
 	to_del = []
@@ -68,6 +70,12 @@ def calibrate(file_name, z_dict, camera, cam_id, cam_pos, imag_proc, debug):
 		frequencies_of_lights[i] = cround(frequencies_of_lights[i], 50)
 
 
+	# Debug
+	logger.debug("Kept, normalized centers after rotation:")
+	for i in range(len(frequencies_of_lights)):
+		logger.debug('\t{}: {}'.format(
+			frequencies_of_lights[i], positions_of_lights[i]))
+
 	assert len(z_dict) >= len(positions_of_lights)
 
 
@@ -82,7 +90,16 @@ def calibrate(file_name, z_dict, camera, cam_id, cam_pos, imag_proc, debug):
 				z_dict[frequencies_of_lights[i]],
 				)
 		locs[frequencies_of_lights[i]] = (x, y, z)
-		abs_locs[frequencies_of_lights[i]] = (x + cam_pos[0], y + cam_pos[1], z)
+		if cam_orient == '+x':
+			pass
+		elif cam_orient == '-x':
+			pass
+		elif cam_orient == '+y':
+			abs_locs[frequencies_of_lights[i]] = (x + cam_pos[0], y + cam_pos[1], z)
+		elif cam_orient == '-y':
+			abs_locs[frequencies_of_lights[i]] = (-x + cam_pos[0], -y + cam_pos[1], z)
+		else:
+			assert False and 'Bad camera orientation: {}'.format(cam_orient)
 
 	return locs, abs_locs
 
@@ -106,6 +123,9 @@ def calibrate_from_files(fname, cal_f):
 		if l[0] == 'CAM_ID:':
 			cam_id = l[1]
 			continue
+		if l[0] == 'CAM_ORIENT:':
+			cam_orient = l[1]
+			continue
 
 		z_vals[int(l[1])] = float(l[2])
 		names[int(l[1])] = l[0]
@@ -113,12 +133,10 @@ def calibrate_from_files(fname, cal_f):
 	from phones.cameras import lumia_1020_back as camera
 	from processors import opencv_fft
 
-	try:
-		debug = int(os.environ['DEBUG']) >= 3
-	except KeyError:
-		debug = False
-
-	locs, abs_locs = calibrate(fname, z_vals, camera, cam_id, cam_pos, opencv_fft.imag_proc, debug)
+	locs, abs_locs = calibrate(
+			fname, z_vals,
+			camera, cam_id, cam_pos, cam_orient,
+			opencv_fft.imag_proc)
 
 	return locs, abs_locs, names
 
@@ -145,7 +163,7 @@ def calibrate_from_directory(path):
 				ret[f] = np.vstack((ret[f], locs[f]))
 				abs_ret[f] = np.vstack((abs_ret[f], abs_locs[f]))
 
-		if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 3:
+		if 'BULB_LIMIT' in os.environ:
 			break
 
 	return ret, abs_ret, names

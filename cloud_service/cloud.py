@@ -19,6 +19,7 @@ from aoa_full import aoa_full
 import phones
 import rooms
 import processors.opencv_fft
+import processors.draw_center
 
 import pretty_logger
 logger = pretty_logger.get_logger()
@@ -31,11 +32,6 @@ if PYTHON3:
 else:
 	from SimpleHTTPServer import SimpleHTTPRequestHandler
 	import SocketServer as socketserver
-
-if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 3:
-	debug = True
-else:
-	debug = False
 
 PORT = 4908
 
@@ -101,7 +97,6 @@ def on_image_received(input_image_path):
 				camera,
 				room,
 				processors.opencv_fft.imag_proc,
-				debug,
 				)
 		logger.info('rx_location = {}'.format(rx_location))
 		logger.info('rx_rotation =\n{}'.format(rx_rotation))
