@@ -339,7 +339,6 @@ def imag_proc(file_name, num_of_tx, camera):
 		dbg_save('contours-kept-labeled', contours_kept_image)
 		dbg_save('circles', light_circles)
 
-	logger.debug('estimated_frequencies = {}'.format(estimated_frequencies))
 	logger.end_op()
 
 	centers = numpy.array(centers)

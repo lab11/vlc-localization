@@ -18,6 +18,7 @@ except ImportError:
 	cprint = lambda s, *args, **kwargs : print(s)
 
 if 'QUIET' in os.environ:
+	_cprint = cprint
 	cprint = lambda s, *args, **kwargs : None
 
 class Logger(object):
@@ -108,6 +109,19 @@ class Logger(object):
 		s = str(s)
 		cprint(self.indent() + s, 'yellow', attrs=['bold'])
 
+	def primary(self, s, remove_newlines=False, indent_newlines=True):
+		'''Same level as `info`, but only log if top-level operation'''
+		if len(self.ops) == 0:
+			self.info(s, remove_newlines, indent_newlines)
+
+			if 'QUIET' in os.environ:
+				s = str(s)
+				if remove_newlines:
+					s = s.replace('\n', ' ')
+				elif indent_newlines:
+					s = s.replace('\n', '\n'+self.indent())
+				_cprint(self.indent() + s, 'green', attrs=['bold'])
+
 	def info(self, s, remove_newlines=False, indent_newlines=True):
 		s = str(s)
 		if remove_newlines:
@@ -126,7 +140,7 @@ class Logger(object):
 			s = s.replace('\n', ' ')
 		elif indent_newlines:
 			s = s.replace('\n', '\n'+self.indent())
-		cprint(self.indent() + s, 'blue')
+		cprint(self.indent() + s, 'cyan')
 
 	def debug2(self, *args, **kwargs):
 		try:

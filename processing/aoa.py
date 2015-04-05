@@ -26,7 +26,6 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 
 	# Add Zf column to centers array (light z coordinate is fixed by Zf)
 	centers = numpy.append(centers, Zf * numpy.ones((len(lights), 1)), axis=1)
-	logger.debug('centers\n{}'.format(centers))
 
 	## Precompute static properties of locations (constant calculation)
 	logger.start_op("Pre-computing static arrays used for AoA")
@@ -160,14 +159,13 @@ def aoa(lights, Zf, k_init_method='scipy_basin'):
 	else:
 		logger.error("Unknown k_init_method. Valid options are:\n"\
 				"  static YS_brute scipy_brute scipy_basin")
-	print('{} (k_vals_init from {})'.format(k_vals_init, k_init_method))
+	logger.debug('{} (k_vals_init from {})'.format(k_vals_init, k_init_method))
 	k_vals, ier = scipy.optimize.leastsq(least_squares_scaling_factors, k_vals_init)
-	print('{} (k_vals after leastsq)'.format(k_vals))
+	logger.debug('{} (k_vals after leastsq)'.format(k_vals))
 	if ier not in (1,2,3,4):
 		# ier is a return code that must be in (1,2,3,4) if leastsq succeeded:
 		# http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html
 		raise ValueError("Least squares failed to minimize distance function")
-	logger.debug('k_vals = {}'.format(k_vals))
 	logger.end_op()
 
 	def least_squares_rx_location(rx_location):

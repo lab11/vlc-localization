@@ -17,7 +17,11 @@ if __name__ == '__main__':
 Control debug level with DEBUG evinronment environment variable.
   Default: no debugging
   DEBUG=1: print debugging information
-  DEBUG=2: print debugging information and write out intermediate images to /tmp (slow)
+  DEBUG=2: print lots of debugging information
+
+  QUIET=1: Suppress most output (supersedes DEBUG)
+
+  PICS=1:  Save intermediate images (slow)
 ''')
 	parser.add_argument('-f', '--filename', type=str,
 			default='./samples/x_0_y_1.27.jpg',
@@ -38,13 +42,6 @@ Control debug level with DEBUG evinronment environment variable.
 
 	args = parser.parse_args()
 
-	try:
-		if os.environ['DEBUG'] >= '2':
-			debug = True
-		else:
-			debug = False
-	except KeyError:
-		debug = False
 
 	try:
 		#from phones import args.camera.split('-')[0] as phone
@@ -70,7 +67,7 @@ Control debug level with DEBUG evinronment environment variable.
 	if args.only_image:
 		try:
 			centers, radii, estimated_frequencies, shape =\
-					imag_proc(args.filename, 0, camera, debug)
+					imag_proc(args.filename, 0, camera)
 			for c,r,f in zip(centers, radii, estimated_frequencies):
 				logger.info('{}: {} pixel radius. Freq {}'.format(c, r, f))
 			logger.info('shape = {}'.format(shape))
@@ -87,7 +84,7 @@ Control debug level with DEBUG evinronment environment variable.
 			raise
 		try:
 			rx_location, rx_rotation, location_error = aoa_full(
-					args.filename, camera, room, imag_proc, debug)
+					args.filename, camera, room, imag_proc)
 			logger.info('rx_location = {}'.format(rx_location))
 			logger.info('rx_rotation =\n{}'.format(rx_rotation))
 			logger.info('location_error = {}'.format(location_error))

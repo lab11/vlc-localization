@@ -98,7 +98,7 @@ def on_image_received(input_image_path):
 				room,
 				processors.opencv_fft.imag_proc,
 				)
-		logger.info('rx_location = {}'.format(rx_location))
+		logger.primary('rx_location = {}'.format(rx_location))
 		logger.info('rx_rotation =\n{}'.format(rx_rotation))
 		logger.info('location_error = {}'.format(location_error))
 
