@@ -40,7 +40,11 @@ def calibrate_light(px_pos, freq, z_f, correction, z_val):
 	return x, y, z_val
 
 @logger.op("Calibrate using image {0} taken with {2}::{3} facing {5} at {4}")
-def calibrate(file_name, z_dict, camera, cam_id, cam_pos, cam_orient, imag_proc,):
+def calibrate(
+		file_name, z_dict, gt,
+		camera, cam_id, cam_pos, cam_orient, center_bulb,
+		imag_proc,
+		):
 	raw_positions_of_lights, radii_of_lights, frequencies_of_lights, image_shape =\
 			imag_proc(file_name, 0, camera)
 
@@ -91,15 +95,40 @@ def calibrate(file_name, z_dict, camera, cam_id, cam_pos, cam_orient, imag_proc,
 				)
 		locs[frequencies_of_lights[i]] = (x, y, z)
 		if cam_orient == '+x':
-			pass
+			raise NotImplementedError('cam +x')
 		elif cam_orient == '-x':
-			pass
+			raise NotImplementedError('cam -x')
 		elif cam_orient == '+y':
 			abs_locs[frequencies_of_lights[i]] = (x + cam_pos[0], y + cam_pos[1], z)
 		elif cam_orient == '-y':
 			abs_locs[frequencies_of_lights[i]] = (-x + cam_pos[0], -y + cam_pos[1], z)
 		else:
 			assert False and 'Bad camera orientation: {}'.format(cam_orient)
+
+		if center_bulb is not None:
+			if frequencies_of_lights[i] == center_bulb:
+				center_x_y = (x, y)
+
+	if center_bulb is not None:
+		for i in range(len(positions_of_lights)):
+			locs[frequencies_of_lights[i]] = (
+					locs[frequencies_of_lights[i]][0] - center_x_y[0],
+					locs[frequencies_of_lights[i]][1] - center_x_y[1]
+					)
+			if cam_orient == '+x':
+				raise NotImplementedError('cam +x')
+			elif cam_orient == '-x':
+				raise NotImplementedError('cam -x')
+			elif cam_orient == '+y':
+				abs_locs[frequencies_of_lights[i]] = (
+						abs_locs[frequencies_of_lights[i]][0] - center_x_y[0],
+						abs_locs[frequencies_of_lights[i]][1] - center_x_y[1]
+						)
+			elif cam_orient == '-y':
+				abs_locs[frequencies_of_lights[i]] = (
+						abs_locs[frequencies_of_lights[i]][0] + center_x_y[0],
+						abs_locs[frequencies_of_lights[i]][1] + center_x_y[1]
+						)
 
 	return locs, abs_locs
 
@@ -110,6 +139,8 @@ def calibrate_from_files(fname, cal_f):
 
 	z_vals = {}
 	names = {}
+	gt = {}
+	center_bulb = None
 	for l in open(cal_f):
 		if len(l.strip()) == 0 or l[0] == '#':
 			continue
@@ -118,7 +149,6 @@ def calibrate_from_files(fname, cal_f):
 
 		if l[0] == 'CAM_POS:':
 			cam_pos = map(float, l[1:3])
-			cam_pos = (cam_pos[1], cam_pos[0])
 			continue
 		if l[0] == 'CAM_ID:':
 			cam_id = l[1]
@@ -126,19 +156,26 @@ def calibrate_from_files(fname, cal_f):
 		if l[0] == 'CAM_ORIENT:':
 			cam_orient = l[1]
 			continue
+		if l[0] == 'CENTER_BULB:':
+			center_bulb = int(l[1])
+			continue
 
 		z_vals[int(l[1])] = float(l[2])
 		names[int(l[1])] = l[0]
+		try:
+			gt[int(l[1])] = map(float, l[3:5])
+		except KeyError:
+			gt[int(l[1])] = None
 
 	from phones.cameras import lumia_1020_back as camera
 	from processors import opencv_fft
 
 	locs, abs_locs = calibrate(
-			fname, z_vals,
-			camera, cam_id, cam_pos, cam_orient,
+			fname, z_vals, gt,
+			camera, cam_id, cam_pos, cam_orient, center_bulb,
 			opencv_fft.imag_proc)
 
-	return locs, abs_locs, names
+	return locs, abs_locs, names, gt
 
 
 @logger.op('Averaging images in {0}')
@@ -150,7 +187,7 @@ def calibrate_from_directory(path):
 	ret = {}
 	abs_ret = {}
 	for pic in glob.glob(path + '*.jpg'):
-		locs, abs_locs, names = calibrate_from_files(pic, cal_f)
+		locs, abs_locs, names, gt = calibrate_from_files(pic, cal_f)
 
 		for f in sorted(locs):
 			logger.info('{} Hz: {}'.format(f, map(lambda x: round(x, 3), locs[f])))
@@ -166,33 +203,36 @@ def calibrate_from_directory(path):
 		if 'BULB_LIMIT' in os.environ:
 			break
 
-	return ret, abs_ret, names
+	return ret, abs_ret, names, gt
 
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
 		path = '~/Dropbox/benpat/research/vlc-data/calibration/bulb7/'
 		path = os.path.expanduser(path)
-		locs, abs_locs, names = calibrate_from_directory(path)
+		locs, abs_locs, names, gt = calibrate_from_directory(path)
 	elif len(sys.argv) == 2:
 		path = sys.argv[1]
 		path = os.path.expanduser(path)
-		locs, abs_locs, names = calibrate_from_directory(path)
+		locs, abs_locs, names, gt = calibrate_from_directory(path)
 	elif len(sys.argv) == 3:
 		path = sys.argv[1]
 		path = os.path.expanduser(path)
 		cal_f = sys.argv[2]
 		cal_f = os.path.expanduser(cal_f)
-		locs, abs_locs, names = calibrate_from_files(path, cal_f)
+		locs, abs_locs, names, gt = calibrate_from_files(path, cal_f)
 
 	np.set_printoptions(suppress=True)
 	for f in sorted(locs):
 		print('Bulb {} ({} Hz):'.format(names[f], f))
 		if len(locs[f].shape) > 1:
 			logger.debug('{}'.format(locs[f]))
-			print(np.mean(locs[f], axis=0))
+			print('{} (camera-relative)'.format(np.mean(locs[f], axis=0)))
+			if gt[f]:
+				print('{} (camera-relative error)'.format(
+					np.mean(locs[f], axis=0) - gt[f]))
 			logger.debug('{}'.format(abs_locs[f]))
-			print(np.mean(abs_locs[f], axis=0))
+			print('{} (global)'.format(np.mean(abs_locs[f], axis=0)))
 		else:
 			print(locs[f])
 			print(abs_locs[f])

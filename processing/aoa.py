@@ -85,7 +85,12 @@ def aoa(room, lights, Zf, k_init_method='scipy_basin', actual_location=None):
 						2*k_vals[i]*k_vals[j] * pairwise_image_inner_products[i][j] -\
 						transmitter_pair_squared_distance[i][j]
 						)
+		#errs = numpy.array(errs)
+		#logger.debug('')
+		#logger.debug('k_vals = {}'.format(k_vals))
 		#logger.debug('errs = {}'.format(errs))
+		#logger.debug('err2 = {}'.format(errs**2))
+		#logger.debug('sum = {}'.format(sum(errs**2)))
 		return errs
 
 	def scalar_scaling(k_vals):

@@ -66,19 +66,22 @@ def aoa_full(file_name, camera, room, imag_proc,
 
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
 	# Image is mirrored by the lens, need to reflect the image
-	if not hasattr(room, 'origin'):
-		raise TypeError('Room object {} does not have an origin'.format(room))
-	if room.origin == 'center':
-		# Image origin is currently the top left but we want to center it
-		center_point = tuple([p /2 for p in image_shape])
-		positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]
-		positions_of_lights[:,1] = center_point[1] - positions_of_lights[:,1]
-	elif room.origin == 'south-east':
-		positions_of_lights[:,1] = -positions_of_lights[:,1]
-	elif room.origin == 'north-west':
-		pass
-	else:
-		raise NotImplementedError('Unknown origin type: {}'.format(room.origin))
+
+	# Image origin is currently the top left but we want to center it, the AoA
+	# processing assumes that (0, 0, 0) in the receiver coordinate system is at
+	# the center of the lens
+	center_point = tuple([p /2 for p in image_shape])
+	positions_of_lights[:,0] = center_point[0] - positions_of_lights[:,0]
+	positions_of_lights[:,1] = center_point[1] - positions_of_lights[:,1]
+
+	# 90
+	# positions_of_lights[:,0] = -(center_point[1] - positions_of_lights[:,1])
+	# positions_of_lights[:,1] = center_point[0] - positions_of_lights[:,0]
+
+	# -90
+	# positions_of_lights[:,0] = center_point[1] - positions_of_lights[:,1]
+	# positions_of_lights[:,1] = -(center_point[0] - positions_of_lights[:,0])
+
 	logger.debug2('Translated light center points: {}'.format(
 		positions_of_lights), remove_newlines=True)
 

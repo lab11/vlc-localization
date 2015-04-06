@@ -134,9 +134,7 @@ class Logger(object):
 			remove_newlines=False,
 			indent_newlines=True,
 			remove_blanklines=False):
-		try:
-			os.environ['DEBUG']
-		except KeyError:
+		if not ('DEBUG' in os.environ and int(os.environ['DEBUG']) >= 1):
 			return
 		s = str(s)
 		if remove_blanklines:
