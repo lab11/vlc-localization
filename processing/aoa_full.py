@@ -234,8 +234,12 @@ def aoa_full(file_name, camera, room, imag_proc,
 				rx_rotation = tries_rx_rot[min_err_idx]
 				location_error = tries_rx_err[min_err_idx]
 				
-				logger.info('Error ({}) too high, but max tries exceeded'.format(location_error))
+				logger.warn('Error ({}) too high, but max tries exceeded'.format(location_error))
 				logger.warn('Returning measurement with high error estimate')
+
+				max_light_i = numpy.argmax(radii_of_lights)
+				logger.warn('Prefer estimate of under max radii light:')
+				logger.warn('Loc: {}'.format(room.transmitters[actual_frequencies[max_light_i]]))
 			else:
 				logger.info('Error ({}) too high, trying again'.format(location_error))
 		else:
