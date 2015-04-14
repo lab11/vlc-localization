@@ -155,8 +155,7 @@ def imag_proc(file_name, num_of_tx, camera):
 		center = map(int, center)
 		radius = int(radius)
 		if radius <= 33:
-			logger.info('Skipping transmitter at {} with small radius ({} pixels)'.format(
-				center, radius))
+			logger.debug('Skipping transmitter at {} with small radius ({} pixels)'.format(center, radius))
 			continue
 		# For some reason minEnclosingCircle flips x and y?
 		center = (center[1], center[0])
@@ -178,7 +177,7 @@ def imag_proc(file_name, num_of_tx, camera):
 				break
 
 		if reject:
-			logger.info('Rejecting edge contour at {}'.format(center))
+			logger.debug('Rejecting edge contour at {}'.format(center))
 			continue
 
 		contour_area = cv2.contourArea(contour)
@@ -186,7 +185,7 @@ def imag_proc(file_name, num_of_tx, camera):
 		logger.debug('Transmitter area {:0.1f}. Radius {} px. Contour area {}.  %age {:0.1f}'.format(
 			circle_area, radius, contour_area, (contour_area / circle_area)*100 ))
 		if (contour_area / circle_area) < .5:
-			logger.info('Rejecting non-circular contour at {}'.format(center))
+			logger.debug('Rejecting non-circular contour at {}'.format(center))
 			continue
 		centers.append(center)
 		radii.append(radius)

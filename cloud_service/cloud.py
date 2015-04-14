@@ -45,6 +45,8 @@ def work_fn(work_queue):
 			if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 1:
 				traceback.print_exc()
 
+m_avg = []
+
 def on_image_received(input_image_path):
 	directory, fname = os.path.split(input_image_path)
 	img_name, ext = os.path.splitext(fname)
@@ -74,16 +76,19 @@ def on_image_received(input_image_path):
 		else:
 			raise NotImplementedError('Unknown phone type for image dimensions: ' + str(size))
 
-	try:
-		hint = headers['x-luxapose-ble-loc-hints'].split()[0].strip()
-		room = getattr(rooms, hint)
-	except KeyError:
-		logger.warn("No location hint. Assuming demo_floor")
-		room = rooms.demo_floor
-	except AttributeError:
-		logger.error("Location hint for unknown room: {}".format(hint))
-		logger.error("Skipping image in unknown room")
-		return
+	# Override room to ipsn for demo
+	room = rooms.ipsn15
+
+	#try:
+	#	hint = headers['x-luxapose-ble-loc-hints'].split()[0].strip()
+	#	room = getattr(rooms, hint)
+	#except KeyError:
+	#	logger.warn("No location hint. Assuming demo_floor")
+	#	room = rooms.demo_floor
+	#except AttributeError:
+	#	logger.error("Location hint for unknown room: {}".format(hint))
+	#	logger.error("Skipping image in unknown room")
+	#	return
 
 	source_ip = headers['x-luxapose-source-ip']
 	user = headers['x-luxapose-user']
@@ -107,25 +112,34 @@ def on_image_received(input_image_path):
 		ofile.write('rx_rotation =\n{}\n'.format(rx_rotation))
 		ofile.write('location_error = {}\n'.format(location_error))
 		ofile.close()
-		logger.info('Result saved to {}'.format(result_path))
+		logger.debug('Result saved to {}'.format(result_path))
 
-		data = {
-				'rx_location' : list(rx_location),
-				'rx_rotation' : rx_rotation.tolist(),
-				'location_error' : location_error,
-				'image_name' : img_name,
-				'phone_ip' : source_ip,
-				'user': user,
-		}
+		m_avg.append(rx_location)
+		if len(m_avg) > 3:
+			m_avg.pop(0)
+		m = map(lambda x: sum(x)/len(x), zip(*m_avg))
+		logger.primary('m_avg_loc = {}'.format(m))
 
-		req = urllib2.Request('http://gatd.eecs.umich.edu:8081/WEgwAGyc9N')
-		req.add_header('Content-Type', 'application/json')
+		#data = {
+		#		'rx_location' : list(rx_location),
+		#		'rx_rotation' : rx_rotation.tolist(),
+		#		'location_error' : location_error,
+		#		'image_name' : img_name,
+		#		'phone_ip' : source_ip,
+		#		'user': user,
+		#}
 
-		response = urllib2.urlopen(req, json.dumps(data))
-		logger.info('Result posted to gatd')
+		#req = urllib2.Request('http://gatd.eecs.umich.edu:8081/WEgwAGyc9N')
+		#req.add_header('Content-Type', 'application/json')
+
+		#response = urllib2.urlopen(req, json.dumps(data))
+		#logger.info('Result posted to gatd')
 
 	finally:
 		logger.close_copy_file()
+
+	print('')
+	print('')
 
 def callback(*args):
 	print("Callback")

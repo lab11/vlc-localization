@@ -80,10 +80,10 @@ class Logger(object):
 			self.f.write(s + '\n')
 			self.orig_cprint(s, *args, **kwargs)
 		cprint = new_cprint
-		self.info('Copying all logging output to {}'.format(fname))
+		self.debug('Copying all logging output to {}'.format(fname))
 
 	def close_copy_file(self):
-		self.info('Closing logging output file {}'.format(self.fname))
+		self.debug('Closing logging output file {}'.format(self.fname))
 		self.f.close()
 		global cprint
 		cprint = self.orig_cprint
@@ -97,8 +97,9 @@ class Logger(object):
 			cprint(self.indent() +
 					"Starting: " + op, 'white', attrs=['bold'])
 		else:
-			cprint(self.indent() +
-					"Starting: " + op, 'grey', attrs=['bold'])
+			if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 1:
+				cprint(self.indent() +
+						"Starting: " + op, 'grey', attrs=['bold'])
 		self.ops.append((op, time.time()))
 
 	def error(self, s):
@@ -112,15 +113,15 @@ class Logger(object):
 	def primary(self, s, remove_newlines=False, indent_newlines=True):
 		'''Same level as `info`, but only log if top-level operation'''
 		if len(self.ops) == 0:
-			self.info(s, remove_newlines, indent_newlines)
-
+			s = str(s)
+			if remove_newlines:
+				s = s.replace('\n', ' ')
+			elif indent_newlines:
+				s = s.replace('\n', '\n'+self.indent())
 			if 'QUIET' in os.environ:
-				s = str(s)
-				if remove_newlines:
-					s = s.replace('\n', ' ')
-				elif indent_newlines:
-					s = s.replace('\n', '\n'+self.indent())
 				_cprint(self.indent() + s, 'green', attrs=['bold'])
+			else:
+				cprint(self.indent() + s, 'green', attrs=['bold'])
 
 	def info(self, s, remove_newlines=False, indent_newlines=True):
 		s = str(s)
@@ -128,7 +129,7 @@ class Logger(object):
 			s = s.replace('\n', ' ')
 		elif indent_newlines:
 			s = s.replace('\n', '\n'+self.indent())
-		cprint(self.indent() + s, 'green', attrs=['bold'])
+		cprint(self.indent() + s, 'green')
 
 	def debug(self, s,
 			remove_newlines=False,
@@ -168,9 +169,10 @@ class Logger(object):
 						"Complete: {} ({:.3f} secs)".format(op, dur),
 						'white', attrs=['bold'])
 			else:
-				cprint(self.indent() +
-						"Complete: {} ({:.3f} secs)".format(op, dur),
-						'grey', attrs=['bold'])
+				if 'DEBUG' in os.environ and int(os.environ['DEBUG']) >= 1:
+					cprint(self.indent() +
+							"Complete: {} ({:.3f} secs)".format(op, dur),
+							'grey', attrs=['bold'])
 		else:
 			cprint(self.indent() + 
 					"FAILED: {} ({:.3f} secs)".format(op, dur),
