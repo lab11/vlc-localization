@@ -3,33 +3,41 @@ origin = 'center'
 units = 'm'
 user_is = 'below'
 
+# room wall: 17.0688 m
+# bathroom:  49.0728 m
+# meeting:   28.956 m
+# arch:      17.3228 m
+# arch2:     45.2628 m
+# elevator:  21.336 m
+
+# z measured, center measured, others calibrated
 transmitters_measured = {
 		# Chandelier 1
 		# Second from bathroom
 		# Center: x = 3.45 + meeting, y = bathroom wall - 14.00
 		# camera -> -x
-		4650 : (( 0.000, 0.000, 3.021),),		# Bulb e
-		4200 : (( 0.000, 0.000, 3.026),),		# Bule 5
-		4050 : (( 0.000, 0.000, 2.993),),		# Bulb 2
-		4300 : (( 0.000, 0.000, 3.000),),		# Bulb 7
+		4650 : ((20.216,35.943, 3.021),),		# Bulb e
+		4200 : ((21.740,34.743, 3.026),),		# Bule 5
+		4050 : ((20.032,34.102, 2.993),),		# Bulb 2
+		4300 : ((20.519,34.073, 3.000),),		# Bulb 7
 
 		# Chandelier 2
 		# glass room near glass
 		# Center: x = 5.66, y = 10.05
 		# camera -> -y
-		4400 : (( 0.000, 0.000, 3.305),),		# Bulb 9
-		4350 : (( 0.000, 0.000, 3.312),),		# Bule 8
-		4600 : (( 0.000, 0.000, 3.304),),		# Bulb d
-		4550 : (( 0.000, 0.000, 3.315),),		# Bulb c
+		4400 : (( 5.660,10.050, 3.305),),		# Bulb 9
+		4350 : (( 5.962, 9.180, 3.312),),		# Bule 8
+		4600 : (( 6.171,11.002, 3.304),),		# Bulb d
+		4550 : (( 4.473,10.401, 3.315),),		# Bulb c
 
 		# Chandelier 3
 		# big room triangle point
 		# Center: x = 11.87 + wall, y = 12.39
 		# camera -> -y
-		4450 : (( 0.000, 0.000, 3.457),),		# Bulb 0a
-		4500 : (( 0.000, 0.000, 3.407),),		# Bule 0b
-		4250 : (( 0.000, 0.000, 3.375),),		# Bulb 06
-		4150 : (( 0.000, 0.000, 3.388),),		# Bulb 04
+		4450 : ((29.838,12.579, 3.457),),		# Bulb 0a
+		4500 : ((28.939,12.390, 3.407),),		# Bule 0b
+		4250 : ((28.452,11.234, 3.375),),		# Bulb 06
+		4150 : ((28.038,13.001, 3.388),),		# Bulb 04
 
 		# Chandelier 4
 		# third from bathroom
@@ -44,20 +52,20 @@ transmitters_measured = {
 		# big room middle of line
 		# Center: x = 8.61 + Chandelier 9,  y = 5.74
 		# camera -> -y
-		5000 : (( 0.000, 0.000, 3.297),),		# Bulb 15
-		4100 : (( 0.000, 0.000, 3.317),),		# Bule 03
-		4000 : (( 0.000, 0.000, 3.296),),		# Bulb 01
-		4700 : (( 0.000, 0.000, 3.307),),		# Bulb 0f
+		5000 : ((24.391, 5.964, 3.297),),		# Bulb 15
+		4100 : ((22.850, 6.902, 3.317),),		# Bule 03
+		4000 : ((22.823, 4.971, 3.296),),		# Bulb 01
+		4700 : ((23.329, 5.740, 3.307),),		# Bulb 0f
 
 
 		# Chandelier 6
 		# stub hallway light
-		# Center: 3.80 + arch, y = 1.95 + electric / elevator room (309)
+		# Center: 3.80 + arch2, y = 1.95 + electric / elevator room (309)
 		# camera -> +x
-		4800 : (( 0.000, 0.000, 2.843),),		# Bulb 11
-		5200 : (( 0.000, 0.000, 2.749),),		# Bule 1a
-		4900 : (( 0.000, 0.000, 2.830),),		# Bulb 13
-		5650 : (( 0.000, 0.000, 2.815),),		# Bulb 23
+		4800 : ((49.061,22.221, 2.843),),		# Bulb 11
+		5200 : ((50.282,23.507, 2.749),),		# Bule 1a
+		4900 : ((48.399,23.929, 2.830),),		# Bulb 13
+		5650 : ((49.063,23.286, 2.815),),		# Bulb 23
 
 
 		# Chandelier 7
@@ -73,10 +81,10 @@ transmitters_measured = {
 		# Nearest bathroom (end of food)
 		# Center: x = 8.59 + meeting, y = bathroom - 5.89
 		# camera -> -x
-		5150 : (( 0.000, 0.000, 3.312),),		# Bulb 19
-		5900 : (( 0.000, 0.000, 3.326),),		# Bule 29
-		5300 : (( 0.000, 0.000, 3.328),),		# Bulb 1c
-		5100 : (( 0.000, 0.000, 3.320),),		# Bulb 18, estimated
+		5150 : ((38.285,43.962, 3.312),),		# Bulb 19
+		5900 : ((37.546,43.183, 3.326),),		# Bule 29
+		4650 : ((36.634,43.176, 3.328),),		# Bulb 1c, NOTE: conf thought this should be 5300
+		5100 : ((38.251,42.168, 3.320),),		# Bulb 18, estimated
 
 
 		# Chandelier 9

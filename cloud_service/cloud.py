@@ -190,8 +190,8 @@ if __name__ == '__main__':
 	t.start()
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.connect(("gmail.com",80))
-	logger.info("Server IP address {}".format(s.getsockname()[0]))
+	#s.connect(("gmail.com",80))
+	#logger.info("Server IP address {}".format(s.getsockname()[0]))
 	s.close()
 
 	logger.info("Server running at port {}".format(PORT))
