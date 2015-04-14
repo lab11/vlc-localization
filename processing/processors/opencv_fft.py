@@ -153,7 +153,7 @@ def imag_proc(file_name, num_of_tx, camera):
 		center, radius = cv2.minEnclosingCircle(contour)
 		center = map(int, center)
 		radius = int(radius)
-		if radius <= 5:
+		if radius <= 50:
 			logger.info('Skipping transmitter at {} with small radius ({} pixels)'.format(
 				center, radius))
 			continue

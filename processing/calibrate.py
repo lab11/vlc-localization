@@ -95,9 +95,11 @@ def calibrate(
 				)
 		locs[frequencies_of_lights[i]] = (x, y, z)
 		if cam_orient == '+x':
-			raise NotImplementedError('cam +x')
+			# 90 deg rot left from -y, (-x, -y) rot90 (y, -x)
+			abs_locs[frequencies_of_lights[i]] = (y + cam_pos[0], -x + cam_pos[1], z)
 		elif cam_orient == '-x':
-			raise NotImplementedError('cam -x')
+			# 90 deg rot left from +y, (x, y) rot90 (-y, x)
+			abs_locs[frequencies_of_lights[i]] = (-y + cam_pos[0], x + cam_pos[1], z)
 		elif cam_orient == '+y':
 			abs_locs[frequencies_of_lights[i]] = (x + cam_pos[0], y + cam_pos[1], z)
 		elif cam_orient == '-y':
@@ -116,9 +118,15 @@ def calibrate(
 					locs[frequencies_of_lights[i]][1] - center_x_y[1]
 					)
 			if cam_orient == '+x':
-				raise NotImplementedError('cam +x')
+				abs_locs[frequencies_of_lights[i]] = (
+						abs_locs[frequencies_of_lights[i]][0] - center_x_y[1],
+						abs_locs[frequencies_of_lights[i]][1] + center_x_y[0]
+						)
 			elif cam_orient == '-x':
-				raise NotImplementedError('cam -x')
+				abs_locs[frequencies_of_lights[i]] = (
+						abs_locs[frequencies_of_lights[i]][0] + center_x_y[1],
+						abs_locs[frequencies_of_lights[i]][1] - center_x_y[0]
+						)
 			elif cam_orient == '+y':
 				abs_locs[frequencies_of_lights[i]] = (
 						abs_locs[frequencies_of_lights[i]][0] - center_x_y[0],
