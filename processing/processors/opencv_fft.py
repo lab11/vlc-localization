@@ -91,7 +91,8 @@ def imag_proc(file_name, num_of_tx, camera):
 
 	# Replace manual threshold with more efficient OTSU filter
 	logger.start_op("Threshold image")
-	threshold, thresholded_img = cv2.threshold(m2, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+	#threshold, thresholded_img = cv2.threshold(m2, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+	thresholded_img = cv2.adaptiveThreshold(m2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 101, 2)
 	if debug:
 		dbg_save('thresholded_img', thresholded_img)
 	logger.end_op()
@@ -153,7 +154,7 @@ def imag_proc(file_name, num_of_tx, camera):
 		center, radius = cv2.minEnclosingCircle(contour)
 		center = map(int, center)
 		radius = int(radius)
-		if radius <= 50:
+		if radius <= 33:
 			logger.info('Skipping transmitter at {} with small radius ({} pixels)'.format(
 				center, radius))
 			continue
@@ -219,120 +220,127 @@ def imag_proc(file_name, num_of_tx, camera):
 	light_circles = gray_image.copy()
 
 	for i in xrange(number_of_transmitters):
-		row_start = max(0, centers[i][0] - radii[i])
-		row_end = min(gray_image.shape[0]-1, centers[i][0] + radii[i])
-		column_start = max(0, centers[i][1] - radii[i])
-		column_end = min(gray_image.shape[1]-1, centers[i][1] + radii[i])
+		try:
+			row_start = max(0, centers[i][0] - radii[i])
+			row_end = min(gray_image.shape[0]-1, centers[i][0] + radii[i])
+			column_start = max(0, centers[i][1] - radii[i])
+			column_end = min(gray_image.shape[1]-1, centers[i][1] + radii[i])
 
-		#Slice image around current center and sum across all rows
-		image_slice = gray_image[row_start:row_end, column_start:column_end]
-		image_slice_mean = numpy.mean(image_slice)
-		image_row = numpy.sum(image_slice, axis=0)
+			#Slice image around current center and sum across all rows
+			image_slice = gray_image[row_start:row_end, column_start:column_end]
+			image_slice_mean = numpy.mean(image_slice)
+			image_row = numpy.sum(image_slice, axis=0)
 
-		#Remove any DC component
-		image_row = image_row - numpy.mean(image_row)
+			#Remove any DC component
+			image_row = image_row - numpy.mean(image_row)
 
-		#Apply window
-		y = image_row * numpy.hamming(image_row.shape[0])
+			#Apply window
+			y = image_row * numpy.hamming(image_row.shape[0])
 
-		#Take FFT
-		L = len(y)
-		Y = numpy.fft.fft(y* gain, NFFT) / float(L)
-		f = Fs/2 * numpy.linspace(0,1,NFFT/2.0+1)
-		Y_plot = 2*abs(Y[0:NFFT/2.0+1])
+			#Take FFT
+			L = len(y)
+			Y = numpy.fft.fft(y* gain, NFFT) / float(L)
+			f = Fs/2 * numpy.linspace(0,1,NFFT/2.0+1)
+			Y_plot = 2*abs(Y[0:NFFT/2.0+1])
 
-		#TODO: Apply heuristic to determine SNR
+			#TODO: Apply heuristic to determine SNR
 
-		if debug:
-			pylab.subplot(number_of_transmitters,2,2*i+1)
-			pylab.title(str(centers[i]), size='xx-small')
-			pylab.ylim([-13000,13000])
-			pylab.yticks([-13000,0,13000])
-			pylab.tick_params(labelsize=4)
-			pylab.plot(y)
+			if debug:
+				pylab.subplot(number_of_transmitters,2,2*i+1)
+				pylab.title(str(centers[i]), size='xx-small')
+				pylab.ylim([-13000,13000])
+				pylab.yticks([-13000,0,13000])
+				pylab.tick_params(labelsize=4)
+				pylab.plot(y)
 
-		##Improve center by thresholding image and obtaining minimum enclosing circle
-		#_, image_slice_thresh = cv2.threshold(image_slice, image_slice_mean*1.5, 1, cv2.THRESH_BINARY)
-		#image_slice_thresh_contours, _ = cv2.findContours(image_slice_thresh, cv2.RETR_LIST,
-		#	cv2.CHAIN_APPROX_SIMPLE)
-		#image_slice_thresh_contours = numpy.vstack(image_slice_thresh_contours)
-		#center, radius = cv2.minEnclosingCircle(image_slice_thresh_contours)
-		#center = map(int, center)
-		#radius = int(radius)
-		#center = (center[1] + row_start, center[0] + column_start)
-		#cv2.circle(light_circles, (center[1], center[0]), radius + 3, WHITE, 3)
-		#centers[i] = center
-		#radii[i] = radius
+			##Improve center by thresholding image and obtaining minimum enclosing circle
+			#_, image_slice_thresh = cv2.threshold(image_slice, image_slice_mean*1.5, 1, cv2.THRESH_BINARY)
+			#image_slice_thresh_contours, _ = cv2.findContours(image_slice_thresh, cv2.RETR_LIST,
+			#	cv2.CHAIN_APPROX_SIMPLE)
+			#image_slice_thresh_contours = numpy.vstack(image_slice_thresh_contours)
+			#center, radius = cv2.minEnclosingCircle(image_slice_thresh_contours)
+			#center = map(int, center)
+			#radius = int(radius)
+			#center = (center[1] + row_start, center[0] + column_start)
+			#cv2.circle(light_circles, (center[1], center[0]), radius + 3, WHITE, 3)
+			#centers[i] = center
+			#radii[i] = radius
 
-		#Find the best fit for the largest circle
-		radius = int(image_slice.shape[0]/2)
-		first_time = True
-		max_val = 0
-		circle_area = 0
-		max_loc = (0, 0)
-		while radius > 0:
-			last_radius = radius
-			last_max_loc = max_loc
-			last_max_val = max_val
-			last_circle_area = circle_area
+			#Find the best fit for the largest circle
+			radius = int(image_slice.shape[0]/2)
+			first_time = True
+			max_val = 0
+			circle_area = 0
+			max_loc = (0, 0)
+			while radius > 0:
+				last_radius = radius
+				last_max_loc = max_loc
+				last_max_val = max_val
+				last_circle_area = circle_area
 
-			circle_template = numpy.zeros((radius*2+1, radius*2+1), type(image_slice[0][0]))
-			cv2.circle(circle_template, (radius, radius), radius, WHITE, -1)
-			res = cv2.matchTemplate(image_slice, circle_template, cv2.TM_CCORR)
-			min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-			circle_area = math.pi*math.pow(radius,2)
-			#Continue to decrease the circle size until more than 10% of the remaining pixels 
-			#print('{} {}'.format(max_val, last_max_val))
-			if first_time or max_val > last_max_val*((.4*circle_area+.6*last_circle_area)/last_circle_area):
-				first_time = False
-				radius = radius-1
-			else:
-				#print('GOT HERE')
-				radii[i] = last_radius
-				centers[i] = (row_start + last_max_loc[1] + last_radius + 1, column_start + last_max_loc[0] + last_radius + 1)
-				cv2.circle(light_circles, (centers[i][1], centers[i][0]), radius + 5, WHITE, 3)
-				break
+				circle_template = numpy.zeros((radius*2+1, radius*2+1), type(image_slice[0][0]))
+				cv2.circle(circle_template, (radius, radius), radius, WHITE, -1)
+				res = cv2.matchTemplate(image_slice, circle_template, cv2.TM_CCORR)
+				min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+				circle_area = math.pi*math.pow(radius,2)
+				#Continue to decrease the circle size until more than 10% of the remaining pixels 
+				#print('{} {}'.format(max_val, last_max_val))
+				if first_time or max_val > last_max_val*((.4*circle_area+.6*last_circle_area)/last_circle_area):
+					first_time = False
+					radius = radius-1
+				else:
+					#print('GOT HERE')
+					radii[i] = last_radius
+					centers[i] = (row_start + last_max_loc[1] + last_radius + 1, column_start + last_max_loc[0] + last_radius + 1)
+					cv2.circle(light_circles, (centers[i][1], centers[i][0]), radius + 5, WHITE, 3)
+					break
 
-		if debug:
-			pylab.subplot(number_of_transmitters,2,2*i+2)
-			pylab.plot(f, Y_plot)
-			pylab.title(str(centers[i]), size='xx-small')
-			#pylab.xlabel('Frequency (Hz)')
-			pylab.xlim([0,16000])
-			pylab.tick_params(labelsize=4)
+			if radii[i] <= 33:
+				raise NotImplementedError("hack")
 
-		peaks = scipy.signal.argrelmax(Y_plot)[0]
-		logger.debug2('peaks =\n{}'.format(peaks))
-		logger.debug2('f[peaks] =\n{}'.format(f[peaks]))
-		logger.debug2('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
+			if debug:
+				pylab.subplot(number_of_transmitters,2,2*i+2)
+				pylab.plot(f, Y_plot)
+				pylab.title(str(centers[i]), size='xx-small')
+				#pylab.xlabel('Frequency (Hz)')
+				pylab.xlim([0,16000])
+				pylab.tick_params(labelsize=4)
 
-		idx = numpy.argmax(Y_plot[peaks])
-		peak_freq = f[peaks[idx]]
+			peaks = scipy.signal.argrelmax(Y_plot)[0]
+			logger.debug2('peaks =\n{}'.format(peaks))
+			logger.debug2('f[peaks] =\n{}'.format(f[peaks]))
+			logger.debug2('Y_plot[peaks] =\n{}'.format(Y_plot[peaks]))
 
-		logger.debug('center {} peak_freq = {}'.format(centers[i], peak_freq))
-		if debug:
-			cv2.circle(contours_kept_image,
-					(centers[i][1], centers[i][0]),
-					5,
-					GREEN,
-					-1)
-			cv2.circle(contours_kept_image,
-					(centers[i][1], centers[i][0]),
-					radius + 5,
-					GREEN,
-					2)
-			cv2.putText(
-					contours_kept_image,
-					"({} {}) {} Hz".format(
-						centers[i][1],
-						centers[i][0],
-						int(peak_freq)),
-					(centers[i][1]+100, centers[i][0]),
-					cv2.FONT_HERSHEY_TRIPLEX,
-					2,
-					YELLOW)
+			idx = numpy.argmax(Y_plot[peaks])
+			peak_freq = f[peaks[idx]]
 
-		estimated_frequencies.append(peak_freq)
+			logger.debug('center {}\tradius {}\tpeak_freq = {}'.format(centers[i], radii[i], peak_freq))
+			if debug:
+				cv2.circle(contours_kept_image,
+						(centers[i][1], centers[i][0]),
+						5,
+						GREEN,
+						-1)
+				cv2.circle(contours_kept_image,
+						(centers[i][1], centers[i][0]),
+						radius + 5,
+						GREEN,
+						2)
+				cv2.putText(
+						contours_kept_image,
+						"({} {}) {} Hz".format(
+							centers[i][1],
+							centers[i][0],
+							int(peak_freq)),
+						(centers[i][1]+100, centers[i][0]),
+						cv2.FONT_HERSHEY_TRIPLEX,
+						2,
+						YELLOW)
+
+			estimated_frequencies.append(peak_freq)
+		except:
+			logger.debug("Dropped failed center at {}".format(centers[i]))
+			estimated_frequencies.append(10)
 
 	if debug:
 		dbg_plot_subplots('freq_fft_transmitters')

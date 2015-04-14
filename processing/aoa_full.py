@@ -67,6 +67,9 @@ def aoa_full(file_name, camera, room, imag_proc,
 	assert image_shape[0] > image_shape[1], "Processed image is not oriented correctly?"
 	# Image is mirrored by the lens, need to reflect the image
 
+	assert len(positions_of_lights) == len(radii_of_lights)
+	assert len(radii_of_lights) == len(frequencies_of_lights)
+
 	# Image origin is currently the top left but we want to center it, the AoA
 	# processing assumes that (0, 0, 0) in the receiver coordinate system is at
 	# the center of the lens
@@ -106,6 +109,10 @@ def aoa_full(file_name, camera, room, imag_proc,
 	del(min_freq_diff)
 
 
+	assert len(positions_of_lights) == len(radii_of_lights)
+	assert len(radii_of_lights) == len(actual_frequencies)
+
+
 	# Drop unknown frequencies
 	to_del = []
 	for i in range(len(actual_frequencies)):
@@ -115,6 +122,36 @@ def aoa_full(file_name, camera, room, imag_proc,
 	positions_of_lights = numpy.delete(positions_of_lights, to_del, axis=0)
 	radii_of_lights = numpy.delete(radii_of_lights, to_del)
 	actual_frequencies = numpy.delete(actual_frequencies, to_del)
+
+
+	assert len(positions_of_lights) == len(radii_of_lights)
+	assert len(radii_of_lights) == len(actual_frequencies)
+
+
+	# Delete duplicate frequencies
+	to_del = []
+	dups = {}
+	for i in range(len(actual_frequencies)):
+		if actual_frequencies[i] in dups:
+			logger.debug("Deleting dup freq entry {}".format(actual_frequencies[i]))
+			to_del.append(i)
+			# Check if close by?
+			l1 = positions_of_lights[i]
+			l2 = positions_of_lights[dups[actual_frequencies[i]]]
+			if (l1[0] - l2[0])**2 + (l1[0] - l2[0])**2 > 100**2:
+				logger.debug("Remove orig too, far away")
+				to_del.append(dups[actual_frequencies[i]])
+			else:
+				logger.debug("keep orig")
+		else:
+			dups[actual_frequencies[i]] = i
+	positions_of_lights = numpy.delete(positions_of_lights, to_del, axis=0)
+	radii_of_lights = numpy.delete(radii_of_lights, to_del)
+	actual_frequencies = numpy.delete(actual_frequencies, to_del)
+
+
+	assert len(positions_of_lights) == len(radii_of_lights)
+	assert len(radii_of_lights) == len(actual_frequencies)
 
 
 	# if len(actual_frequencies) != len(numpy.unique(actual_frequencies)):
