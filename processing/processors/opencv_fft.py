@@ -294,8 +294,10 @@ def imag_proc(file_name, num_of_tx, camera):
 					cv2.circle(light_circles, (centers[i][1], centers[i][0]), radius + 5, WHITE, 3)
 					break
 
-			if radii[i] <= 33:
-				raise NotImplementedError("hack")
+			# Temporary hack put in place to improve demo reliability. Remove.
+			#if radii[i] <= 33:
+			#	logger.debug("WARN: HACK")
+			#	raise NotImplementedError("hack")
 
 			if debug:
 				pylab.subplot(number_of_transmitters,2,2*i+2)
